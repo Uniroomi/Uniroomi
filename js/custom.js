@@ -582,11 +582,21 @@
             $('#banner-search-btn').on('click', function(){
                 var university = $('#university-select').val();
                 var campus = $('#campus-select').val();
+                var universityText = $('#university-select option:selected').text();
+                var campusText = $('#campus-select option:selected').text();
+                
                 if(!university || !campus){
                     $('#banner-search-result').text('Please select both a University and a Campus.').show();
                     return;
                 }
-                // Navigate to the selected campus page
+                
+                // Special case: University of Cape Town + Upper Campus should go to uct.html
+                if(universityText === 'University of Cape Town' && campusText === 'Upper Campus'){
+                    window.location.href = 'Campuses/uct.html';
+                    return;
+                }
+                
+                // For all other combinations, navigate to the selected campus page
                 window.location.href = campus;
             });
         }
