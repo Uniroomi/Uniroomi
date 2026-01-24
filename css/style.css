@@ -552,9 +552,28 @@ button:focus {
     0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+/* Become a Host button specific styling - white background, blue font */
+.navbar .menu_nav .nav-item .nav-link.theme_btn.become-host {
+  background: #ffffff !important;
+  color: #2BA2D8 !important;
+  border: 2px solid #2BA2D8 !important;
+}
+
+.navbar .menu_nav .nav-item .nav-link.theme_btn.become-host:hover {
+  background: #ffffff !important;
+  color: #2BA2D8 !important;
+  border: 2px solid #2BA2D8 !important;
+}
+
+.navbar .menu_nav .nav-item .nav-link.theme_btn.become-host:active {
+  background: #ffffff !important;
+  color: #2BA2D8 !important;
+  border: 2px solid #2BA2D8 !important;
+}
+
 .navbar .menu_nav .nav-item .nav-link.theme_btn_two {
   font: 600 12px "Poppins", sans-serif;
-  color: #fff;
+  color: #2BA2D8;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 10px 20px;
@@ -563,11 +582,11 @@ button:focus {
   display: inline-block;
   vertical-align: middle;
   line-height: 20px;
-  background: linear-gradient(135deg, #52c5fd 0%, #2BA2D8 100%);
-  border: none;
+  background: #ffffff;
+  border: 2px solid #2BA2D8;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 
-    0 4px 12px rgba(82, 197, 253, 0.3),
+    0 4px 12px rgba(43, 162, 216, 0.2),
     0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
@@ -587,12 +606,13 @@ button:focus {
 }
 
 .navbar .menu_nav .nav-item .nav-link.theme_btn_two:hover {
-  color: #fff;
+  color: #2BA2D8;
   transform: translateY(-2px);
   box-shadow: 
-    0 8px 20px rgba(82, 197, 253, 0.4),
+    0 8px 20px rgba(43, 162, 216, 0.3),
     0 4px 8px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #6dd0fa 0%, #3DB5E8 100%);
+  background: #ffffff;
+  border: 2px solid #2BA2D8;
 }
 
 .navbar .menu_nav .nav-item .nav-link.theme_btn_two:hover::before {
@@ -602,8 +622,11 @@ button:focus {
 .navbar .menu_nav .nav-item .nav-link.theme_btn_two:active {
   transform: translateY(0);
   box-shadow: 
-    0 2px 8px rgba(82, 197, 253, 0.3),
+    0 2px 8px rgba(43, 162, 216, 0.2),
     0 1px 2px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border: 2px solid #2BA2D8;
+  color: #2BA2D8;
 }
 
 /* Responsive navbar buttons */
