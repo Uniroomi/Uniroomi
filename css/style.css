@@ -5016,6 +5016,15 @@ section {
   font-size: 1.2rem;
   transition: transform 0.3s ease;
   margin-left: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #2BA2D8;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
 .collapsible-header.collapsed .collapsible-icon {
@@ -5144,8 +5153,8 @@ body {
     right: 30px;
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #000000;
+    color: #2BA2D8;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -5158,7 +5167,7 @@ body {
     transform: translateY(20px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
 }
 
@@ -5169,9 +5178,9 @@ body {
 }
 
 .back-to-top:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: #000000;
     transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
 .back-to-top:active {
@@ -5181,13 +5190,13 @@ body {
 /* Pulse animation for attention */
 @keyframes pulse {
     0% {
-        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
     50% {
-        box-shadow: 0 4px 30px rgba(102, 126, 234, 0.8);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
     }
     100% {
-        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 }
 
