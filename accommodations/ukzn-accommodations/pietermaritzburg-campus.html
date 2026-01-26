@@ -1274,99 +1274,22 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
     <script src="../../js/jquery-3.2.1.min.js"></script>
     <script src="../../js/popper.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
     <script src="../../vendors/owl-carousel/owl.carousel.min.js"></script>
     <script src="../../js/jquery.ajaxchimp.min.js"></script>
+    <script src="../../js/mail-script.js"></script>
     <script src="../../vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
     <script src="../../vendors/nice-select/js/jquery.nice-select.js"></script>
-    <script src="../../js/mail-script.js"></script>
     <script src="../../js/stellar.js"></script>
     <script src="../../vendors/lightbox/simpleLightbox.min.js"></script>
     <script src="../../js/custom.js"></script>
-    <script>
-      // Accommodation Toggle Functionality
-      document.addEventListener('DOMContentLoaded', function() {
-        // First toggle
-        const toggleBtn = document.getElementById('accommodationToggle');
-        const accommodationContent = document.getElementById('accommodationContent');
-        const toggleIcon = toggleBtn.querySelector('.collapsible-icon');
-        
-        // Set initial state - start expanded for first section
-        // accommodationContent.classList.add('collapsed');
-        // toggleBtn.classList.add('collapsed');
-        toggleIcon.textContent = '-';
-        
-        toggleBtn.addEventListener('click', function() {
-          const isCollapsed = accommodationContent.classList.contains('collapsed');
-          
-          if (isCollapsed) {
-            // Expand
-            accommodationContent.classList.remove('collapsed');
-            toggleBtn.classList.remove('collapsed');
-            toggleIcon.textContent = '-';
-          } else {
-            // Collapse
-            accommodationContent.classList.add('collapsed');
-            toggleBtn.classList.add('collapsed');
-            toggleIcon.textContent = '+';
-          }
-        });
-
-        // Second toggle
-        const toggleBtn2 = document.getElementById('accommodationToggle2');
-        const accommodationContent2 = document.getElementById('accommodationContent2');
-        const toggleIcon2 = toggleBtn2.querySelector('.collapsible-icon');
-        
-        // Set initial state - start collapsed
-        accommodationContent2.classList.add('collapsed');
-        toggleBtn2.classList.add('collapsed');
-        toggleIcon2.textContent = '+';
-        
-        toggleBtn2.addEventListener('click', function() {
-          const isCollapsed = accommodationContent2.classList.contains('collapsed');
-          
-          if (isCollapsed) {
-            // Expand
-            accommodationContent2.classList.remove('collapsed');
-            toggleBtn2.classList.remove('collapsed');
-            toggleIcon2.textContent = '-';
-          } else {
-            // Collapse
-            accommodationContent2.classList.add('collapsed');
-            toggleBtn2.classList.add('collapsed');
-            toggleIcon2.textContent = '+';
-          }
-        });
-
-        // Third toggle
-        const toggleBtn3 = document.getElementById('accommodationToggle3');
-        const accommodationContent3 = document.getElementById('accommodationContent3');
-        const toggleIcon3 = toggleBtn3.querySelector('.collapsible-icon');
-        
-        // Set initial state - start collapsed
-        accommodationContent3.classList.add('collapsed');
-        toggleBtn3.classList.add('collapsed');
-        toggleIcon3.textContent = '+';
-        
-        toggleBtn3.addEventListener('click', function() {
-          const isCollapsed = accommodationContent3.classList.contains('collapsed');
-          
-          if (isCollapsed) {
-            // Expand
-            accommodationContent3.classList.remove('collapsed');
-            toggleBtn3.classList.remove('collapsed');
-            toggleIcon3.textContent = '-';
-          } else {
-            // Collapse
-            accommodationContent3.classList.add('collapsed');
-            toggleBtn3.classList.add('collapsed');
-            toggleIcon3.textContent = '+';
-          }
-        });
-      });
-    </script>
   </body>
 </html>
 

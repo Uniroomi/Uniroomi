@@ -533,7 +533,46 @@
         });
     }
 
+    // Page refresh functionality for returning from search results
+    function handlePageRefreshOnReturn() {
+        // Check if we're returning from a search result page
+        const hasSearched = sessionStorage.getItem('hasSearched');
+        
+        if (hasSearched === 'true') {
+            // Clear the search state
+            sessionStorage.removeItem('hasSearched');
+            
+            // Reset the search form
+            $('#university-select').val('');
+            $('#campus-select').val('');
+            populateCampusSelectWithPlaceholder();
+            
+            // Hide any search results
+            $('#banner-search-result').hide();
+            
+            // Remove filtered campus area if it exists
+            var $filtered = $('#filtered-campus-area');
+            if($filtered.length){
+                $filtered.remove();
+            }
+            
+            // Show original universities grid
+            animateShow($('.accomodation_two'));
+            
+            // Force a page refresh to ensure clean state
+            window.location.reload();
+        }
+    }
+
+    // Set search flag when navigating away
+    function setSearchFlag() {
+        sessionStorage.setItem('hasSearched', 'true');
+    }
+
     $(document).ready(function(){
+        // Handle page refresh on return
+        handlePageRefreshOnReturn();
+        
         if($('#university-select').length && $('#campus-select').length){
             // Build university options first
             buildUniversitySelect();
@@ -589,6 +628,9 @@
                     $('#banner-search-result').text('Please select both a University and a Campus.').show();
                     return;
                 }
+                
+                // Set search flag before navigating
+                setSearchFlag();
                 
                 // Special case: University of Cape Town + Upper Campus should go to uct.html
                 if(universityText === 'University of Cape Town' && campusText === 'Upper Campus'){
@@ -709,5 +751,132 @@
             }
         }, 250);
     });
+
+    // Back to Top Button Functionality
+    function initBackToTopButton() {
+        // Show/hide back to top button based on scroll position
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 300) {
+                $('#backToTop').addClass('show');
+            } else {
+                $('#backToTop').removeClass('show');
+            }
+        });
+        
+        // Scroll to top when button is clicked
+        $('#backToTop').on('click', function(e) {
+            e.preventDefault();
+            
+            // Try multiple scroll methods for maximum compatibility
+            $('html, body').animate({
+                scrollTop: 0
+            }, {
+                duration: 600,
+                easing: 'swing'
+            });
+            
+            // Fallback for browsers that don't support jQuery animation
+            setTimeout(function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        });
+    }
+
+    // Initialize back to top button
+    initBackToTopButton();
+
+    // Accommodation Toggle Functionality
+    function initAccommodationToggles() {
+        // Only run on pages that have accommodation toggles
+        if (!$('#accommodationToggle').length) return;
+        
+        // First toggle
+        const $toggleBtn = $('#accommodationToggle');
+        const $accommodationContent = $('#accommodationContent');
+        const $toggleIcon = $toggleBtn.find('.collapsible-icon');
+        
+        // Set initial state - start expanded for first section
+        $accommodationContent.removeClass('collapsed');
+        $toggleBtn.removeClass('collapsed');
+        $toggleIcon.text('-');
+        
+        $toggleBtn.on('click', function() {
+            const isCollapsed = $accommodationContent.hasClass('collapsed');
+            
+            if (isCollapsed) {
+                // Expand
+                $accommodationContent.removeClass('collapsed');
+                $toggleBtn.removeClass('collapsed');
+                $toggleIcon.text('-');
+            } else {
+                // Collapse
+                $accommodationContent.addClass('collapsed');
+                $toggleBtn.addClass('collapsed');
+                $toggleIcon.text('+');
+            }
+        });
+
+        // Second toggle
+        const $toggleBtn2 = $('#accommodationToggle2');
+        const $accommodationContent2 = $('#accommodationContent2');
+        const $toggleIcon2 = $toggleBtn2.find('.collapsible-icon');
+        
+        if ($toggleBtn2.length && $accommodationContent2.length) {
+            // Set initial state - start collapsed
+            $accommodationContent2.addClass('collapsed');
+            $toggleBtn2.addClass('collapsed');
+            $toggleIcon2.text('+');
+            
+            $toggleBtn2.on('click', function() {
+                const isCollapsed = $accommodationContent2.hasClass('collapsed');
+                
+                if (isCollapsed) {
+                    // Expand
+                    $accommodationContent2.removeClass('collapsed');
+                    $toggleBtn2.removeClass('collapsed');
+                    $toggleIcon2.text('-');
+                } else {
+                    // Collapse
+                    $accommodationContent2.addClass('collapsed');
+                    $toggleBtn2.addClass('collapsed');
+                    $toggleIcon2.text('+');
+                }
+            });
+        }
+
+        // Third toggle
+        const $toggleBtn3 = $('#accommodationToggle3');
+        const $accommodationContent3 = $('#accommodationContent3');
+        const $toggleIcon3 = $toggleBtn3.find('.collapsible-icon');
+        
+        if ($toggleBtn3.length && $accommodationContent3.length) {
+            // Set initial state - start collapsed
+            $accommodationContent3.addClass('collapsed');
+            $toggleBtn3.addClass('collapsed');
+            $toggleIcon3.text('+');
+            
+            $toggleBtn3.on('click', function() {
+                const isCollapsed = $accommodationContent3.hasClass('collapsed');
+                
+                if (isCollapsed) {
+                    // Expand
+                    $accommodationContent3.removeClass('collapsed');
+                    $toggleBtn3.removeClass('collapsed');
+                    $toggleIcon3.text('-');
+                } else {
+                    // Collapse
+                    $accommodationContent3.addClass('collapsed');
+                    $toggleBtn3.addClass('collapsed');
+                    $toggleIcon3.text('+');
+                }
+            });
+        }
+    }
+
+    // Initialize accommodation toggles
+    initAccommodationToggles();
 
 })(jQuery)
