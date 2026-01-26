@@ -226,12 +226,19 @@
         }
         .accomodation_area .row {
                 max-width: 100%;
-                padding: 0 5px;
+                padding: 0 15px;
                 margin: 0px auto -30px;
+                justify-content: center;
+        }
+        .accomodation_item {
+            max-width: 320px;
+            margin: 0 auto 30px;
         }
         .accomodation_item img {
             width: 100%;
-            height: auto;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 5px;
         }
         .section_gap {
                 padding: 70px 0;
