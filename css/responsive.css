@@ -3,6 +3,7 @@
         left: auto;
         right: 0;
         width: 100%;
+        min-width: 250px;
     }
 }
 @media(max-width: 1199px){
@@ -17,24 +18,25 @@
                 margin-bottom: 20px;
         }
     .navbar{
-        padding: 0px 15px;
+        padding: 0px 5px;
     }
         .header_area .navbar-brand {
                 padding-top: 0px;
         }
         .header_area .navbar-brand img {
-            max-width: 250px;
+            max-width: 280px;
             width: 100%;
         }
         .main_menu_inner {
                 background: #000;
         }
         .navbar-collapse {
-                max-height: 400px;
+                max-height: 500px;
                 overflow-y: scroll;
         }
         .navbar-nav {
             width: 100%;
+            padding: 0 5px;
         }
         .navbar-toggler[aria-expanded="false"] span:nth-child(2) {
                 opacity: 1;
@@ -228,7 +230,7 @@
         }
         .accomodation_area .row {
                 max-width: 100%;
-                padding: 0 15px;
+                padding: 0 5px;
                 margin: 0px auto -30px;
         }
         .accomodation_item img {
