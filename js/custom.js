@@ -644,6 +644,107 @@
         }
     });
 
+    // Room Type Toggle Functionality
+    function initRoomTypeToggle() {
+        const toggleSwitch = document.getElementById('roomTypeToggle');
+        const singleOption = document.querySelector('.toggle_option_small:first-child');
+        const doubleOption = document.querySelector('.toggle_option_small:last-child');
+        const roomTag = document.querySelector('.private_room_tag');
+        const roomTitle = document.querySelector('.room_title');
+        const guestsElement = document.querySelector('.room_meta span:last-child');
+        const bedroomsElement = document.querySelector('.room_meta span:nth-child(2)');
+        
+        // Get both desktop and mobile price elements
+        const desktopPriceElement = document.querySelector('.booking_card .price');
+        const mobilePriceElement = document.querySelector('.booking-card-mobile .price');
+        
+        // Get both desktop and mobile room type displays
+        const desktopRoomTypeDisplay = document.querySelector('.booking_card .room_type_display');
+        const mobileRoomTypeDisplay = document.querySelector('.booking-card-mobile .room_type_display');
+        
+        if (!toggleSwitch) return;
+        
+        const roomData = {
+            single: {
+                tag: 'private room',
+                title: 'Dambose Homes',
+                price: 'R6,000',
+                guests: 'Up to 1 guests',
+                bedrooms: '1 Bedrooms',
+                type: 'Single'
+            },
+            double: {
+                tag: 'shared room',
+                title: 'Dambose Homes',
+                price: 'R5,000',
+                guests: 'Up to 2 guests',
+                bedrooms: '2 Bedrooms',
+                type: 'Double'
+            }
+        };
+        
+        function updateRoomType(isDouble) {
+            const roomType = isDouble ? 'double' : 'single';
+            const data = roomData[roomType];
+            
+            // Update option colors
+            if (isDouble) {
+                singleOption.classList.remove('active');
+                doubleOption.classList.add('active');
+            } else {
+                singleOption.classList.add('active');
+                doubleOption.classList.remove('active');
+            }
+            
+            // Update room details
+            if (roomTag) roomTag.textContent = data.tag;
+            if (roomTitle) roomTitle.textContent = data.title;
+            if (guestsElement) guestsElement.innerHTML = `<i class="fa fa-users"></i> ${data.guests}`;
+            if (bedroomsElement) bedroomsElement.innerHTML = `<i class="fa fa-bed"></i> ${data.bedrooms}`;
+            
+            // Update desktop price and room type
+            if (desktopPriceElement) desktopPriceElement.innerHTML = `${data.price} <small>/ month</small>`;
+            if (desktopRoomTypeDisplay) desktopRoomTypeDisplay.textContent = data.type;
+            
+            // Update mobile price and room type
+            if (mobilePriceElement) mobilePriceElement.innerHTML = `${data.price} <small>/ month</small>`;
+            if (mobileRoomTypeDisplay) mobileRoomTypeDisplay.textContent = data.type;
+            
+            // Update both book buttons
+            const desktopBookBtn = document.querySelector('.booking_card .request_book_btn');
+            const mobileBookBtn = document.querySelector('.booking-card-mobile .request_book_btn');
+            
+            if (desktopBookBtn) {
+                desktopBookBtn.textContent = `Request to Book - ${data.price}/month`;
+            }
+            if (mobileBookBtn) {
+                mobileBookBtn.textContent = `Request to Book - ${data.price}/month`;
+            }
+        }
+        
+        // Initialize with single room selected
+        updateRoomType(false);
+        
+        // Toggle switch event listener
+        toggleSwitch.addEventListener('change', function() {
+            updateRoomType(this.checked);
+        });
+        
+        // Option click events (clicking on text labels)
+        singleOption.addEventListener('click', function() {
+            toggleSwitch.checked = false;
+            updateRoomType(false);
+        });
+        
+        doubleOption.addEventListener('click', function() {
+            toggleSwitch.checked = true;
+            updateRoomType(true);
+        });
+    }
+    
+    // Initialize room type toggle when page loads
+    initRoomTypeToggle();
+
     // Mobile Slider Functionality
     function initMobileSlider() {
         const sliderWrapper = document.querySelector('.slider_wrapper');
@@ -656,6 +757,9 @@
         
         let currentSlide = 0;
         const totalSlides = slides.length;
+        
+        // Clear existing dots
+        dotsContainer.innerHTML = '';
         
         // Create dots
         for (let i = 0; i < totalSlides; i++) {

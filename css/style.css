@@ -783,12 +783,12 @@ button:focus {
 }
 
 .rating {
-    color: #ff6b6b;
+    color: #2BA2D8;
     font-weight: 500;
 }
 
 .rating i {
-    color: #ff6b6b;
+    color: #FFD700;
 }
 
 .room_meta {
@@ -920,24 +920,289 @@ button:focus {
 }
 
 .request_book_btn {
-    background: #ff6b6b;
+    background: #2BA2D8;
     border: none;
     border-radius: 8px;
-    padding: 15px;
-    font-weight: 500;
-    font-size: 16px;
     color: white;
-    margin-top: 10px;
+    font-weight: 600;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
     transition: background 0.3s ease;
 }
 
 .request_book_btn:hover {
-    background: #ff5252;
+    background: #1E7BA8;
 }
 
 .booking_card p {
     color: #999;
     font-size: 12px;
+}
+
+/* Inline Room Type Toggle (smaller version) */
+.room_type_toggle_inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.toggle_option_small {
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.toggle_option_small.active {
+    color: #2BA2D8;
+}
+
+/* Small Toggle Switch */
+.switch_small {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch_small input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider_small {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e0e0e0;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.slider_small:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider_small {
+    background-color: #2BA2D8;
+}
+
+input:focus + .slider_small {
+    box-shadow: 0 0 1px #2BA2D8;
+}
+
+input:checked + .slider_small:before {
+    transform: translateX(20px);
+}
+
+/* Room Type Toggle Section */
+.room_type_toggle {
+    background: #f8f9fa;
+    padding: 40px 0;
+}
+
+.toggle_container {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.toggle_header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.toggle_title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.toggle_switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.toggle_option {
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.toggle_option.active {
+    color: #2BA2D8;
+}
+
+/* Modern Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e0e0e0;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider {
+    background-color: #2BA2D8;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2BA2D8;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Hover effects */
+.switch:hover .slider {
+    box-shadow: 0 0 8px rgba(43, 162, 216, 0.3);
+}
+
+input:checked + .slider:hover {
+    box-shadow: 0 0 12px rgba(43, 162, 216, 0.4);
+}
+
+/* Responsive toggle switch */
+@media (max-width: 768px) {
+    .toggle_switch {
+        gap: 10px;
+    }
+    
+    .toggle_option {
+        font-size: 14px;
+    }
+    
+    .switch {
+        width: 50px;
+        height: 28px;
+    }
+    
+    .slider:before {
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+    }
+    
+    input:checked + .slider:before {
+        transform: translateX(22px);
+    }
+}
+
+/* Mobile Floating Booking Card */
+.booking-card-mobile {
+    display: none; /* Hidden on desktop */
+}
+
+/* Add padding to bottom of sections to prevent content from being blocked */
+@media (max-width: 767px) {
+    .section_gap {
+        padding-bottom: 120px !important;
+    }
+    
+    .section_gap_bottom {
+        padding-bottom: 120px !important;
+    }
+    
+    .booking-card-mobile {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #e0e0e0;
+        padding: 15px;
+        z-index: 1000;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .booking-card-mobile .price_info {
+        margin-bottom: 10px;
+    }
+    
+    .booking-card-mobile .price {
+        font-size: 18px;
+        margin: 0;
+    }
+    
+    .booking-card-mobile .room_type_display {
+        font-size: 14px;
+        font-weight: 600;
+        color: #2BA2D8;
+    }
+    
+    .booking-card-mobile .request_book_btn {
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .booking-card-mobile p {
+        font-size: 11px;
+        margin-top: 8px;
+        margin-bottom: 0;
+    }
+}
+
+/* Hide desktop booking card on mobile */
+@media (max-width: 767px) {
+    .booking_card {
+        display: none;
+    }
 }
 
 /* Your Host Section */
@@ -962,7 +1227,7 @@ button:focus {
 .host_avatar {
     width: 60px;
     height: 60px;
-    background: #ff6b6b;
+    background: #2BA2D8;
     color: white;
     border-radius: 50%;
     display: flex;
