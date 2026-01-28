@@ -715,10 +715,10 @@
             const mobileBookBtn = document.querySelector('.booking-card-mobile .request_book_btn');
             
             if (desktopBookBtn) {
-                desktopBookBtn.textContent = `Request to Book - ${data.price}/month`;
+                desktopBookBtn.textContent = `Request to Book`;
             }
             if (mobileBookBtn) {
-                mobileBookBtn.textContent = `Request to Book - ${data.price}/month`;
+                mobileBookBtn.textContent = `Request to Book`;
             }
         }
         

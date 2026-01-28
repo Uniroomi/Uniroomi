@@ -1150,11 +1150,11 @@ input:checked + .slider:hover {
 /* Add padding to bottom of sections to prevent content from being blocked */
 @media (max-width: 767px) {
     .section_gap {
-        padding-bottom: 120px !important;
+        padding-bottom: 100px !important;
     }
     
     .section_gap_bottom {
-        padding-bottom: 120px !important;
+        padding-bottom: 100px !important;
     }
     
     .booking-card-mobile {
@@ -1165,35 +1165,35 @@ input:checked + .slider:hover {
         right: 0;
         background: white;
         border-top: 1px solid #e0e0e0;
-        padding: 15px;
+        padding: 10px;
         z-index: 1000;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     }
     
     .booking-card-mobile .price_info {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
     
     .booking-card-mobile .price {
-        font-size: 18px;
+        font-size: 16px;
         margin: 0;
     }
     
     .booking-card-mobile .room_type_display {
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 600;
         color: #2BA2D8;
     }
     
     .booking-card-mobile .request_book_btn {
-        padding: 12px;
-        font-size: 14px;
+        padding: 10px;
+        font-size: 13px;
         font-weight: 600;
     }
     
     .booking-card-mobile p {
-        font-size: 11px;
-        margin-top: 8px;
+        font-size: 10px;
+        margin-top: 6px;
         margin-bottom: 0;
     }
 }
