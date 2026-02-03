@@ -22,6 +22,8 @@
     <!-- main css -->
     <link rel="stylesheet" href="../../css/style.css" />
     <link rel="stylesheet" href="../../css/responsive.css" />
+    <!-- Auth CSS for heart icons -->
+    <link rel="stylesheet" href="../../css/auth.css" />
   </head>
   <body>
     <!--================Header Area =================-->
@@ -88,11 +90,33 @@
               <li class="nav-item">
                 <a class="nav-link" href="uct-accommodation.html"></a>
               </li>
-              <li class="nav-item">
-                <span class="nav-link theme_btn become-host">Become a Host</span>
+              <li class="nav-item dashboard-nav-item" style="display: none;">
+                <a class="nav-link" href="../../dashboard.html">Dashboard</a>
+              </li>
+              <li class="nav-item submenu dropdown">
+                <a
+                  href="#"
+                  class="nav-link dropdown-toggle"
+                  data-toggle="dropdown"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  ></a
+                >
+                <ul class="dropdown-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="blog.html"></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="blog-single.html"></a>
+                  </li>
+                </ul>
               </li>
               <li class="nav-item">
-                <span class="nav-link theme_btn">Login</span>
+                <span class="nav-link theme_btn_two">Become a Host</span>
+              </li>
+              <li class="nav-item">
+                <span class="nav-link theme_btn login-btn">Login</span>
               </li>
             </ul>
           </div>
@@ -118,6 +142,14 @@
               <div class="hotel_img">
                 <img src="../../image/room5_263x270.png" alt="" />
                 <a href="../../Campuses/specs.html" class="btn theme_btn button_hover">View</a>
+                <!-- Heart Icon -->
+                <div class="accommodation-heart" data-accommodation-id="msinsi-lodge" 
+                     data-title="Msinsi Lodge" 
+                     data-location="36 University Road, Westville (0.05 km)" 
+                     data-image="../../image/room5_263x270.png"
+                     data-link="../../Campuses/specs.html">
+                  <i class="fa fa-heart"></i>
+                </div>
               </div>
               <a href="#"><h4 class="sec_h4">Msinsi Lodge</h4></a>
               <h5><small>36 University Road, Westville (0.05 km)</small></h5>
@@ -128,6 +160,14 @@
               <div class="hotel_img">
                 <img src="../../image/room5_263x270.png" alt="" />
                 <a href="../../Campuses/specs.html" class="btn theme_btn button_hover">View</a>
+                <!-- Heart Icon -->
+                <div class="accommodation-heart" data-accommodation-id="karishma-khemraz" 
+                     data-title="Karishma Khemraz" 
+                     data-location="03 Nathson close, Westville (0.12 km)" 
+                     data-image="../../image/room5_263x270.png"
+                     data-link="../../Campuses/specs.html">
+                  <i class="fa fa-heart"></i>
+                </div>
               </div>
               <a href="#"><h4 class="sec_h4">Karishma Khemraz</h4></a>
               <h5><small>03 Nathson close, Westville (0.12 km)</small></h5>
@@ -138,6 +178,14 @@
               <div class="hotel_img">
                 <img src="../../image/room5_263x270.png" alt="" />
                 <a href="../../Campuses/specs.html" class="btn theme_btn button_hover">View</a>
+                <!-- Heart Icon -->
+                <div class="accommodation-heart" data-accommodation-id="green-house" 
+                     data-title="Green house" 
+                     data-location="131 oflherty road, Westville (0.15 km)" 
+                     data-image="../../image/room5_263x270.png"
+                     data-link="../../Campuses/specs.html">
+                  <i class="fa fa-heart"></i>
+                </div>
               </div>
               <a href="#"><h4 class="sec_h4">Green house</h4></a>
               <h5><small>131 oflherty road, Westville (0.15 km)</small></h5>
@@ -148,6 +196,14 @@
               <div class="hotel_img">
                 <img src="../../image/room5_263x270.png" alt="" />
                 <a href="../../Campuses/specs.html" class="btn theme_btn button_hover">View</a>
+                <!-- Heart Icon -->
+                <div class="accommodation-heart" data-accommodation-id="varsity-drive-1" 
+                     data-title="Varsity Drive" 
+                     data-location="222 Varsity Drive, Westville (0.18 km)" 
+                     data-image="../../image/room5_263x270.png"
+                     data-link="../../Campuses/specs.html">
+                  <i class="fa fa-heart"></i>
+                </div>
               </div>
               <a href="#"><h4 class="sec_h4">Varsity Drive</h4></a>
               <h5><small>222 Varsity Drive, Westville (0.18 km)</small></h5>
@@ -158,6 +214,14 @@
               <div class="hotel_img">
                 <img src="../../image/room5_263x270.png" alt="" />
                 <a href="../../Campuses/specs.html" class="btn theme_btn button_hover">View</a>
+                <!-- Heart Icon -->
+                <div class="accommodation-heart" data-accommodation-id="varsity-drive-2" 
+                     data-title="Varsity drive" 
+                     data-location="170 Varsity drive, Westville (0.19 km)" 
+                     data-image="../../image/room5_263x270.png"
+                     data-link="../../Campuses/specs.html">
+                  <i class="fa fa-heart"></i>
+                </div>
               </div>
               <a href="#"><h4 class="sec_h4">Varsity drive</h4></a>
               <h5><small>170 Varsity drive, Westville (0.19 km)</small></h5>
@@ -1481,6 +1545,46 @@
     <script src="../../js/stellar.js"></script>
     <script src="../../vendors/lightbox/simpleLightbox.min.js"></script>
     <script src="../../js/custom.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyA4BFHNLe0LB0itiZ392YjefYPoDYznBdw",
+        authDomain: "uniroomi-e1216.firebaseapp.com",
+        projectId: "uniroomi-e1216",
+        storageBucket: "uniroomi-e1216.appspot.com",
+        messagingSenderId: "495800480757",
+        appId: "1:495800480757:web:d2a02ba1c115c40c23e6bc"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <!-- Firebase Email Authentication -->
+    <script src="../../js/firebase-email-auth.js"></script>
+    
+    <!-- Accommodation Favorites -->
+    <script src="../../js/accommodation-favorites.js"></script>
+    
+    <!-- Initialize Messaging System -->
+    <script>
+      // Initialize messaging system when user is logged in
+      if (typeof firebase !== 'undefined' && firebase.auth) {
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            // Initialize messaging system for logged in users
+            if (typeof initializeMessaging === 'function') {
+              initializeMessaging();
+            }
+          }
+        });
+      }
+    </script>
   </body>
 </html>
 

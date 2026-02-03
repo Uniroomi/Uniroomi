@@ -22,6 +22,7 @@
     <!-- main css -->
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/responsive.css" />
+    <link rel="stylesheet" href="../css/auth.css" />
   </head>
   <body>
     <!--================Header Area =================-->
@@ -52,16 +53,19 @@
           >
             <ul class="nav navbar-nav menu_nav ml-auto">
               <li class="nav-item">
-                <a class="nav-link" href="index.html"></a>
+                <a class="nav-link" href="../index.html"></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html"></a>
+                <a class="nav-link" href="../about.html"></a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="accomodation.html"></a>
+                <a class="nav-link" href="../accomodation.html"></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="gallery.html"></a>
+                <a class="nav-link" href="../gallery.html"></a>
+              </li>
+              <li class="nav-item dashboard-nav-item" style="display: none;">
+                <a class="nav-link" href="../dashboard.html">Dashboard</a>
               </li>
               <li class="nav-item submenu dropdown">
                 <a
@@ -75,24 +79,18 @@
                 >
                 <ul class="dropdown-menu">
                   <li class="nav-item">
-                    <a class="nav-link" href="blog.html"></a>
+                    <a class="nav-link" href="../blog.html"></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="blog-single.html"></a>
+                    <a class="nav-link" href="../blog-single.html"></a>
                   </li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="elements.html"></a>
+                <span class="nav-link theme_btn_two">Become a Host</span>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="contact.html"></a>
-              </li>
-              <li class="nav-item">
-                <span class="nav-link theme_btn become-host">Become a Host</span>
-              </li>
-              <li class="nav-item">
-                <span class="nav-link theme_btn">Login</span>
+                <span class="nav-link theme_btn login-btn">Login</span>
               </li>
             </ul>
           </div>
@@ -210,6 +208,31 @@
     <script src="../js/stellar.js"></script>
     <script src="../vendors/lightbox/simpleLightbox.min.js"></script>
     <script src="../js/custom.js"></script>
+    <!-- Firebase SDK -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-functions-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyA4BFHNLe0LB0itiZ392YjefYPoDYznBdw",
+        authDomain: "uniroomi-e1216.firebaseapp.com",
+        projectId: "uniroomi-e1216",
+        storageBucket: "uniroomi-e1216.appspot.com",
+        messagingSenderId: "495800480757",
+        appId: "1:495800480757:web:d2a02ba1c115c40c23e6bc"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <!-- Firebase Email Authentication -->
+    <script src="../js/firebase-email-auth.js"></script>
   </body>
 </html>
 
