@@ -356,6 +356,20 @@
     <!-- Firebase Email Authentication -->
     <script src="../js/firebase-email-auth.js"></script>
     
+    <script>
+      // Handle hash navigation for mobile menu
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check for hash in URL and navigate to section
+        if (window.location.hash) {
+          const section = window.location.hash.substring(1);
+          setTimeout(() => {
+            if (typeof window.auth !== 'undefined') {
+              window.auth.scrollToSection(section);
+            }
+          }, 1000);
+        }
+      });
+    </script>
     <!-- Simple Profile Management JavaScript -->
     <script src="../js/profile-simple.js"></script>
     

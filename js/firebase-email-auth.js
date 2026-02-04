@@ -527,22 +527,22 @@ class FirebaseEmailAuth {
         </div>
       </li>
       <li class="nav-item mobile-menu-item">
-        <a class="nav-link" href="#" onclick="navigateToDashboard(); return false;">
+        <a class="nav-link" href="#" onclick="navigateToSection('profile'); return false;">
           <i class="fa fa-user"></i> My Profile
         </a>
       </li>
       <li class="nav-item mobile-menu-item">
-        <a class="nav-link" href="#" onclick="navigateToDashboard(); return false;">
+        <a class="nav-link" href="#" onclick="navigateToSection('bookings'); return false;">
           <i class="fa fa-home"></i> My Bookings
         </a>
       </li>
       <li class="nav-item mobile-menu-item">
-        <a class="nav-link" href="#" onclick="navigateToDashboard(); return false;">
+        <a class="nav-link" href="#" onclick="navigateToSection('saved'); return false;">
           <i class="fa fa-heart"></i> Saved Properties
         </a>
       </li>
       <li class="nav-item mobile-menu-item">
-        <a class="nav-link" href="#" onclick="navigateToDashboard(); return false;">
+        <a class="nav-link" href="#" onclick="navigateToSection('messages'); return false;">
           <i class="fa fa-envelope"></i> Messages
         </a>
       </li>
@@ -670,6 +670,77 @@ class FirebaseEmailAuth {
     }, 3000);
   }
 
+  navigateToSection(section) {
+    const userRole = localStorage.getItem('userRole');
+    const currentPath = window.location.pathname;
+    
+    // Determine which dashboard to go to
+    let targetDashboard = 'dashboard.html'; // default for guests
+    
+    if (userRole === 'host') {
+      targetDashboard = 'dashboard-host.html';
+    }
+    
+    // Check if we're already on the correct dashboard
+    if (!currentPath.includes(targetDashboard)) {
+      // Navigate to dashboard with section hash
+      window.location.href = `${targetDashboard}#${section}`;
+    } else {
+      // Already on dashboard, just scroll to section
+      this.scrollToSection(section);
+    }
+  }
+
+  scrollToSection(section) {
+    // Close mobile menu first
+    const navbarCollapse = document.getElementById('navbarSupportedContent');
+    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+      $('.navbar-toggler').click(); // Close the menu
+    }
+
+    // Find and scroll to the section
+    let targetElement;
+    switch(section) {
+      case 'profile':
+        targetElement = document.querySelector('.dashboard-profile-section');
+        if (!targetElement) {
+          // Try to toggle profile section if it exists
+          const profileToggle = document.querySelector('.profile-toggle');
+          if (profileToggle && typeof toggleProfileSection === 'function') {
+            toggleProfileSection();
+            targetElement = document.querySelector('.dashboard-profile-section');
+          }
+        }
+        break;
+      case 'bookings':
+        targetElement = document.querySelector('.booking-section');
+        if (!targetElement) {
+          const bookingToggle = document.querySelector('.booking-toggle');
+          if (bookingToggle && typeof toggleBookingSection === 'function') {
+            toggleBookingSection();
+            targetElement = document.querySelector('.booking-section');
+          }
+        }
+        break;
+      case 'saved':
+        targetElement = document.querySelector('.saved-properties-section');
+        break;
+      case 'messages':
+        targetElement = document.querySelector('.dashboard-messages-container');
+        break;
+    }
+
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Highlight the section briefly
+      targetElement.style.transition = 'background-color 0.3s';
+      targetElement.style.backgroundColor = '#f0f8ff';
+      setTimeout(() => {
+        targetElement.style.backgroundColor = '';
+      }, 1000);
+    }
+  }
+
   // Role-based navigation utility
   navigateToDashboard() {
     const userRole = localStorage.getItem('userRole');
@@ -686,6 +757,13 @@ class FirebaseEmailAuth {
     if (!currentPath.includes(targetDashboard)) {
       window.location.href = targetDashboard;
     }
+  }
+
+  // Make functions globally accessible
+  makeGlobal() {
+    window.navigateToSection = this.navigateToSection.bind(this);
+    window.scrollToSection = this.scrollToSection.bind(this);
+    window.navigateToDashboard = this.navigateToDashboard.bind(this);
   }
 
   // Get current user role
@@ -871,5 +949,9 @@ class FirebaseEmailAuth {
 // Initialize authentication system when DOM is ready
 $(document).ready(function() {
   // Firebase SDK is already loaded in index.html
-  window.uniroomiAuth = new FirebaseEmailAuth();
+  window.auth = new FirebaseEmailAuth();
+  window.uniroomiAuth = window.auth;
+  
+  // Make navigation functions globally accessible
+  window.auth.makeGlobal();
 });

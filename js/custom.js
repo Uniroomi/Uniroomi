@@ -757,6 +757,8 @@
         
         let currentSlide = 0;
         const totalSlides = slides.length;
+        let isTransitioning = false;
+        let autoPlayInterval = null;
         
         // Clear existing dots
         dotsContainer.innerHTML = '';
@@ -773,60 +775,95 @@
         const dots = document.querySelectorAll('.dot');
         
         function updateSlider() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            // Force reflow to ensure smooth transition
+            sliderWrapper.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
             sliderWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
             
             // Update dots
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
             });
+            
+            // Reset transition flag after animation completes
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 500);
         }
         
         function goToSlide(slideIndex) {
+            if (isTransitioning || slideIndex === currentSlide) return;
             currentSlide = slideIndex;
             updateSlider();
         }
         
         function nextSlide() {
+            if (isTransitioning) return;
             currentSlide = (currentSlide + 1) % totalSlides;
             updateSlider();
         }
         
         function prevSlide() {
+            if (isTransitioning) return;
             currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
             updateSlider();
         }
         
         // Event listeners
-        prevBtn.addEventListener('click', prevSlide);
-        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            prevSlide();
+        });
         
-        // Auto-play (optional)
-        let autoPlayInterval = setInterval(nextSlide, 5000);
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            nextSlide();
+        });
+        
+        // Auto-play functionality
+        function startAutoPlay() {
+            if (autoPlayInterval) clearInterval(autoPlayInterval);
+            autoPlayInterval = setInterval(nextSlide, 5000);
+        }
+        
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+        }
         
         // Pause auto-play on hover
         const sliderContainer = document.querySelector('.slider_container');
-        sliderContainer.addEventListener('mouseenter', () => {
-            clearInterval(autoPlayInterval);
-        });
-        
-        sliderContainer.addEventListener('mouseleave', () => {
-            autoPlayInterval = setInterval(nextSlide, 5000);
-        });
+        sliderContainer.addEventListener('mouseenter', stopAutoPlay);
+        sliderContainer.addEventListener('mouseleave', startAutoPlay);
         
         // Touch/swipe support for mobile
         let touchStartX = 0;
         let touchEndX = 0;
+        let touchStartTime = 0;
         
         sliderContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
-        });
+            touchStartTime = Date.now();
+        }, { passive: true });
         
         sliderContainer.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+            
+            // Only handle swipe if it was quick (less than 300ms) to avoid conflicts with scrolling
+            if (touchDuration < 300) {
+                handleSwipe();
+            }
+        }, { passive: true });
         
         function handleSwipe() {
+            if (isTransitioning) return;
+            
             const swipeThreshold = 50;
             const diff = touchStartX - touchEndX;
             
@@ -838,11 +875,22 @@
                 }
             }
         }
+        
+        // Start auto-play
+        startAutoPlay();
+        
+        // Cleanup function to prevent memory leaks
+        return function cleanup() {
+            stopAutoPlay();
+            sliderContainer.removeEventListener('mouseenter', stopAutoPlay);
+            sliderContainer.removeEventListener('mouseleave', startAutoPlay);
+        };
     }
     
     // Initialize slider when page loads
+    let sliderCleanup = null;
     if (window.innerWidth <= 480) {
-        initMobileSlider();
+        sliderCleanup = initMobileSlider();
     }
     
     // Re-initialize on window resize
@@ -850,8 +898,15 @@
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
+            // Cleanup existing slider
+            if (sliderCleanup) {
+                sliderCleanup();
+                sliderCleanup = null;
+            }
+            
+            // Re-initialize if still on mobile
             if (window.innerWidth <= 480) {
-                initMobileSlider();
+                sliderCleanup = initMobileSlider();
             }
         }, 250);
     });

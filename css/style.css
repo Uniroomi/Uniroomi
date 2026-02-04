@@ -1366,12 +1366,15 @@ input:checked + .slider:hover {
 
 .slider_wrapper {
     display: flex;
-    transition: transform 0.5s ease;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
 }
 
 .slide {
     min-width: 100%;
     position: relative;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .slide img {

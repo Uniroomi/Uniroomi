@@ -1,3 +1,24 @@
+// Mobile menu toggle functions
+function toggleProfileSection() {
+    const profileSection = document.querySelector('.dashboard-profile-section');
+    if (profileSection) {
+        profileSection.classList.toggle('hidden');
+        // Close other sections
+        const bookingSection = document.querySelector('.booking-section');
+        if (bookingSection) bookingSection.classList.add('hidden');
+    }
+}
+
+function toggleBookingSection() {
+    const bookingSection = document.querySelector('.booking-section');
+    if (bookingSection) {
+        bookingSection.classList.toggle('hidden');
+        // Close other sections
+        const profileSection = document.querySelector('.dashboard-profile-section');
+        if (profileSection) profileSection.classList.add('hidden');
+    }
+}
+
 // Simple Profile Loader - Direct HTML Injection
 let isEditMode = false;
 let profileData = {
