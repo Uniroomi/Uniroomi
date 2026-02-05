@@ -63,9 +63,13 @@
     // $('select').niceSelect(); // Removed global initialization
     // DISABLE NICE-SELECT COMPLETELY TO USE REGULAR SELECTS
     console.log('Nice-select disabled - using regular selects');
-    $('#datetimepicker11,#datetimepicker1').datetimepicker({
-        daysOfWeekDisabled: [0, 6]
-    });
+    
+    // Initialize datetimepicker only if elements exist and library is loaded
+    if (typeof $.fn.datetimepicker !== 'undefined' && $('#datetimepicker11,#datetimepicker1').length) {
+        $('#datetimepicker11,#datetimepicker1').datetimepicker({
+            daysOfWeekDisabled: [0, 6]
+        });
+    }
     
      /*---------gallery isotope js-----------*/
     function galleryMasonry(){

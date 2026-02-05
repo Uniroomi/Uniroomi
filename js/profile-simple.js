@@ -10,12 +10,38 @@ function toggleProfileSection() {
 }
 
 function toggleBookingSection() {
-    const bookingSection = document.querySelector('.booking-section');
+    const bookingSection = document.querySelector('.dashboard-booking-section');
     if (bookingSection) {
         bookingSection.classList.toggle('hidden');
         // Close other sections
         const profileSection = document.querySelector('.dashboard-profile-section');
         if (profileSection) profileSection.classList.add('hidden');
+    }
+}
+
+function toggleSavedSection() {
+    const savedSection = document.querySelector('.dashboard-saved-section');
+    if (savedSection) {
+        savedSection.classList.toggle('hidden');
+        // Close other sections
+        const profileSection = document.querySelector('.dashboard-profile-section');
+        const bookingSection = document.querySelector('.dashboard-booking-section');
+        if (profileSection) profileSection.classList.add('hidden');
+        if (bookingSection) bookingSection.classList.add('hidden');
+    }
+}
+
+function toggleMessageSection() {
+    const messageSection = document.querySelector('.dashboard-message-section');
+    if (messageSection) {
+        messageSection.classList.toggle('hidden');
+        // Close other sections
+        const profileSection = document.querySelector('.dashboard-profile-section');
+        const bookingSection = document.querySelector('.dashboard-booking-section');
+        const savedSection = document.querySelector('.dashboard-saved-section');
+        if (profileSection) profileSection.classList.add('hidden');
+        if (bookingSection) bookingSection.classList.add('hidden');
+        if (savedSection) savedSection.classList.add('hidden');
     }
 }
 
