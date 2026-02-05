@@ -626,8 +626,18 @@
         });
 
         // Handle booking request
+        let isProcessingBooking = false; // Flag to prevent duplicate bookings
+        
         function handleBookingRequest() {
             console.log('handleBookingRequest called!'); // Debug log
+            
+            // Prevent multiple simultaneous booking requests
+            if (isProcessingBooking) {
+                console.log('Booking already in progress, ignoring request');
+                return;
+            }
+            
+            isProcessingBooking = true;
             
             // Check if Firebase is properly initialized
             try {
@@ -642,6 +652,7 @@
                                 const userObj = JSON.parse(userData);
                                 if (userObj.role === 'host') {
                                     // User is a host, show restriction message
+                                    isProcessingBooking = false;
                                     showHostRestrictionModal();
                                     return;
                                 }
@@ -651,15 +662,18 @@
                         } else {
                             // User not logged in, show custom modal
                             console.log('User not logged in, showing modal'); // Debug log
+                            isProcessingBooking = false;
                             showLoginModal();
                         }
                     });
                 } else {
                     console.log('Firebase not properly initialized, showing modal'); // Debug log
+                    isProcessingBooking = false;
                     showLoginModal();
                 }
             } catch (error) {
                 console.log('Firebase error, showing modal:', error); // Debug log
+                isProcessingBooking = false;
                 showLoginModal();
             }
         }
@@ -789,13 +803,19 @@
                 existingBookings.unshift(newBooking);
                 localStorage.setItem(userBookingsKey, JSON.stringify(existingBookings));
 
+                // Reset processing flag
+                isProcessingBooking = false;
+
                 // Show confirmation
                 showBookingConfirmation(newBooking);
                 
-                // Redirect to dashboard to see the booking
+                // Redirect to dashboard to see booking
                 setTimeout(() => {
                     window.location.href = '../dashboard.html';
                 }, 3000);
+            } else {
+                // Reset processing flag if no user
+                isProcessingBooking = false;
             }
         }
 
@@ -856,20 +876,17 @@
             
             bookingButtons.forEach((button, index) => {
                 console.log(`Setting up button ${index + 1}`); // Debug log
+                // Remove any existing event listeners first
+                button.removeEventListener('click', handleBookingRequest);
+                button.onclick = null;
+                
+                // Add single event listener
                 button.addEventListener('click', function(e) {
                     console.log('Button clicked!'); // Debug log
                     e.preventDefault();
+                    e.stopPropagation();
                     handleBookingRequest();
                 });
-            });
-            
-            // Also add direct click handler as backup
-            document.querySelectorAll('.request_book_btn').forEach(btn => {
-                btn.onclick = function(e) {
-                    console.log('Direct onclick triggered!'); // Debug log
-                    e.preventDefault();
-                    handleBookingRequest();
-                };
             });
         });
     </script>
