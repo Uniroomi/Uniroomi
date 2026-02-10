@@ -406,9 +406,12 @@ class FirebaseEmailAuth {
       }
     }
     
-    // Only remove "Become a Host" button if user is a host, keep it for guests
-    if (userRole === 'host') {
-      $becomeHostBtn.parent().remove();
+    // Remove ALL existing "Become a Host" buttons to prevent duplicates
+    $becomeHostBtn.parent().remove();
+    
+    // Only add "Become a Host" button back if user is a guest
+    if (userRole !== 'host') {
+      // We'll add it in the mobile menu generation below
     }
     
     // Get user initials and check for avatar
