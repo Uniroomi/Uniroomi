@@ -178,8 +178,14 @@ class FirebaseEmailAuth {
         const isAccommodationPage = currentPath.includes('accommodations/');
         
         if (isPropertyPage || isAccommodationPage) {
-          // User was on property or accommodation page, reload to continue with booking
-          window.location.reload();
+          // User was on property or accommodation page
+          if (userRole === 'host') {
+            // Hosts always go to their dashboard, even from accommodation pages
+            window.location.href = 'dashboard-host.html';
+          } else {
+            // Students reload to continue with booking
+            window.location.reload();
+          }
         } else {
           // Regular login, redirect based on user role
           if (userRole === 'host') {
