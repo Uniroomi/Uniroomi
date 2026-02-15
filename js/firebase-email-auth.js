@@ -175,9 +175,10 @@ class FirebaseEmailAuth {
         // Check if we're on a property page and user was trying to book
         const currentPath = window.location.pathname;
         const isPropertyPage = currentPath.includes('Campuses/specs.html');
+        const isAccommodationPage = currentPath.includes('accommodations/');
         
-        if (isPropertyPage) {
-          // User was on property page, reload the page to continue with booking
+        if (isPropertyPage || isAccommodationPage) {
+          // User was on property or accommodation page, reload to continue with booking
           window.location.reload();
         } else {
           // Regular login, redirect based on user role
@@ -414,7 +415,18 @@ class FirebaseEmailAuth {
     
     // Only add "Become a Host" button back if user is a guest
     if (userRole !== 'host') {
-      // We'll add it in the mobile menu generation below
+      // We'll add it in mobile menu generation below
+    }
+    
+    // Update dashboard navigation based on user role
+    const $dashboardNavItem = $('.dashboard-nav-item');
+    if ($dashboardNavItem.length) {
+      if (userRole === 'host') {
+        $dashboardNavItem.find('a').attr('href', 'dashboard-host.html');
+      } else {
+        $dashboardNavItem.find('a').attr('href', 'dashboard.html');
+      }
+      $dashboardNavItem.show();
     }
     
     // Get user initials and check for avatar
@@ -492,16 +504,16 @@ class FirebaseEmailAuth {
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userProfileDropdown">
-          <a class="dropdown-item" href="#" onclick="console.log('Profile clicked from dropdown'); window.location.href='dashboard.html'; return false;">
+          <a class="dropdown-item" href="#" onclick="console.log('Profile clicked from dropdown'); navigateToDashboard(); return false;">
             <i class="fa fa-user"></i> My Profile
           </a>
-          <a class="dropdown-item" href="#" onclick="console.log('Bookings clicked from dropdown'); window.location.href='dashboard.html'; return false;">
+          <a class="dropdown-item" href="#" onclick="console.log('Bookings clicked from dropdown'); navigateToDashboard(); return false;">
             <i class="fa fa-home"></i> My Bookings
           </a>
-          <a class="dropdown-item" href="#" onclick="console.log('Saved clicked from dropdown'); window.location.href='dashboard.html'; return false;">
+          <a class="dropdown-item" href="#" onclick="console.log('Saved clicked from dropdown'); navigateToDashboard(); return false;">
             <i class="fa fa-heart"></i> Saved Properties
           </a>
-          <a class="dropdown-item" href="#" onclick="console.log('Messages clicked from dropdown'); window.location.href='dashboard.html'; return false;">
+          <a class="dropdown-item" href="#" onclick="console.log('Messages clicked from dropdown'); navigateToDashboard(); return false;">
             <i class="fa fa-envelope"></i> Messages
           </a>
           <div class="dropdown-divider"></div>

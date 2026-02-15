@@ -7,26 +7,634 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link rel="icon" href="../image/favicon.ico" type="image/png" />
+    <link rel="icon" href="image/favicon.ico" type="image/png" />
     <title>Uniroomi</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../css/bootstrap.css" />
-    <link rel="stylesheet" href="../vendors/linericon/style.css" />
-    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="vendors/linericon/style.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link
       rel="stylesheet"
-      href="../vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css"
+      href="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css"
     />
-    <link rel="stylesheet" href="../vendors/nice-select/css/nice-select.css" />
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css" />
     <link
       rel="stylesheet"
-      href="../vendors/owl-carousel/owl.carousel.min.css"
+      href="vendors/owl-carousel/owl.carousel.min.css"
     />
     <!-- main css -->
-    <link rel="stylesheet" href="../css/style.css" />
-    <link rel="stylesheet" href="../css/responsive.css" />
-    <link rel="stylesheet" href="../css/auth.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/auth.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Host Dashboard Styles -->
+    <style>
+      /* Listings Section Styles */
+      .dashboard-btn-primary {
+        background: #2BA2D8;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+      
+      .dashboard-btn-primary:hover {
+        background: #1E7BA8;
+        transform: translateY(-1px);
+      }
+      
+      .dashboard-btn-danger {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+      
+      .dashboard-btn-danger:hover {
+        background: #c82333;
+      }
+      
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+      
+      .modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      
+      .modal-container {
+        background: white;
+        border-radius: 12px;
+        padding: 0;
+        max-width: 800px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        transform: scale(0.9);
+        transition: all 0.3s ease;
+      }
+      
+      .modal-overlay.show .modal-container {
+        transform: scale(1);
+      }
+      
+      .create-listing-modal {
+        max-width: 900px;
+      }
+      
+      .modal-header {
+        background: linear-gradient(135deg, #2BA2D8 0%, #1E7BA8 100%);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 12px 12px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .modal-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+      }
+      
+      .modal-close:hover {
+        opacity: 1;
+      }
+      
+      .listing-form {
+        padding: 30px;
+      }
+      
+      .form-section {
+        margin-bottom: 35px;
+      }
+      
+      .form-section h3 {
+        color: #333;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #2BA2D8;
+      }
+      
+      .form-group {
+        margin-bottom: 20px;
+      }
+      
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #555;
+      }
+      
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e1e5e9;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+      }
+      
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #2BA2D8;
+      }
+      
+      .form-help {
+        display: block;
+        margin-top: 5px;
+        color: #666;
+        font-size: 12px;
+        font-style: italic;
+      }
+      
+      .gender-selection {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+      
+      .gender-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex: 1;
+        min-width: 120px;
+      }
+      
+      .gender-option:hover {
+        background: #e9ecef;
+        border-color: #2BA2D8;
+      }
+      
+      .gender-option input[type="radio"] {
+        margin-bottom: 8px;
+        width: auto;
+      }
+      
+      .gender-option input[type="radio"]:checked + .gender-icon {
+        transform: scale(1.2);
+        filter: hue-rotate(200deg);
+      }
+      
+      .gender-option:has(input:checked) {
+        background: #e3f2fd;
+        border-color: #2BA2D8;
+      }
+      
+      .gender-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+        transition: transform 0.3s ease;
+      }
+      
+      .gender-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+      }
+      
+      .room-type-selection {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+      
+      .room-type-option {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        background: #f8f9fa;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex: 1;
+        min-width: 150px;
+      }
+      
+      .room-type-option:hover {
+        background: #e9ecef;
+        border-color: #2BA2D8;
+      }
+      
+      .room-type-option input[type="checkbox"] {
+        margin-right: 10px;
+        width: auto;
+      }
+      
+      .room-type-option:has(input:checked) {
+        background: #e3f2fd;
+        border-color: #2BA2D8;
+      }
+      
+      .room-type-option input[type="checkbox"]:checked + .room-type-icon {
+        transform: scale(1.1);
+      }
+      
+      .room-type-icon {
+        font-size: 20px;
+        margin-right: 8px;
+        transition: transform 0.3s ease;
+      }
+      
+      .room-type-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+      }
+      
+      .room-type-config {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #2BA2D8;
+      }
+      
+      .room-type-config.hidden {
+        display: none;
+      }
+      
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      
+      .room-type-config {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+      
+      .room-type-config h4 {
+        color: #2BA2D8;
+        margin-bottom: 15px;
+      }
+      
+      .amenities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+      }
+      
+      .amenity-checkbox {
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .amenity-checkbox:hover {
+        background: #e9ecef;
+      }
+      
+      .amenity-checkbox input[type="checkbox"] {
+        margin-right: 10px;
+        width: auto;
+      }
+      
+      .amenity-checkbox span {
+        font-size: 14px;
+      }
+      
+      .image-upload-section {
+        margin-top: 20px;
+      }
+      
+      .image-upload-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+      
+      .image-upload-slot {
+        aspect-ratio: 1;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .image-upload-slot:hover {
+        border-color: #2BA2D8;
+        background: #f8f9fa;
+      }
+      
+      .image-upload-slot.filled {
+        border: 2px solid #2BA2D8;
+      }
+      
+      .image-upload-slot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .upload-placeholder {
+        text-align: center;
+        color: #999;
+      }
+      
+      .upload-placeholder i {
+        font-size: 24px;
+        margin-bottom: 5px;
+        display: block;
+      }
+      
+      .remove-image {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+      
+      .upload-help {
+        color: #666;
+        font-size: 14px;
+        font-style: italic;
+      }
+      
+      .listing-submit-btn {
+        background: linear-gradient(135deg, #2BA2D8 0%, #1E7BA8 100%);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+      
+      .listing-submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(43, 162, 216, 0.4);
+      }
+      
+      .listing-submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        border: 1px solid #f5c6cb;
+      }
+      
+      /* Listings Display Styles */
+      .listings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+      }
+      
+      .listing-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .listing-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      }
+      
+      .listing-image {
+        position: relative;
+        height: 200px;
+        background: #f8f9fa;
+      }
+      
+      .listing-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .no-image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        font-size: 48px;
+        color: #ddd;
+      }
+      
+      .listing-status {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #28a745;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      
+      .listing-details {
+        padding: 20px;
+      }
+      
+      .listing-details h4 {
+        margin-bottom: 10px;
+        color: #333;
+      }
+      
+      .listing-address {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      
+      .listing-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: #666;
+      }
+      
+      .listing-meta span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      
+      .listing-pricing {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      
+      .price {
+        font-weight: 600;
+        color: #2BA2D8;
+        font-size: 16px;
+      }
+      
+      .price-type {
+        background: #e9ecef;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        color: #666;
+      }
+      
+      .listing-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+      }
+      
+      .empty-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+      }
+      
+      .empty-state h3 {
+        margin-bottom: 10px;
+        color: #333;
+      }
+      
+      .empty-state p {
+        margin-bottom: 25px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      @media (max-width: 768px) {
+        .modal-container {
+          width: 95%;
+          margin: 20px;
+        }
+        
+        .listing-form {
+          padding: 20px;
+        }
+        
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+        
+        .gender-selection {
+          flex-direction: column;
+          gap: 10px;
+        }
+        
+        .gender-option {
+          flex-direction: row;
+          justify-content: flex-start;
+          gap: 15px;
+          min-width: auto;
+        }
+        
+        .room-type-selection {
+          flex-direction: column;
+          gap: 10px;
+        }
+        
+        .room-type-option {
+          flex-direction: row;
+          justify-content: flex-start;
+          gap: 15px;
+          min-width: auto;
+        }
+        
+        .amenities-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .listings-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .listing-actions {
+          justify-content: center;
+        }
+      }
+    </style>
   </head>
   <body>
     <!--================Header Area =================-->
@@ -34,8 +642,8 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
           <!-- Brand and toggle get grouped for better mobile display -->
-          <a class="navbar-brand logo_h" href="../index.html"
-            ><img src="../image/Logo.png" alt=""
+          <a class="navbar-brand logo_h" href="index.html"
+            ><img src="image/Logo.png" alt=""
           /></a>
           <button
             class="navbar-toggler"
@@ -83,131 +691,436 @@
       <div class="dashboard-quick-card profile-toggle" onclick="toggleProfileSection()">
         <div class="dashboard-icon">👤</div>
         <div>
-          <h1 id="welcomeMessage"></h1>
+          <small>My Profile</small>
+          <strong>Complete</strong>
         </div>
       </div>
 
-      <div class="dashboard-quick-grid">
-        <div class="dashboard-quick-card profile-toggle" onclick="toggleProfileSection()">
-          <div class="dashboard-icon">👤</div>
-          <div>
-            <small>My Profile</small>
-            <strong>Complete</strong>
-          </div>
-        </div>
+      <!-- Mobile Profile Section -->
+      <div class="dashboard-card dashboard-profile-section hidden">
+        <div class="loading">Loading profile...</div>
+      </div>
 
-        <!-- Mobile Profile Section -->
-        <div class="dashboard-card dashboard-profile-section hidden">
-          <div class="loading">Loading profile...</div>
-        </div>
-
-        <div class="dashboard-quick-card booking-toggle" onclick="toggleBookingSection()">
-          <div class="dashboard-icon">📅</div>
-          <div>
-            <small>My Bookings</small>
-            <strong>2 Active</strong>
-          </div>
-        </div>
-
-        <!-- Mobile Booking Section -->
-        <div class="dashboard-card dashboard-booking-section hidden">
-          <div class="dashboard-card-header">
-            <h2>My Bookings</h2>
-            <button class="dashboard-btn-outline">View All</button>
-          </div>
-
-          <div class="dashboard-bookings-container">
-            <!-- Bookings will be dynamically loaded here -->
-            <div class="loading-bookings">Loading bookings...</div>
-          </div>
-        </div>
-
-        <div class="dashboard-quick-card saved-toggle" onclick="toggleSavedSection()">
-          <div class="dashboard-icon">🔖</div>
-          <div>
-            <small>Saved Properties</small>
-            <strong>8 Saved</strong>
-          </div>
-        </div>
-
-        <!-- Mobile Saved Section -->
-        <div class="dashboard-card dashboard-saved-section hidden">
-          <div class="dashboard-card-header">
-            <h2>Saved Properties</h2>
-            <button class="dashboard-btn-outline">View Saved</button>
-          </div>
-
-          <div class="dashboard-saved-grid">
-            <!-- Saved properties will be dynamically loaded here -->
-            <div class="loading-saved-properties">Loading saved properties...</div>
-          </div>
-        </div>
-
-        <div class="dashboard-quick-card message-toggle" onclick="toggleMessageSection()">
-          <div class="dashboard-icon">💬</div>
-          <div>
-            <small>Messages</small>
-            <strong id="message-count">0 New</strong>
-          </div>
-        </div>
-
-        <!-- Mobile Message Section -->
-        <div class="dashboard-card dashboard-message-section hidden">
-          <div class="dashboard-card-header">
-            <h2>Messages</h2>
-            <button class="dashboard-btn-outline">Open Inbox</button>
-          </div>
-
-          <div class="dashboard-messages-container">
-            <!-- Messages will be dynamically loaded here -->
-            <div class="loading-messages">Loading messages...</div>
-          </div>
+      <div class="dashboard-quick-card booking-toggle" onclick="toggleBookingSection()">
+        <div class="dashboard-icon">📅</div>
+        <div>
+          <small>My Bookings</small>
+          <strong>2 Active</strong>
         </div>
       </div>
 
-      <!-- Desktop Original Layout -->
-      <div class="dashboard-grid">
-        <div class="dashboard-card dashboard-profile-section" style="grid-column: 1 / -1;">
-          <div class="loading">Loading profile...</div>
+      <!-- Mobile Booking Section -->
+      <div class="dashboard-card dashboard-booking-section hidden">
+        <div class="dashboard-card-header">
+          <h2>My Bookings</h2>
+          <button class="dashboard-btn-outline">View All</button>
         </div>
 
-        <div class="dashboard-card">
-          <div class="dashboard-card-header">
-            <h2>My Bookings</h2>
-            <button class="dashboard-btn-outline">View All</button>
-          </div>
+        <div class="dashboard-bookings-container">
+          <!-- Bookings will be dynamically loaded here -->
+          <div class="loading-bookings">Loading bookings...</div>
+        </div>
+      </div>
 
-          <div class="dashboard-bookings-container">
-            <!-- Bookings will be dynamically loaded here -->
-            <div class="loading-bookings">Loading bookings...</div>
-          </div>
+      <div class="dashboard-quick-card saved-toggle" onclick="toggleSavedSection()">
+        <div class="dashboard-icon">🔖</div>
+        <div>
+          <small>Saved Properties</small>
+          <strong>8 Saved</strong>
+        </div>
+      </div>
+
+      <!-- Mobile Saved Section -->
+      <div class="dashboard-card dashboard-saved-section hidden">
+        <div class="dashboard-card-header">
+          <h2>Saved Properties</h2>
+          <button class="dashboard-btn-outline">View Saved</button>
         </div>
 
-        <div class="dashboard-card">
-          <div class="dashboard-card-header">
-            <h2>Messages</h2>
-            <button class="dashboard-btn-outline">Open Inbox</button>
-          </div>
+        <div class="dashboard-saved-grid">
+          <!-- Saved properties will be dynamically loaded here -->
+          <div class="loading-saved-properties">Loading saved properties...</div>
+        </div>
+      </div>
 
-          <div class="dashboard-messages-container">
-            <!-- Messages will be dynamically loaded here -->
-            <div class="loading-messages">Loading messages...</div>
-          </div>
+      <div class="dashboard-quick-card listing-toggle" onclick="toggleListingSection()">
+        <div class="dashboard-icon">🏠</div>
+        <div>
+          <small>My Listings</small>
+          <strong>3 Active</strong>
+        </div>
+      </div>
+
+      <!-- Mobile Message Section -->
+      <div class="dashboard-card dashboard-message-section hidden">
+        <div class="dashboard-card-header">
+          <h2>Messages</h2>
+          <button class="dashboard-btn-outline">Open Inbox</button>
         </div>
 
-        <div class="dashboard-card" style="grid-column:1/-1;">
-          <div class="dashboard-card-header">
-            <h2>Saved Properties</h2>
-            <button class="dashboard-btn-outline">View Saved</button>
-          </div>
-
-          <div class="dashboard-saved-grid">
-            <!-- Saved properties will be dynamically loaded here -->
-            <div class="loading-saved-properties">Loading saved properties...</div>
-          </div>
+        <div class="dashboard-messages-container">
+          <!-- Messages will be dynamically loaded here -->
+          <div class="loading-messages">Loading messages...</div>
         </div>
       </div>
     </div>
+
+    <!-- Desktop Original Layout -->
+    <div class="dashboard-grid">
+      <div class="dashboard-card dashboard-profile-section" style="grid-column: 1 / -1;">
+        <div class="loading">Loading profile...</div>
+      </div>
+
+      <div class="dashboard-card dashboard-listings-section" style="grid-column: 1 / -1;">
+        <div class="dashboard-card-header">
+          <h2>My Listings</h2>
+          <button class="dashboard-btn-primary" onclick="showCreateListingModal()">+ Create New Listing</button>
+        </div>
+
+        <div class="dashboard-listings-container">
+          <!-- Listings will be dynamically loaded here -->
+          <div class="loading-listings">Loading listings...</div>
+        </div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <h2>My Bookings</h2>
+          <button class="dashboard-btn-outline">View All</button>
+        </div>
+
+        <div class="dashboard-bookings-container">
+          <!-- Bookings will be dynamically loaded here -->
+          <div class="loading-bookings">Loading bookings...</div>
+        </div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <h2>Messages</h2>
+          <button class="dashboard-btn-outline">Open Inbox</button>
+        </div>
+
+        <div class="dashboard-messages-container">
+          <!-- Messages will be dynamically loaded here -->
+          <div class="loading-messages">Loading messages...</div>
+        </div>
+      </div>
+
+      <div class="dashboard-card" style="grid-column:1/-1;">
+        <div class="dashboard-card-header">
+          <h2>Saved Properties</h2>
+          <button class="dashboard-btn-outline">View Saved</button>
+        </div>
+
+        <div class="dashboard-saved-grid">
+          <!-- Saved properties will be dynamically loaded here -->
+          <div class="loading-saved-properties">Loading saved properties...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Listing Modal -->
+    <div class="modal-overlay" id="createListingModal">
+      <div class="modal-container create-listing-modal">
+        <div class="modal-header">
+          <h2>Create New Listing</h2>
+          <button class="modal-close" onclick="closeCreateListingModal()">&times;</button>
+        </div>
+        
+        <form id="createListingForm" class="listing-form">
+          <div class="error-message" id="listingError" style="display: none;"></div>
+          
+          <!-- Basic Information -->
+          <div class="form-section">
+            <h3>Basic Information</h3>
+            <div class="form-group">
+              <label for="listingTitle">Property Title *</label>
+              <input type="text" id="listingTitle" required placeholder="e.g., Modern Student Apartment">
+            </div>
+            
+            <div class="form-group">
+              <label for="listingAddress">Address *</label>
+              <input type="text" id="listingAddress" required placeholder="e.g., 47 Elgie Road, Glenwood">
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="listingCity">City *</label>
+                <input type="text" id="listingCity" required placeholder="e.g., Durban">
+              </div>
+              <div class="form-group">
+                <label for="listingProvince">Province *</label>
+                <select id="listingProvince" required>
+                  <option value="">Select Province</option>
+                  <option value="KZN">KwaZulu-Natal</option>
+                  <option value="WC">Western Cape</option>
+                  <option value="GP">Gauteng</option>
+                  <option value="EC">Eastern Cape</option>
+                  <option value="FS">Free State</option>
+                  <option value="LP">Limpopo</option>
+                  <option value="MP">Mpumalanga</option>
+                  <option value="NC">Northern Cape</option>
+                  <option value="NW">North West</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Property Details -->
+          <div class="form-section">
+            <h3>Property Details</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="listingBedrooms">Bedrooms *</label>
+                <input type="number" id="listingBedrooms" required min="1" placeholder="1">
+              </div>
+              <div class="form-group">
+                <label for="listingBathrooms">Bathrooms *</label>
+                <input type="number" id="listingBathrooms" required min="1" placeholder="1">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="listingGuests">Maximum Guests *</label>
+              <input type="number" id="listingGuests" required min="1" placeholder="1">
+            </div>
+            
+            <div class="form-group">
+              <label for="listingDescription">Description *</label>
+              <textarea id="listingDescription" required rows="4" placeholder="Describe your property, its features, and what makes it special for students..."></textarea>
+            </div>
+
+            <!-- Gender Selection -->
+            <div class="form-group">
+              <label>Accommodation Gender *</label>
+              <div class="gender-selection">
+                <label class="gender-option">
+                  <input type="radio" name="gender" value="male" required>
+                  <span class="gender-icon">👨</span>
+                  <span class="gender-label">Male Only</span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="gender" value="female" required>
+                  <span class="gender-icon">👩</span>
+                  <span class="gender-label">Female Only</span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="gender" value="both" required checked>
+                  <span class="gender-icon">👥</span>
+                  <span class="gender-label">All Genders</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Host Information -->
+          <div class="form-section">
+            <h3>Host Information</h3>
+            <div class="form-group">
+              <label for="hostName">Host Name *</label>
+              <input type="text" id="hostName" required placeholder="e.g., Elizabeth Taylor">
+              <small class="form-help">This name will be displayed to students viewing your property</small>
+            </div>
+          </div>
+
+          <!-- Room Types & Pricing -->
+          <div class="form-section">
+            <h3>Room Types & Pricing</h3>
+            
+            <!-- Room Type Selection -->
+            <div class="form-group">
+              <label>Available Room Types *</label>
+              <div class="room-type-selection">
+                <label class="room-type-option">
+                  <input type="checkbox" name="roomTypes" value="single" checked>
+                  <span class="room-type-icon">🛏️</span>
+                  <span class="room-type-label">Single Room</span>
+                </label>
+                <label class="room-type-option">
+                  <input type="checkbox" name="roomTypes" value="double" checked>
+                  <span class="room-type-icon">🛏️</span>
+                  <span class="room-type-label">Double Room</span>
+                </label>
+              </div>
+              <small class="form-help">Select which room types you want to offer. You can offer one or both types.</small>
+            </div>
+            
+            <div id="roomTypesContainer">
+              <div class="room-type-config" id="singleRoomConfig">
+                <h4>Single Room</h4>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="singlePrice">Monthly Price (R) *</label>
+                    <input type="number" id="singlePrice" required min="0" placeholder="6000">
+                  </div>
+                  <div class="form-group">
+                    <label for="singleCapacity">Guest Capacity *</label>
+                    <input type="number" id="singleCapacity" required min="1" placeholder="1">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="room-type-config" id="doubleRoomConfig">
+                <h4>Double Room</h4>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="doublePrice">Monthly Price (R) *</label>
+                    <input type="number" id="doublePrice" required min="0" placeholder="8500">
+                  </div>
+                  <div class="form-group">
+                    <label for="doubleCapacity">Guest Capacity *</label>
+                    <input type="number" id="doubleCapacity" required min="1" placeholder="2">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- University Information -->
+          <div class="form-section">
+            <h3>University Information</h3>
+            <div class="form-group">
+              <label for="nearestUniversity">Nearest University *</label>
+              <select id="nearestUniversity" required>
+                <option value="">Select University</option>
+                <option value="Campuses/uct.html">University of Cape Town</option>
+                <option value="Campuses/ukzn.html">University of KwaZulu Natal</option>
+                <option value="Campuses/wits.html">University of Witwatersrand</option>
+                <option value="Campuses/dut.html">Durban University of Technology</option>
+                <option value="Campuses/ufh.html">University of Fort Hare</option>
+                <option value="Campuses/cut.html">Central University of Technology</option>
+                <option value="Campuses/cput.html">Cape Peninsula University of Technology</option>
+                <option value="Campuses/ufs.html">University of Free State</option>
+                <option value="Campuses/ul.html">University of Limpopo</option>
+                <option value="Campuses/mut.html">Mangosuthu University of Technology</option>
+                <option value="Campuses/ump.html">Mpumalanga University</option>
+                <option value="Campuses/nmu.html">Nelson Mandela Metropolitan University</option>
+                <option value="Campuses/nwu.html">North-West University</option>
+                <option value="Campuses/up.html">University of Pretoria</option>
+                <option value="Campuses/rhodes.html">Rhodes University</option>
+                <option value="Campuses/unizulu.html">University of Zululand</option>
+                <option value="Campuses/uj.html">University of Johannesburg</option>
+                <option value="Campuses/spu.html">Sol Plaatje University</option>
+                <option value="Campuses/unisa.html">University of South Africa</option>
+                <option value="Campuses/su.html">Stellenbosch University</option>
+                <option value="Campuses/tut.html">Tshwane University of Technology</option>
+                <option value="Campuses/vut.html">Vaal University of Technology</option>
+                <option value="Campuses/wsu.html">Walter Sisulu University</option>
+                <option value="Campuses/uwc.html">University of Western Cape</option>
+                <option value="Campuses/smu.html">Sefako Makgatho Health & Sciences University</option>
+                <option value="Campuses/uv.html">University of Venda</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="nearestCampus">Nearest Campus *</label>
+              <select id="nearestCampus" required>
+                <option value="">Select University First</option>
+              </select>
+              <small class="form-help">Campuses will load based on selected university</small>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="distanceToCampus">Distance to Campus *</label>
+                <select id="distanceToCampus" required>
+                  <option value="">Select Distance</option>
+                  <option value="walking">Walking Distance</option>
+                  <option value="1-3km">1 to 3km</option>
+                  <option value="3-5km">3 to 5km</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="transportMethod">Transport Method</label>
+                <select id="transportMethod">
+                  <option value="walk">Walk</option>
+                  <option value="bus">Bus</option>
+                  <option value="taxi">Taxi</option>
+                  <option value="car">Car</option>
+                  <option value="bike">Bicycle</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amenities -->
+          <div class="form-section">
+            <h3>Amenities</h3>
+            <div class="amenities-grid">
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="WiFi">
+                <span>📶 WiFi</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Kitchen">
+                <span>🍳 Kitchen</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Furnished">
+                <span>🛋️ Furnished</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Study Desk">
+                <span>📚 Study Desk</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Heating">
+                <span>🔥 Heating</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Air Conditioning">
+                <span>❄️ Air Conditioning</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Parking">
+                <span>🚗 Parking</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Laundry">
+                <span>🧺 Laundry</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Garden">
+                <span>🌳 Garden</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Security">
+                <span>🔒 Security</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Gym">
+                <span>💪 Gym</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="amenities" value="Pool">
+                <span>🏊 Pool</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Images -->
+          <div class="form-section">
+            <h3>Property Images</h3>
+            <div class="image-upload-section">
+              <div class="image-upload-grid" id="imageUploadGrid">
+                <div class="image-upload-slot" onclick="triggerImageUpload(0)">
+                  <div class="upload-placeholder">
+                    <i class="fa fa-plus"></i>
+                    <span>Add Image</span>
+                  </div>
+                </div>
+              </div>
+              <input type="file" id="imageUploadInput" multiple accept="image/*" style="display: none;">
+              <p class="upload-help">Please upload exactly 6 images for your property.</p>
+            </div>
+          </div>
+
+          <button type="submit" class="listing-submit-btn">Create Listing</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
     <!--================ start footer Area  =================-->
     <footer class="footer-area section_gap">
@@ -247,7 +1160,7 @@
           targetDashboard = 'dashboard-host.html';
         }
         
-        // Check if we're already on the correct dashboard
+        // Check if we're already on correct dashboard
         if (!currentPath.includes(targetDashboard)) {
           window.location.href = targetDashboard;
         }
@@ -297,6 +1210,432 @@
         }
       }
 
+      // Listings Toggle Functionality
+      function toggleListingSection() {
+        const listingSection = document.querySelector('.dashboard-listings-section');
+        const listingToggle = document.querySelector('.listing-toggle');
+        
+        if (listingSection && listingToggle) {
+          listingSection.classList.toggle('hidden');
+          listingToggle.classList.toggle('collapsed');
+        }
+      }
+
+      // Create Listing Modal Functions
+      function showCreateListingModal() {
+        document.getElementById('createListingModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeCreateListingModal() {
+        document.getElementById('createListingModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+        resetListingForm();
+      }
+
+      function resetListingForm() {
+        document.getElementById('createListingForm').reset();
+        document.getElementById('listingError').style.display = 'none';
+        
+        // Reset gender selection to default (both)
+        const bothGenderRadio = document.querySelector('input[name="gender"][value="both"]');
+        if (bothGenderRadio) {
+          bothGenderRadio.checked = true;
+        }
+        
+        // Reset room type selection to default (both checked)
+        const singleRoomCheckbox = document.querySelector('input[name="roomTypes"][value="single"]');
+        const doubleRoomCheckbox = document.querySelector('input[name="roomTypes"][value="double"]');
+        if (singleRoomCheckbox && doubleRoomCheckbox) {
+          singleRoomCheckbox.checked = true;
+          doubleRoomCheckbox.checked = true;
+        }
+        
+        // Show both room type configs by default
+        handleRoomTypeSelection();
+        
+        // Reset image upload grid
+        const imageGrid = document.getElementById('imageUploadGrid');
+        imageGrid.innerHTML = `
+          <div class="image-upload-slot" onclick="triggerImageUpload(0)">
+            <div class="upload-placeholder">
+              <i class="fa fa-plus"></i>
+              <span>Add Image</span>
+            </div>
+          </div>
+        `;
+        uploadedImages = [];
+      }
+
+      // Image Upload Functions
+      let uploadedImages = [];
+
+      function triggerImageUpload(slotIndex) {
+        document.getElementById('imageUploadInput').click();
+      }
+
+      function handleImageUpload(event) {
+        const files = event.target.files;
+        
+        for (let file of files) {
+          if (uploadedImages.length >= 6) {
+            alert('Maximum 6 images allowed');
+            break;
+          }
+          
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            uploadedImages.push(e.target.result);
+            updateImageGrid();
+          };
+          reader.readAsDataURL(file);
+        }
+        
+        // Reset the input to allow selecting the same file again
+        event.target.value = '';
+      }
+
+      function updateImageGrid() {
+        const imageGrid = document.getElementById('imageUploadGrid');
+        let html = '';
+        
+        uploadedImages.forEach((image, index) => {
+          html += `
+            <div class="image-upload-slot filled">
+              <img src="${image}" alt="Property image ${index + 1}">
+              <button type="button" class="remove-image" onclick="removeImage(${index})">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+          `;
+        });
+        
+        if (uploadedImages.length < 6) {
+          html += `
+            <div class="image-upload-slot" onclick="triggerImageUpload()">
+              <div class="upload-placeholder">
+                <i class="fa fa-plus"></i>
+                <span>Add Image</span>
+              </div>
+            </div>
+          `;
+        }
+        
+        imageGrid.innerHTML = html;
+      }
+
+      function removeImage(index) {
+        uploadedImages.splice(index, 1);
+        updateImageGrid();
+      }
+
+      // Campus Selection Functions
+      function handleUniversitySelection() {
+        const universitySelect = document.getElementById('nearestUniversity');
+        const campusSelect = document.getElementById('nearestCampus');
+        const selectedUniversity = universitySelect.value;
+        
+        // Reset campus dropdown
+        campusSelect.innerHTML = '<option value="">Select Campus</option>';
+        
+        if (!selectedUniversity) {
+          return;
+        }
+        
+        // Show loading state
+        campusSelect.innerHTML = '<option value="">Loading campuses...</option>';
+        
+        // Fetch campuses for selected university
+        fetch(selectedUniversity)
+          .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+          })
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const campusItems = doc.querySelectorAll('.single-recent-blog-post');
+            const campuses = [];
+            
+            campusItems.forEach(item => {
+              const linkElement = item.querySelector('.details a');
+              const titleElement = item.querySelector('.details h4');
+              const title = linkElement ? linkElement.textContent.trim() : 
+                           (titleElement ? titleElement.textContent.trim() : '');
+              const link = linkElement ? linkElement.getAttribute('href') : '';
+              
+              if (title) {
+                campuses.push({ title, link });
+              }
+            });
+            
+            // Populate campus dropdown
+            campusSelect.innerHTML = '<option value="">Select Campus</option>';
+            campuses.forEach(campus => {
+              const option = document.createElement('option');
+              option.value = campus.title;
+              option.textContent = campus.title;
+              campusSelect.appendChild(option);
+            });
+            
+            if (campuses.length === 0) {
+              campusSelect.innerHTML = '<option value="">No campuses found</option>';
+            }
+          })
+          .catch(error => {
+            console.error('Error loading campuses:', error);
+            campusSelect.innerHTML = '<option value="">Error loading campuses</option>';
+          });
+      }
+
+      // Room Type Selection Functions
+      function handleRoomTypeSelection() {
+        const singleCheckbox = document.querySelector('input[name="roomTypes"][value="single"]');
+        const doubleCheckbox = document.querySelector('input[name="roomTypes"][value="double"]');
+        const singleConfig = document.getElementById('singleRoomConfig');
+        const doubleConfig = document.getElementById('doubleRoomConfig');
+        
+        // Show/hide single room config
+        if (singleCheckbox.checked) {
+          singleConfig.classList.remove('hidden');
+          document.getElementById('singlePrice').required = true;
+          document.getElementById('singleCapacity').required = true;
+        } else {
+          singleConfig.classList.add('hidden');
+          document.getElementById('singlePrice').required = false;
+          document.getElementById('singleCapacity').required = false;
+        }
+        
+        // Show/hide double room config
+        if (doubleCheckbox.checked) {
+          doubleConfig.classList.remove('hidden');
+          document.getElementById('doublePrice').required = true;
+          document.getElementById('doubleCapacity').required = true;
+        } else {
+          doubleConfig.classList.add('hidden');
+          document.getElementById('doublePrice').required = false;
+          document.getElementById('doubleCapacity').required = false;
+        }
+      }
+
+      // Create Listing Form Submission
+      function handleCreateListing(event) {
+        event.preventDefault();
+        
+        // Get selected room types
+        const selectedRoomTypes = Array.from(document.querySelectorAll('input[name="roomTypes"]:checked')).map(cb => cb.value);
+        
+        // Validate at least one room type is selected
+        if (selectedRoomTypes.length === 0) {
+          showListingError('Please select at least one room type to offer');
+          return;
+        }
+        
+        // Validate exactly 6 images are uploaded
+        if (uploadedImages.length !== 6) {
+          showListingError('Please upload exactly 6 images for your property');
+          return;
+        }
+        
+        // Validate at least one amenity is selected
+        const selectedAmenities = Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map(cb => cb.value);
+        if (selectedAmenities.length === 0) {
+          showListingError('Please select at least one amenity');
+          return;
+        }
+        
+        const formData = {
+          title: document.getElementById('listingTitle').value,
+          address: document.getElementById('listingAddress').value,
+          city: document.getElementById('listingCity').value,
+          province: document.getElementById('listingProvince').value,
+          bedrooms: document.getElementById('listingBedrooms').value,
+          bathrooms: document.getElementById('listingBathrooms').value,
+          guests: document.getElementById('listingGuests').value,
+          description: document.getElementById('listingDescription').value,
+          gender: document.querySelector('input[name="gender"]:checked').value,
+          hostName: document.getElementById('hostName').value,
+          roomTypes: selectedRoomTypes,
+          singlePrice: document.getElementById('singlePrice').value,
+          singleCapacity: document.getElementById('singleCapacity').value,
+          doublePrice: document.getElementById('doublePrice').value,
+          doubleCapacity: document.getElementById('doubleCapacity').value,
+          nearestUniversity: document.getElementById('nearestUniversity').value,
+          nearestCampus: document.getElementById('nearestCampus').value,
+          distanceToCampus: document.getElementById('distanceToCampus').value,
+          transportMethod: document.getElementById('transportMethod').value,
+          amenities: selectedAmenities,
+          images: uploadedImages
+        };
+        
+        // Show loading
+        const submitBtn = document.querySelector('.listing-submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Creating Listing...';
+        submitBtn.disabled = true;
+        
+        // Simulate API call
+        setTimeout(() => {
+          // Save to localStorage (in real app, this would be an API call)
+          const user = firebase.auth().currentUser;
+          if (user) {
+            const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
+            const newListing = {
+              id: Date.now().toString(),
+              ...formData,
+              hostId: user.uid,
+              createdAt: new Date().toISOString(),
+              status: 'active'
+            };
+            listings.push(newListing);
+            localStorage.setItem(`host_listings_${user.uid}`, JSON.stringify(listings));
+            
+            // Update UI
+            loadHostListings();
+            closeCreateListingModal();
+            showSuccess('Listing created successfully!');
+          }
+          
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }, 2000);
+      }
+
+      function showListingError(message) {
+        const errorDiv = document.getElementById('listingError');
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+          errorDiv.style.display = 'none';
+        }, 5000);
+      }
+
+      // Load Host Listings
+      function loadHostListings() {
+        const user = firebase.auth().currentUser;
+        if (!user) return;
+        
+        const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
+        const listingsContainer = document.querySelector('.dashboard-listings-container');
+        
+        if (listings.length === 0) {
+          listingsContainer.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">🏠</div>
+              <h3>No Listings Yet</h3>
+              <p>Create your first property listing to start hosting students.</p>
+              <button class="dashboard-btn-primary" onclick="showCreateListingModal()">Create Your First Listing</button>
+            </div>
+          `;
+          return;
+        }
+        
+        let html = '<div class="listings-grid">';
+        listings.forEach(listing => {
+          html += `
+            <div class="listing-card">
+              <div class="listing-image">
+                ${listing.images.length > 0 ? 
+                  `<img src="${listing.images[0]}" alt="${listing.title}">` :
+                  `<div class="no-image-placeholder">📷</div>`
+                }
+                <div class="listing-status ${listing.status}">${listing.status}</div>
+              </div>
+              <div class="listing-details">
+                <h4>${listing.title}</h4>
+                <p class="listing-address"><i class="fa fa-map-marker"></i> ${listing.address}, ${listing.city}</p>
+                <div class="listing-meta">
+                  <span><i class="fa fa-bed"></i> ${listing.bedrooms} bed</span>
+                  <span><i class="fa fa-bath"></i> ${listing.bathrooms} bath</span>
+                  <span><i class="fa fa-users"></i> ${listing.guests} guests</span>
+                </div>
+                <div class="listing-pricing">
+                  <span class="price">R${listing.singlePrice}/mo</span>
+                  <span class="price-type">Single</span>
+                  <span class="price">R${listing.doublePrice}/mo</span>
+                  <span class="price-type">Double</span>
+                </div>
+                <div class="listing-actions">
+                  <button class="dashboard-btn-outline" onclick="editListing('${listing.id}')">Edit</button>
+                  <button class="dashboard-btn-outline" onclick="viewListing('${listing.id}')">View</button>
+                  <button class="dashboard-btn-danger" onclick="deleteListing('${listing.id}')">Delete</button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        html += '</div>';
+        
+        listingsContainer.innerHTML = html;
+      }
+
+      function editListing(listingId) {
+        // TODO: Implement edit functionality
+        console.log('Edit listing:', listingId);
+      }
+
+      function viewListing(listingId) {
+        // TODO: Implement view functionality - could open a preview or navigate to specs page
+        console.log('View listing:', listingId);
+      }
+
+      function deleteListing(listingId) {
+        if (confirm('Are you sure you want to delete this listing? This action cannot be undone.')) {
+          const user = firebase.auth().currentUser;
+          if (user) {
+            const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
+            const updatedListings = listings.filter(l => l.id !== listingId);
+            localStorage.setItem(`host_listings_${user.uid}`, JSON.stringify(updatedListings));
+            loadHostListings();
+            showSuccess('Listing deleted successfully');
+          }
+        }
+      }
+
+      // Initialize event listeners when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        // Set up form submission listener
+        const createListingForm = document.getElementById('createListingForm');
+        if (createListingForm) {
+          createListingForm.addEventListener('submit', handleCreateListing);
+        }
+        
+        // Set up image upload listener
+        const imageUploadInput = document.getElementById('imageUploadInput');
+        if (imageUploadInput) {
+          imageUploadInput.addEventListener('change', handleImageUpload);
+        }
+        
+        // Set up university selection listener
+        const universitySelect = document.getElementById('nearestUniversity');
+        if (universitySelect) {
+          universitySelect.addEventListener('change', handleUniversitySelection);
+        }
+        
+        // Set up room type selection listeners
+        const roomTypeCheckboxes = document.querySelectorAll('input[name="roomTypes"]');
+        roomTypeCheckboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', handleRoomTypeSelection);
+        });
+        
+        // Set up modal close on backdrop click
+        const createListingModal = document.getElementById('createListingModal');
+        if (createListingModal) {
+          createListingModal.addEventListener('click', function(e) {
+            if (e.target === createListingModal) {
+              closeCreateListingModal();
+            }
+          });
+        }
+        
+        // Load listings when user is authenticated
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            loadHostListings();
+          }
+        });
+      });
+
       // Debug desktop profile loading
       setTimeout(() => {
         if (window.innerWidth > 768) {
@@ -319,17 +1658,17 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="../js/jquery-3.2.1.min.js"></script>
-    <script src="../js/popper.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../vendors/owl-carousel/owl.carousel.min.js"></script>
-    <script src="../js/jquery.ajaxchimp.min.js"></script>
-    <script src="../vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-    <script src="../vendors/nice-select/js/jquery.nice-select.js"></script>
-    <script src="../js/mail-script.js"></script>
-    <script src="../js/stellar.js"></script>
-    <script src="../vendors/lightbox/simpleLightbox.min.js"></script>
-    <script src="../js/custom.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="vendors/nice-select/js/jquery.nice-select.js"></script>
+    <script src="js/mail-script.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="vendors/lightbox/simpleLightbox.min.js"></script>
+    <script src="js/custom.js"></script>
     <!-- Firebase SDK -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app-compat.js"></script>
@@ -354,7 +1693,10 @@
     </script>
     
     <!-- Firebase Email Authentication -->
-    <script src="../js/firebase-email-auth.js"></script>
+    <script src="js/firebase-email-auth.js"></script>
+    
+    <!-- Simple Profile Management JavaScript -->
+    <script src="js/profile-simple.js"></script>
     
     <script>
       // Handle hash navigation for mobile menu
@@ -370,10 +1712,8 @@
         }
       });
     </script>
-    <!-- Simple Profile Management JavaScript -->
-    <script src="../js/profile-simple.js"></script>
-    
+
     <!-- Avatar Cropper JavaScript -->
-    <script src="../js/avatar-cropper.js"></script>
+    <script src="js/avatar-cropper.js"></script>
   </body>
 </html>
