@@ -418,16 +418,8 @@ class FirebaseEmailAuth {
       // We'll add it in mobile menu generation below
     }
     
-    // Update dashboard navigation based on user role
-    const $dashboardNavItem = $('.dashboard-nav-item');
-    if ($dashboardNavItem.length) {
-      if (userRole === 'host') {
-        $dashboardNavItem.find('a').attr('href', 'dashboard-host.html');
-      } else {
-        $dashboardNavItem.find('a').attr('href', 'dashboard.html');
-      }
-      $dashboardNavItem.show();
-    }
+    // Hide dashboard navigation from navbar
+    $('.dashboard-nav-item').hide();
     
     // Get user initials and check for avatar
     let initials = 'U'; // Default to 'U' for User
