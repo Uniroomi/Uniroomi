@@ -164,37 +164,9 @@ class FirebaseEmailAuth {
         return;
       }
 
-      // Check user role and redirect accordingly
-      const userRole = await this.getUserRole(userCredential.user.uid);
-      
+      // Close modal and show success
       this.closeAllModals();
       this.showSuccess('Login successful!');
-
-      // Check if user was trying to book and redirect accordingly
-      setTimeout(() => {
-        // Check if we're on a property page and user was trying to book
-        const currentPath = window.location.pathname;
-        const isPropertyPage = currentPath.includes('Campuses/specs.html');
-        const isAccommodationPage = currentPath.includes('accommodations/');
-        
-        if (isPropertyPage || isAccommodationPage) {
-          // User was on property or accommodation page
-          if (userRole === 'host') {
-            // Hosts always go to their dashboard, even from accommodation pages
-            window.location.href = 'dashboard-host.html';
-          } else {
-            // Students reload to continue with booking
-            window.location.reload();
-          }
-        } else {
-          // Regular login, redirect based on user role
-          if (userRole === 'host') {
-            window.location.href = 'dashboard-host.html';
-          } else {
-            window.location.href = 'dashboard.html';
-          }
-        }
-      }, 1000);
 
     } catch (error) {
       let errorMessage = 'Login failed. Please try again.';
@@ -494,6 +466,9 @@ class FirebaseEmailAuth {
             <span class="notification--num"></span>
           </div>
         </a>
+      </li>
+      <li class="nav-item">
+        <button class="button-75" role="button" onclick="navigateToDashboard(); return false;"><span class="text"><i class="fa fa-th-large"></i> Dashboard</span></button>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle profile-avatar" href="#" id="userProfileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

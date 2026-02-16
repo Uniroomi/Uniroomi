@@ -6568,8 +6568,8 @@ body.dashboard-page {
     right: 30px;
     width: 50px;
     height: 50px;
-    background: #000000;
-    color: #2BA2D8;
+    background: RGB(240, 240 , 240);
+    color: RGB(39, 147 , 198);
     border: none;
     border-radius: 50%;
     cursor: pointer;
