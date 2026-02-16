@@ -734,7 +734,35 @@ class FirebaseEmailAuth {
 
   // Role-based navigation utility
   navigateToDashboard() {
-    const userRole = localStorage.getItem('userRole');
+    // Get user role from current user data in localStorage
+    let userRole = 'guest'; // default
+    
+    console.log('navigateToDashboard called');
+    console.log('currentUser:', this.currentUser);
+    
+    if (this.currentUser && this.currentUser.uid) {
+      const userData = localStorage.getItem(`uniroomi_user_${this.currentUser.uid}`);
+      console.log(`Looking for role in: uniroomi_user_${this.currentUser.uid}`);
+      console.log('Raw userData from localStorage:', userData);
+      
+      if (userData) {
+        try {
+          const user = JSON.parse(userData);
+          console.log('Parsed user data:', user);
+          userRole = user.role || 'guest';
+          console.log('User role:', userRole);
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+        }
+      } else {
+        console.log('No user data found in localStorage');
+        // Try to get all localStorage keys to debug
+        console.log('Available localStorage keys:', Object.keys(localStorage).filter(k => k.includes('uniroomi')));
+      }
+    } else {
+      console.log('No currentUser or uid found');
+    }
+    
     const currentPath = window.location.pathname;
     
     // Determine which dashboard to go to
@@ -743,6 +771,8 @@ class FirebaseEmailAuth {
     if (userRole === 'host') {
       targetDashboard = 'dashboard-host.html';
     }
+    
+    console.log('Navigating to:', targetDashboard);
     
     // Check if we're already on the correct dashboard
     if (!currentPath.includes(targetDashboard)) {
