@@ -976,3 +976,28 @@ $(document).ready(function() {
   // Make navigation functions globally accessible
   window.auth.makeGlobal();
 });
+
+// Ensure dashboard nav link uses role-based navigation even if anchor is static
+(function() {
+  function attachDashboardNav() {
+    const link = document.querySelector('.dashboard-nav-item a.nav-link');
+    if (!link) return;
+
+    // Prevent default and use the JS role-based navigation when available
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (typeof window.navigateToDashboard === 'function') {
+        window.navigateToDashboard();
+      } else {
+        const href = link.getAttribute('href');
+        if (href) window.location.href = href;
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachDashboardNav);
+  } else {
+    attachDashboardNav();
+  }
+})();
