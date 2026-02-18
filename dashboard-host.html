@@ -504,6 +504,108 @@
         font-weight: 600;
       }
       
+      .listing-status.pending {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      .listing-status.pending.approval {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      /* View Listing Modal Styles */
+      .listing-status-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      
+      .listing-status-badge.pending-approval {
+        background: #ffc107;
+        color: #212529;
+      }
+      
+      .listing-status-badge.active {
+        background: #28a745;
+        color: white;
+      }
+      
+      .form-value {
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e1e5e9;
+        font-weight: 500;
+        color: #333;
+      }
+      
+      .property-images-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+      
+      .property-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .amenities-display {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+      }
+      
+      .amenity-tag {
+        display: inline-block;
+        padding: 8px 12px;
+        background: #e9ecef;
+        border-radius: 20px;
+        font-size: 14px;
+        text-align: center;
+        border: 1px solid #dee2e6;
+      }
+      
+      .room-type-display {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border-left: 4px solid #2BA2D8;
+      }
+      
+      .room-type-display h4 {
+        color: #2BA2D8;
+        margin-bottom: 10px;
+      }
+      
+      .room-pricing {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-top: 10px;
+      }
+      
+      .room-price {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2BA2D8;
+      }
+      
+      .room-capacity {
+        color: #666;
+        font-size: 14px;
+      }
+      
       .listing-details {
         padding: 20px;
       }
@@ -890,38 +992,6 @@
               <label for="listingDescription">Description *</label>
               <textarea id="listingDescription" required rows="4" placeholder="Describe your property, its features, and what makes it special for students..."></textarea>
             </div>
-
-            <!-- Gender Selection -->
-            <div class="form-group">
-              <label>Accommodation Gender *</label>
-              <div class="gender-selection">
-                <label class="gender-option">
-                  <input type="radio" name="gender" value="male" required>
-                  <span class="gender-icon">👨</span>
-                  <span class="gender-label">Male Only</span>
-                </label>
-                <label class="gender-option">
-                  <input type="radio" name="gender" value="female" required>
-                  <span class="gender-icon">👩</span>
-                  <span class="gender-label">Female Only</span>
-                </label>
-                <label class="gender-option">
-                  <input type="radio" name="gender" value="both" required checked>
-                  <span class="gender-icon">👥</span>
-                  <span class="gender-label">All Genders</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Host Information -->
-          <div class="form-section">
-            <h3>Host Information</h3>
-            <div class="form-group">
-              <label for="hostName">Host Name *</label>
-              <input type="text" id="hostName" required placeholder="e.g., Elizabeth Taylor">
-              <small class="form-help">This name will be displayed to students viewing your property</small>
-            </div>
           </div>
 
           <!-- Room Types & Pricing -->
@@ -974,6 +1044,53 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Gender Selection -->
+          <div class="form-section">
+            <h3>Accommodation Gender</h3>
+            <div class="form-group">
+              <label>Accommodation Gender *</label>
+              <div class="gender-selection">
+                <label class="gender-option">
+                  <input type="radio" name="gender" value="male" required>
+                  <span class="gender-icon">👨</span>
+                  <span class="gender-label">Male Only</span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="gender" value="female" required>
+                  <span class="gender-icon">👩</span>
+                  <span class="gender-label">Female Only</span>
+                </label>
+                <label class="gender-option">
+                  <input type="radio" name="gender" value="both" required checked>
+                  <span class="gender-icon">👥</span>
+                  <span class="gender-label">All Genders</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Host Information -->
+          <div class="form-section">
+            <h3>Host Information</h3>
+            <div class="form-group">
+              <label for="hostName">Host Name *</label>
+              <input type="text" id="hostName" required placeholder="e.g., Elizabeth Taylor">
+              <small class="form-help">This name will be displayed to students viewing your property</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="hostEmail">Email Address *</label>
+              <input type="email" id="hostEmail" required placeholder="e.g., elizabeth@example.com">
+              <small class="form-help">This email will be used for booking inquiries and notifications</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="hostCellphone">Cellphone Number *</label>
+              <input type="tel" id="hostCellphone" required placeholder="e.g., 0821234567">
+              <small class="form-help">This number will be used for urgent booking inquiries</small>
             </div>
           </div>
 
@@ -1121,6 +1238,146 @@
       </div>
     </div>
   </div>
+
+    <!-- View Listing Modal -->
+    <div class="modal-overlay" id="viewListingModal">
+      <div class="modal-container create-listing-modal">
+        <div class="modal-header">
+          <h2 id="viewListingTitle">Listing Details</h2>
+          <button class="modal-close" onclick="closeViewListingModal()">&times;</button>
+        </div>
+        
+        <div class="listing-form">
+          <!-- Status Badge -->
+          <div class="form-section">
+            <div class="listing-status-badge" id="viewListingStatus"></div>
+          </div>
+
+          <!-- Property Images -->
+          <div class="form-section">
+            <h3>Property Images</h3>
+            <div class="property-images-gallery" id="viewListingImages">
+              <!-- Images will be dynamically loaded here -->
+            </div>
+          </div>
+
+          <!-- Basic Information -->
+          <div class="form-section">
+            <h3>Basic Information</h3>
+            <div class="form-group">
+              <label>Property Title</label>
+              <div class="form-value" id="viewTitle"></div>
+            </div>
+            
+            <div class="form-group">
+              <label>Address</label>
+              <div class="form-value" id="viewAddress"></div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>City</label>
+                <div class="form-value" id="viewCity"></div>
+              </div>
+              <div class="form-group">
+                <label>Province</label>
+                <div class="form-value" id="viewProvince"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Property Details -->
+          <div class="form-section">
+            <h3>Property Details</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Bedrooms</label>
+                <div class="form-value" id="viewBedrooms"></div>
+              </div>
+              <div class="form-group">
+                <label>Bathrooms</label>
+                <div class="form-value" id="viewBathrooms"></div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Maximum Guests</label>
+              <div class="form-value" id="viewGuests"></div>
+            </div>
+            
+            <div class="form-group">
+              <label>Description</label>
+              <div class="form-value" id="viewDescription"></div>
+            </div>
+
+            <div class="form-group">
+              <label>Accommodation Gender</label>
+              <div class="form-value" id="viewGender"></div>
+            </div>
+          </div>
+
+          <!-- Room Types & Pricing -->
+          <div class="form-section">
+            <h3>Room Types & Pricing</h3>
+            <div id="viewRoomTypes">
+              <!-- Room types will be dynamically loaded here -->
+            </div>
+          </div>
+
+          <!-- Host Information -->
+          <div class="form-section">
+            <h3>Host Information</h3>
+            <div class="form-group">
+              <label>Host Name</label>
+              <div class="form-value" id="viewHostName"></div>
+            </div>
+            
+            <div class="form-group">
+              <label>Email Address</label>
+              <div class="form-value" id="viewHostEmail"></div>
+            </div>
+            
+            <div class="form-group">
+              <label>Cellphone Number</label>
+              <div class="form-value" id="viewHostCellphone"></div>
+            </div>
+          </div>
+
+          <!-- University Information -->
+          <div class="form-section">
+            <h3>University Information</h3>
+            <div class="form-group">
+              <label>Nearest University</label>
+              <div class="form-value" id="viewUniversity"></div>
+            </div>
+            
+            <div class="form-group">
+              <label>Nearest Campus</label>
+              <div class="form-value" id="viewCampus"></div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>Distance to Campus</label>
+                <div class="form-value" id="viewDistance"></div>
+              </div>
+              <div class="form-group">
+                <label>Transport Method</label>
+                <div class="form-value" id="viewTransport"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amenities -->
+          <div class="form-section">
+            <h3>Amenities</h3>
+            <div class="amenities-display" id="viewAmenities">
+              <!-- Amenities will be dynamically loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!--================ start footer Area  =================-->
     <footer class="footer-area section_gap">
@@ -1455,6 +1712,8 @@
           description: document.getElementById('listingDescription').value,
           gender: document.querySelector('input[name="gender"]:checked').value,
           hostName: document.getElementById('hostName').value,
+          hostEmail: document.getElementById('hostEmail').value,
+          hostCellphone: document.getElementById('hostCellphone').value,
           roomTypes: selectedRoomTypes,
           singlePrice: document.getElementById('singlePrice').value,
           singleCapacity: document.getElementById('singleCapacity').value,
@@ -1485,7 +1744,7 @@
               ...formData,
               hostId: user.uid,
               createdAt: new Date().toISOString(),
-              status: 'active'
+              status: 'pending approval'
             };
             listings.push(newListing);
             localStorage.setItem(`host_listings_${user.uid}`, JSON.stringify(listings));
@@ -1493,7 +1752,7 @@
             // Update UI
             loadHostListings();
             closeCreateListingModal();
-            showSuccess('Listing created successfully!');
+            showSuccess('Listing submitted successfully! It is now pending approval.');
           }
           
           submitBtn.textContent = originalText;
@@ -1539,7 +1798,7 @@
                   `<img src="${listing.images[0]}" alt="${listing.title}">` :
                   `<div class="no-image-placeholder">📷</div>`
                 }
-                <div class="listing-status ${listing.status}">${listing.status}</div>
+                <div class="listing-status ${listing.status.replace(' ', '-')}">${listing.status}</div>
               </div>
               <div class="listing-details">
                 <h4>${listing.title}</h4>
@@ -1575,8 +1834,119 @@
       }
 
       function viewListing(listingId) {
-        // TODO: Implement view functionality - could open a preview or navigate to specs page
-        console.log('View listing:', listingId);
+        const user = firebase.auth().currentUser;
+        if (!user) return;
+        
+        const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
+        const listing = listings.find(l => l.id === listingId);
+        
+        if (!listing) {
+          showError('Listing not found');
+          return;
+        }
+        
+        // Populate modal with listing data
+        populateViewListingModal(listing);
+        
+        // Show modal
+        showViewListingModal();
+      }
+
+      function showViewListingModal() {
+        document.getElementById('viewListingModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeViewListingModal() {
+        document.getElementById('viewListingModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+      }
+
+      function populateViewListingModal(listing) {
+        // Set title and status
+        document.getElementById('viewListingTitle').textContent = listing.title;
+        
+        const statusBadge = document.getElementById('viewListingStatus');
+        statusBadge.textContent = listing.status;
+        statusBadge.className = `listing-status-badge ${listing.status.replace(' ', '-')}`;
+        
+        // Basic Information
+        document.getElementById('viewTitle').textContent = listing.title;
+        document.getElementById('viewAddress').textContent = listing.address;
+        document.getElementById('viewCity').textContent = listing.city;
+        document.getElementById('viewProvince').textContent = listing.province;
+        
+        // Property Details
+        document.getElementById('viewBedrooms').textContent = listing.bedrooms;
+        document.getElementById('viewBathrooms').textContent = listing.bathrooms;
+        document.getElementById('viewGuests').textContent = listing.guests;
+        document.getElementById('viewDescription').textContent = listing.description;
+        
+        // Gender display
+        const genderText = {
+          'male': 'Male Only',
+          'female': 'Female Only',
+          'both': 'All Genders'
+        };
+        document.getElementById('viewGender').textContent = genderText[listing.gender] || listing.gender;
+        
+        // Room Types & Pricing
+        const roomTypesContainer = document.getElementById('viewRoomTypes');
+        let roomTypesHtml = '';
+        
+        if (listing.roomTypes.includes('single')) {
+          roomTypesHtml += `
+            <div class="room-type-display">
+              <h4>Single Room</h4>
+              <div class="room-pricing">
+                <span class="room-price">R${listing.singlePrice}/month</span>
+                <span class="room-capacity">Capacity: ${listing.singleCapacity} guest${listing.singleCapacity > 1 ? 's' : ''}</span>
+              </div>
+            </div>
+          `;
+        }
+        
+        if (listing.roomTypes.includes('double')) {
+          roomTypesHtml += `
+            <div class="room-type-display">
+              <h4>Double Room</h4>
+              <div class="room-pricing">
+                <span class="room-price">R${listing.doublePrice}/month</span>
+                <span class="room-capacity">Capacity: ${listing.doubleCapacity} guest${listing.doubleCapacity > 1 ? 's' : ''}</span>
+              </div>
+            </div>
+          `;
+        }
+        
+        roomTypesContainer.innerHTML = roomTypesHtml;
+        
+        // Host Information
+        document.getElementById('viewHostName').textContent = listing.hostName;
+        document.getElementById('viewHostEmail').textContent = listing.hostEmail;
+        document.getElementById('viewHostCellphone').textContent = listing.hostCellphone;
+        
+        // University Information
+        const universityText = listing.nearestUniversity.replace('Campuses/', '').replace('.html', '').replace(/([A-Z])/g, ' $1').trim();
+        document.getElementById('viewUniversity').textContent = universityText;
+        document.getElementById('viewCampus').textContent = listing.nearestCampus;
+        document.getElementById('viewDistance').textContent = listing.distanceToCampus;
+        document.getElementById('viewTransport').textContent = listing.transportMethod;
+        
+        // Amenities
+        const amenitiesContainer = document.getElementById('viewAmenities');
+        let amenitiesHtml = '';
+        listing.amenities.forEach(amenity => {
+          amenitiesHtml += `<div class="amenity-tag">${amenity}</div>`;
+        });
+        amenitiesContainer.innerHTML = amenitiesHtml;
+        
+        // Images
+        const imagesContainer = document.getElementById('viewListingImages');
+        let imagesHtml = '';
+        listing.images.forEach((image, index) => {
+          imagesHtml += `<img src="${image}" alt="Property image ${index + 1}" class="property-image">`;
+        });
+        imagesContainer.innerHTML = imagesHtml;
       }
 
       function deleteListing(listingId) {
@@ -1628,6 +1998,16 @@
           });
         }
         
+        // Set up view listing modal close on backdrop click
+        const viewListingModal = document.getElementById('viewListingModal');
+        if (viewListingModal) {
+          viewListingModal.addEventListener('click', function(e) {
+            if (e.target === viewListingModal) {
+              closeViewListingModal();
+            }
+          });
+        }
+        
         // Load listings when user is authenticated
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
@@ -1635,6 +2015,33 @@
           }
         });
       });
+
+      function showError(message) {
+        // Create error toast
+        const errorToast = document.createElement('div');
+        errorToast.className = 'error-toast';
+        errorToast.textContent = message;
+        errorToast.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #dc3545;
+          color: white;
+          padding: 12px 20px;
+          border-radius: 6px;
+          z-index: 10000;
+          box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        `;
+        
+        document.body.appendChild(errorToast);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+          if (errorToast.parentNode) {
+            errorToast.parentNode.removeChild(errorToast);
+          }
+        }, 3000);
+      }
 
       // Debug desktop profile loading
       setTimeout(() => {

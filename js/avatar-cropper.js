@@ -56,14 +56,30 @@ class AvatarCropper {
     setupEventListeners() {
         const cropCircle = document.querySelector('.crop-circle');
         if (cropCircle) {
+            // Mouse events for desktop
             cropCircle.addEventListener('mousedown', (e) => this.startDrag(e));
             document.addEventListener('mousemove', (e) => this.drag(e));
             document.addEventListener('mouseup', () => this.endDrag());
             
-            // Touch events for mobile
-            cropCircle.addEventListener('touchstart', (e) => this.startDrag(e.touches[0]));
-            document.addEventListener('touchmove', (e) => this.drag(e.touches[0]));
-            document.addEventListener('touchend', () => this.endDrag());
+            // Touch events for mobile with better handling
+            cropCircle.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent scrolling while cropping
+                this.startDrag(e.touches[0]);
+            }, { passive: false });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (this.isDragging) {
+                    e.preventDefault(); // Prevent scrolling while dragging
+                    this.drag(e.touches[0]);
+                }
+            }, { passive: false });
+            
+            document.addEventListener('touchend', (e) => {
+                if (this.isDragging) {
+                    e.preventDefault();
+                    this.endDrag();
+                }
+            }, { passive: false });
         }
     }
 

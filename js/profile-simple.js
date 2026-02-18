@@ -1,3 +1,93 @@
+function getInitials() {
+    const name = profileData.name || 'User';
+    const nameParts = name.trim().split(' ');
+    if (nameParts.length >= 2) {
+        return (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+    } else if (nameParts.length === 1) {
+        return nameParts[0][0].toUpperCase();
+    }
+    return 'U';
+}
+
+function updateWelcomeMessage(userName) {
+    const welcomeElement = document.getElementById('welcomeMessage');
+    if (welcomeElement) {
+        const hour = new Date().getHours();
+        let greeting = 'Welcome';
+        
+        if (hour < 12) {
+            greeting = 'Good morning';
+        } else if (hour < 17) {
+            greeting = 'Good afternoon';
+        } else {
+            greeting = 'Good evening';
+        }
+        
+        welcomeElement.textContent = `${greeting}, ${userName}!`;
+    }
+}
+
+function updateNavbarAvatar() {
+    // Update navbar avatar if it exists
+    const navbarAvatar = document.querySelector('.profile-avatar img, .mobile-avatar img');
+    if (navbarAvatar && profileData.avatarUrl) {
+        navbarAvatar.src = profileData.avatarUrl;
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        border-radius: 6px;
+        color: white;
+        font-weight: 500;
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+        word-wrap: break-word;
+    `;
+    
+    // Set background color based on type
+    switch (type) {
+        case 'success':
+            notification.style.background = '#28a745';
+            break;
+        case 'error':
+            notification.style.background = '#dc3545';
+            break;
+        case 'info':
+            notification.style.background = '#17a2b8';
+            break;
+        default:
+            notification.style.background = '#6c757d';
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
 // Mobile menu toggle functions
 function toggleProfileSection() {
     const profileSection = document.querySelector('.dashboard-profile-section');
@@ -196,16 +286,30 @@ function loadProfileDirectly() {
 }
 
 function renderViewProfile(initials) {
-    // Determine which profile section to target based on screen size
+    // Determine which profile section to target based on screen size and page type
     let profileSection;
+    const isHostPage = window.location.pathname.includes('dashboard-host.html');
+    
     if (window.innerWidth > 768) {
         // Desktop: Target the desktop grid profile section
         profileSection = document.querySelector('.dashboard-grid .dashboard-profile-section');
         console.log('Desktop mode: targeting desktop profile section');
     } else {
         // Mobile: Target the mobile quick grid profile section
+        // First try to find the mobile profile section in quick grid
         profileSection = document.querySelector('.dashboard-quick-grid .dashboard-profile-section');
-        console.log('Mobile mode: targeting mobile profile section');
+        
+        // If not found, try alternative selectors for host dashboard
+        if (!profileSection && isHostPage) {
+            profileSection = document.querySelector('.dashboard-quick-grid .dashboard-card.dashboard-profile-section');
+        }
+        
+        // Fallback to any profile section if still not found
+        if (!profileSection) {
+            profileSection = document.querySelector('.dashboard-profile-section');
+        }
+        
+        console.log('Mobile mode: targeting mobile profile section, found:', !!profileSection);
     }
     
     if (!profileSection) {
@@ -370,7 +474,36 @@ function debugLocalStorage() {
 }
 
 function renderEditProfile() {
-    const profileSection = document.querySelector('.dashboard-profile-section');
+    // Determine which profile section to target based on screen size and page type
+    let profileSection;
+    const isHostPage = window.location.pathname.includes('dashboard-host.html');
+    
+    if (window.innerWidth > 768) {
+        // Desktop: Target desktop grid profile section
+        profileSection = document.querySelector('.dashboard-grid .dashboard-profile-section');
+        console.log('Desktop edit mode: targeting desktop profile section');
+    } else {
+        // Mobile: Target mobile quick grid profile section
+        // First try to find mobile profile section in quick grid
+        profileSection = document.querySelector('.dashboard-quick-grid .dashboard-profile-section');
+        
+        // If not found, try alternative selectors for host dashboard
+        if (!profileSection && isHostPage) {
+            profileSection = document.querySelector('.dashboard-quick-grid .dashboard-card.dashboard-profile-section');
+        }
+        
+        // Fallback to any profile section if still not found
+        if (!profileSection) {
+            profileSection = document.querySelector('.dashboard-profile-section');
+        }
+        
+        console.log('Mobile edit mode: targeting mobile profile section, found:', !!profileSection);
+    }
+    
+    if (!profileSection) {
+        console.error('Profile section not found for edit mode');
+        return;
+    }
     
     const profileHTML = `
         <div class="profile-edit">
@@ -523,6 +656,9 @@ function changeAvatar() {
                 return;
             }
             
+            // Show loading indicator for mobile
+            showNotification('Processing image...', 'info');
+            
             try {
                 // Open cropper and get cropped image
                 console.log('Opening cropper with file:', file.name);
@@ -613,10 +749,30 @@ function changeAvatar() {
         }
     };
     
-    // Trigger file selection
+    // Trigger file selection with better mobile support
     document.body.appendChild(input);
-    input.click();
-    document.body.removeChild(input);
+    
+    // Handle both click and touch events for mobile compatibility
+    const triggerFileSelect = () => {
+        input.click();
+    };
+    
+    // For mobile devices, ensure the input is properly triggered
+    if ('ontouchstart' in window) {
+        // Touch device
+        input.addEventListener('touchend', triggerFileSelect);
+        setTimeout(triggerFileSelect, 100); // Small delay for touch devices
+    } else {
+        // Desktop
+        triggerFileSelect();
+    }
+    
+    // Clean up after selection
+    setTimeout(() => {
+        if (document.body.contains(input)) {
+            document.body.removeChild(input);
+        }
+    }, 1000);
 }
 
 function removeAvatar() {

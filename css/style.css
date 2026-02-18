@@ -651,10 +651,10 @@ header .header_area .navbar .menu_nav .nav-item .nav-link.theme_btn_two:not(.log
 
 .navbar .menu_nav .nav-item .nav-link.theme_btn_two:hover {
   color: #2BA2D8;
-  transform: translateY(-2px);
+  transform: translateY(0px);
   box-shadow: 
-    0 8px 20px rgba(43, 162, 216, 0.3),
-    0 4px 8px rgba(0, 0, 0, 0.15);
+    0 2px 6px rgba(43, 162, 216, 0.1),
+    0 1px 3px rgba(43, 162, 216, 0.05);
   background: #ffffff;
   border: 2px solid #2BA2D8;
 }
@@ -6297,6 +6297,118 @@ body.dashboard-page {
     grid-column: 1 / -1;
     position: relative;
     z-index: 1;
+  }
+
+  /* Ensure mobile profile section is properly styled */
+  .dashboard-quick-grid .dashboard-profile-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+
+  /* Fix avatar button styling on mobile */
+  .dashboard-quick-grid .dashboard-profile-section .dashboard-btn,
+  .dashboard-quick-grid .dashboard-profile-section .dashboard-btn-outline {
+    display: inline-block;
+    padding: 10px 16px;
+    margin: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px; /* iOS touch target minimum */
+    min-width: 44px;
+  }
+
+  /* Ensure avatar container is properly sized on mobile */
+  .dashboard-quick-grid .profile-avatar-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border: 3px solid var(--primary);
+    margin: 0 auto 15px auto;
+  }
+
+  .dashboard-quick-grid .profile-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .dashboard-quick-grid .avatar-initials-large {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+    font-family: "Poppins", sans-serif;
+    text-transform: uppercase;
+  }
+
+  /* Mobile profile edit form styling */
+  .dashboard-quick-grid .profile-edit {
+    width: 100%;
+  }
+
+  .dashboard-quick-grid .profile-edit .profile-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-quick-grid .profile-edit .profile-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .dashboard-quick-grid .profile-form {
+    width: 100%;
+  }
+
+  .dashboard-quick-grid .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .dashboard-quick-grid .form-group {
+    margin-bottom: 15px;
+  }
+
+  .dashboard-quick-grid .form-group input,
+  .dashboard-quick-grid .form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 16px; /* Prevent zoom on iOS */
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .dashboard-quick-grid .form-group input:focus,
+  .dashboard-quick-grid .form-group select:focus {
+    outline: none;
+    border-color: #2BA2D8;
+    box-shadow: 0 0 0 3px rgba(43, 162, 216, 0.1);
+  }
+
+  .dashboard-quick-grid .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
   }
 
   .dashboard-quick-grid .dashboard-card.hidden {
