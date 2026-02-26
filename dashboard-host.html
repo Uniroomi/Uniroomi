@@ -849,7 +849,7 @@
         <div class="dashboard-icon">🏠</div>
         <div>
           <small>My Listings</small>
-          <strong>3 Active</strong>
+          <strong id="mobileListingsCount">0 Active</strong>
         </div>
       </div>
 
@@ -1769,6 +1769,19 @@
         }, 5000);
       }
 
+      // Update mobile listings count only
+      function updateMobileListingsCount() {
+        const user = firebase.auth().currentUser;
+        if (!user) return;
+        
+        const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
+        const mobileListingsCount = document.getElementById('mobileListingsCount');
+        if (mobileListingsCount) {
+          const activeListings = listings.filter(listing => listing.status === 'active' || listing.status === 'approved').length;
+          mobileListingsCount.textContent = `${activeListings} Active`;
+        }
+      }
+
       // Load Host Listings
       function loadHostListings() {
         const user = firebase.auth().currentUser;
@@ -1776,6 +1789,9 @@
         
         const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
         const listingsContainer = document.querySelector('.dashboard-listings-container');
+        
+        // Update mobile listings count
+        updateMobileListingsCount();
         
         if (listings.length === 0) {
           listingsContainer.innerHTML = `

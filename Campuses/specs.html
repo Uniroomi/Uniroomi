@@ -275,7 +275,7 @@
                 <a class="nav-link" href="../gallery.html"></a>
               </li>
               <li class="nav-item dashboard-nav-item" style="display: none;">
-                <a class="nav-link" href="../dashboard.html">Dashboard</a>
+                <a class="nav-link" href="#" onclick="navigateToDashboard(); return false;">Dashboard</a>
               </li>
               <li class="nav-item submenu dropdown">
                 <a
@@ -779,7 +779,7 @@
 
         // Redirect to login page
         function redirectToLogin() {
-            window.location.href = '../dashboard.html';
+            navigateToDashboard();
         }
 
         // Create booking request
@@ -815,7 +815,7 @@
                 
                 // Redirect to dashboard to see booking
                 setTimeout(() => {
-                    window.location.href = '../dashboard.html';
+                    navigateToDashboard();
                 }, 3000);
             } else {
                 // Reset processing flag if no user

@@ -437,8 +437,9 @@ class FirebaseEmailAuth {
       }
     }
     
-    // Check if user is a host to decide whether to show "Become a Host" button
+    // Check if user is a host to decide whether to show "Become a Host" button and Dashboard button
     let becomeHostButton = '';
+    let dashboardButton = '';
     if (user && user.uid) {
       const userData = localStorage.getItem(`uniroomi_user_${user.uid}`);
       if (userData) {
@@ -450,7 +451,14 @@ class FirebaseEmailAuth {
               <span class="nav-link theme_btn_two">Become a Host</span>
             </li>
           `;
+          // Show dashboard button only for guests
+          dashboardButton = `
+            <li class="nav-item">
+              <button class="button-75" role="button" onclick="navigateToDashboard(); return false;"><span class="text"><i class="fa fa-th-large"></i> Dashboard</span></button>
+            </li>
+          `;
         }
+        // For hosts, dashboardButton remains empty (hidden)
       }
     }
     
@@ -467,9 +475,7 @@ class FirebaseEmailAuth {
           </div>
         </a>
       </li>
-      <li class="nav-item">
-        <button class="button-75" role="button" onclick="navigateToDashboard(); return false;"><span class="text"><i class="fa fa-th-large"></i> Dashboard</span></button>
-      </li>
+      ${dashboardButton}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle profile-avatar" href="#" id="userProfileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <div class="avatar-wrapper">
