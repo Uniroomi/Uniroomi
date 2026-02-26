@@ -853,6 +853,19 @@
         </div>
       </div>
 
+      <!-- Mobile Listings Section -->
+      <div class="dashboard-card dashboard-listings-section-mobile hidden">
+        <div class="dashboard-card-header">
+          <h2>My Listings</h2>
+          <button class="dashboard-btn-primary" onclick="showCreateListingModal()">+ Create New Listing</button>
+        </div>
+
+        <div class="dashboard-listings-container-mobile">
+          <!-- Listings will be dynamically loaded here -->
+          <div class="loading-listings">Loading listings...</div>
+        </div>
+      </div>
+
       <!-- Mobile Message Section -->
       <div class="dashboard-card dashboard-message-section hidden">
         <div class="dashboard-card-header">
@@ -1470,11 +1483,21 @@
       // Listings Toggle Functionality
       function toggleListingSection() {
         const listingSection = document.querySelector('.dashboard-listings-section');
+        const listingSectionMobile = document.querySelector('.dashboard-listings-section-mobile');
         const listingToggle = document.querySelector('.listing-toggle');
         
-        if (listingSection && listingToggle) {
-          listingSection.classList.toggle('hidden');
+        if (listingToggle) {
           listingToggle.classList.toggle('collapsed');
+        }
+        
+        // Toggle desktop section (for desktop view)
+        if (listingSection) {
+          listingSection.classList.toggle('hidden');
+        }
+        
+        // Toggle mobile section (for mobile view)
+        if (listingSectionMobile) {
+          listingSectionMobile.classList.toggle('hidden');
         }
       }
 
@@ -1790,12 +1813,13 @@
         
         const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
         const listingsContainer = document.querySelector('.dashboard-listings-container');
+        const listingsContainerMobile = document.querySelector('.dashboard-listings-container-mobile');
         
         // Update mobile listings count
         updateMobileListingsCount();
         
         if (listings.length === 0) {
-          listingsContainer.innerHTML = `
+          const emptyHtml = `
             <div class="empty-state">
               <div class="empty-icon">🏠</div>
               <h3>No Listings Yet</h3>
@@ -1803,6 +1827,9 @@
               <button class="dashboard-btn-primary" onclick="showCreateListingModal()">Create Your First Listing</button>
             </div>
           `;
+          
+          if (listingsContainer) listingsContainer.innerHTML = emptyHtml;
+          if (listingsContainerMobile) listingsContainerMobile.innerHTML = emptyHtml;
           return;
         }
         
@@ -1842,7 +1869,8 @@
         });
         html += '</div>';
         
-        listingsContainer.innerHTML = html;
+        if (listingsContainer) listingsContainer.innerHTML = html;
+        if (listingsContainerMobile) listingsContainerMobile.innerHTML = html;
       }
 
       function editListing(listingId) {
