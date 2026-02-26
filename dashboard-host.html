@@ -1777,8 +1777,9 @@
         const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
         const mobileListingsCount = document.getElementById('mobileListingsCount');
         if (mobileListingsCount) {
-          const activeListings = listings.filter(listing => listing.status === 'active' || listing.status === 'approved').length;
-          mobileListingsCount.textContent = `${activeListings} Active`;
+          // Count all listings regardless of status (pending, active, approved)
+          const totalListings = listings.length;
+          mobileListingsCount.textContent = `${totalListings} Listings`;
         }
       }
 
