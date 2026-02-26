@@ -682,6 +682,17 @@ header .header_area .navbar .menu_nav .nav-item .nav-link.theme_btn_two:not(.log
     min-width: 80px;
     font-size: 11px;
   }
+  
+  /* Hide both dashboard navigation items on mobile */
+  .dashboard-nav-item,
+  .desktop-dashboard-btn {
+    display: none !important;
+  }
+}
+
+/* Always hide the old dashboard-nav-item, use only the new desktop-dashboard-btn */
+.dashboard-nav-item {
+  display: none !important;
 }
 
 @media (max-width: 767px) {
