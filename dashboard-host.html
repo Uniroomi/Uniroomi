@@ -12,7 +12,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="vendors/linericon/style.css" />
-    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link
       rel="stylesheet"
       href="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css"
@@ -1357,13 +1357,13 @@
             <h3>Property Images</h3>
             <div class="image-upload-section">
               <div class="thumbnail-indicator">
-                <i class="fa fa-star"></i>
+                <i class="fa-solid fa-star"></i>
                 <span><strong>First image uploaded</strong> will be used as the property thumbnail</span>
               </div>
               <div class="image-upload-grid" id="imageUploadGrid">
                 <div class="image-upload-slot" onclick="triggerImageUpload(0)">
                   <div class="upload-placeholder">
-                    <i class="fa fa-plus"></i>
+                    <i class="fa-solid fa-plus"></i>
                     <span>Add Image</span>
                   </div>
                 </div>
@@ -1756,7 +1756,7 @@
           <div class="form-section">
             <h3>Property Images</h3>
             <div class="thumbnail-indicator">
-              <i class="fa fa-star"></i>
+              <i class="fa-solid fa-star"></i>
               <span><strong>First image</strong> is currently used as the property thumbnail</span>
             </div>
             <div class="image-upload-section">
@@ -1783,10 +1783,10 @@
             Copyright &copy; 2026. UniRoomi is a digital platform operated by Anokha Holdings (Pty) Ltd.
           </p>
           <div class="col-lg-4 col-sm-12 footer-social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
           </div>
         </div>
       </div>
@@ -1795,7 +1795,7 @@
 
     <!-- Back to Top Button -->
     <button id="backToTop" class="back-to-top" aria-label="Back to top">
-        <i class="fa fa-arrow-up"></i>
+        <i class="fa-solid fa-arrow-up"></i>
     </button>
 
     <script>
@@ -1947,7 +1947,7 @@
               ${isThumbnail ? '<div class="thumbnail-badge">Thumbnail</div>' : ''}
               <img src="${image}" alt="Property image ${index + 1}">
               <button type="button" class="remove-image" onclick="removeImage(${index})">
-                <i class="fa fa-times"></i>
+                <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
           `;
@@ -1957,7 +1957,7 @@
           html += `
             <div class="image-upload-slot" onclick="triggerImageUpload()">
               <div class="upload-placeholder">
-                <i class="fa fa-plus"></i>
+                <i class="fa-solid fa-plus"></i>
                 <span>Add Image</span>
               </div>
             </div>
@@ -2205,11 +2205,11 @@
               </div>
               <div class="listing-details">
                 <h4>${listing.title}</h4>
-                <p class="listing-address"><i class="fa fa-map-marker"></i> ${listing.address}, ${listing.city}</p>
+                <p class="listing-address"><i class="fa-solid fa-location-dot"></i> ${listing.address}, ${listing.city}</p>
                 <div class="listing-meta">
-                  <span><i class="fa fa-bed"></i> ${listing.bedrooms} bed</span>
-                  <span><i class="fa fa-bath"></i> ${listing.bathrooms} bath</span>
-                  <span><i class="fa fa-users"></i> ${listing.guests} guests</span>
+                  <span><i class="fa-solid fa-bed"></i> ${listing.bedrooms} bed</span>
+                  <span><i class="fa-solid fa-bath"></i> ${listing.bathrooms} bath</span>
+                  <span><i class="fa-solid fa-users"></i> ${listing.guests} guests</span>
                 </div>
                 <div class="listing-pricing">
                   <span class="price">R${listing.singlePrice}/mo</span>
@@ -2495,7 +2495,7 @@
               ${isThumbnail ? '<div class="thumbnail-badge">Thumbnail</div>' : ''}
               <img src="${image}" alt="Property image ${index + 1}">
               <button type="button" class="remove-image" onclick="removeEditImage(${index})">
-                <i class="fa fa-times"></i>
+                <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
           `;
@@ -2505,7 +2505,7 @@
           html += `
             <div class="image-upload-slot" onclick="triggerEditImageUpload()">
               <div class="upload-placeholder">
-                <i class="fa fa-plus"></i>
+                <i class="fa-solid fa-plus"></i>
                 <span>Add Image</span>
               </div>
             </div>
