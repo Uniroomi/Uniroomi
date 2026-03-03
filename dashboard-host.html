@@ -35,10 +35,11 @@
         background: #2BA2D8;
         color: white;
         border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
+        padding: 4px 8px;
+        border-radius: 4px;
         cursor: pointer;
         font-weight: 500;
+        font-size: 11px;
         transition: all 0.3s ease;
       }
       
@@ -51,15 +52,33 @@
         background: #dc3545;
         color: white;
         border: none;
-        padding: 6px 12px;
+        padding: 4px 8px;
         border-radius: 4px;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 11px;
         transition: all 0.3s ease;
       }
       
       .dashboard-btn-danger:hover {
         background: #c82333;
+      }
+      
+      .dashboard-btn-outline {
+        background: transparent;
+        color: #2BA2D8;
+        border: 1px solid #2BA2D8;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 11px;
+        transition: all 0.3s ease;
+      }
+      
+      .dashboard-btn-outline:hover {
+        background: #2BA2D8;
+        color: white;
+        transform: translateY(-1px);
       }
       
       /* Modal Styles */
@@ -412,6 +431,44 @@
         font-size: 12px;
       }
       
+      .thumbnail-badge {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        background: #2BA2D8;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        z-index: 2;
+      }
+      
+      .image-upload-slot.thumbnail {
+        border: 3px solid #2BA2D8;
+        box-shadow: 0 0 0 2px rgba(43, 162, 216, 0.2);
+      }
+      
+      .thumbnail-indicator {
+        background: #e3f2fd;
+        border: 1px solid #2BA2D8;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: #1565c0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      .thumbnail-indicator i {
+        color: #2BA2D8;
+        font-size: 16px;
+      }
+      
       .upload-help {
         color: #666;
         font-size: 14px;
@@ -454,26 +511,29 @@
       /* Listings Display Styles */
       .listings-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
       }
       
       .listing-card {
         background: white;
-        border-radius: 12px;
+        border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
         transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
       }
       
       .listing-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       }
       
       .listing-image {
         position: relative;
-        height: 200px;
+        height: 120px;
         background: #f8f9fa;
       }
       
@@ -607,25 +667,34 @@
       }
       
       .listing-details {
-        padding: 20px;
+        padding: 10px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
       }
       
       .listing-details h4 {
-        margin-bottom: 10px;
+        margin-bottom: 6px;
         color: #333;
+        font-size: 14px;
+        line-height: 1.2;
+        min-height: 34px;
+        font-weight: 600;
       }
       
       .listing-address {
         color: #666;
-        font-size: 14px;
-        margin-bottom: 15px;
+        font-size: 11px;
+        margin-bottom: 8px;
+        line-height: 1.2;
+        min-height: 26px;
       }
       
       .listing-meta {
         display: flex;
-        gap: 15px;
-        margin-bottom: 15px;
-        font-size: 14px;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 10px;
         color: #666;
       }
       
@@ -637,29 +706,35 @@
       
       .listing-pricing {
         display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
+        gap: 6px;
+        margin-bottom: 8px;
         flex-wrap: wrap;
+        align-items: center;
       }
       
       .price {
         font-weight: 600;
-        color: #2BA2D8;
-        font-size: 16px;
+        color: black;
+        font-size: 11px;
+        background: #D3D3D3;
+        padding: 2px 6px;
+        border-radius: 4px;
       }
       
       .price-type {
-        background: #e9ecef;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 1px 4px;
+        border-radius: 4px;
+        font-size: 9px;
         color: #666;
+        border: 1px solid #e9ecef;
       }
       
       .listing-actions {
         display: flex;
-        gap: 10px;
+        gap: 4px;
         flex-wrap: wrap;
+        margin-top: auto;
       }
       
       .empty-state {
@@ -729,11 +804,59 @@
         }
         
         .listings-grid {
-          grid-template-columns: 1fr;
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          gap: 12px;
+        }
+        
+        .listing-image {
+          height: 100px;
+        }
+        
+        .listing-details {
+          padding: 8px;
+        }
+        
+        .listing-details h4 {
+          font-size: 12px;
+          min-height: 30px;
+          line-height: 1.1;
+        }
+        
+        .listing-address {
+          font-size: 10px;
+          min-height: 24px;
+        }
+        
+        .listing-meta {
+          font-size: 9px;
+          gap: 6px;
+        }
+        
+        .listing-pricing {
+          gap: 4px;
+          margin-bottom: 6px;
+        }
+        
+        .price {
+          font-size: 10px;
+          padding: 1px 4px;
+        }
+        
+        .price-type {
+          font-size: 8px;
+          padding: 1px 3px;
+        }
+        
+        .dashboard-btn-primary,
+        .dashboard-btn-danger,
+        .dashboard-btn-outline {
+          padding: 3px 6px;
+          font-size: 10px;
+          border-radius: 3px;
         }
         
         .listing-actions {
-          justify-content: center;
+          gap: 3px;
         }
       }
     </style>
@@ -1233,6 +1356,10 @@
           <div class="form-section">
             <h3>Property Images</h3>
             <div class="image-upload-section">
+              <div class="thumbnail-indicator">
+                <i class="fa fa-star"></i>
+                <span><strong>First image uploaded</strong> will be used as the property thumbnail</span>
+              </div>
               <div class="image-upload-grid" id="imageUploadGrid">
                 <div class="image-upload-slot" onclick="triggerImageUpload(0)">
                   <div class="upload-placeholder">
@@ -1242,7 +1369,7 @@
                 </div>
               </div>
               <input type="file" id="imageUploadInput" multiple accept="image/*" style="display: none;">
-              <p class="upload-help">Please upload exactly 6 images for your property.</p>
+              <p class="upload-help">Please upload exactly 6 images for your property. The first image will be the thumbnail.</p>
             </div>
           </div>
 
@@ -1389,6 +1516,260 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Edit Listing Modal -->
+    <div class="modal-overlay" id="editListingModal">
+      <div class="modal-container create-listing-modal">
+        <div class="modal-header">
+          <h2>Edit Listing</h2>
+          <button class="modal-close" onclick="closeEditListingModal()">&times;</button>
+        </div>
+        
+        <form id="editListingForm" class="listing-form">
+          <div class="error-message" id="editListingError" style="display: none;"></div>
+          
+          <!-- Basic Information -->
+          <div class="form-section">
+            <h3>Basic Information</h3>
+            <div class="form-group">
+              <label for="editListingTitle">Property Title *</label>
+              <input type="text" id="editListingTitle" required placeholder="e.g., Modern Student Apartment">
+            </div>
+            
+            <div class="form-group">
+              <label for="editListingAddress">Address *</label>
+              <input type="text" id="editListingAddress" required placeholder="e.g., 47 Elgie Road, Glenwood">
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editListingCity">City *</label>
+                <input type="text" id="editListingCity" required placeholder="e.g., Durban">
+              </div>
+              <div class="form-group">
+                <label for="editListingProvince">Province *</label>
+                <select id="editListingProvince" required>
+                  <option value="">Select Province</option>
+                  <option value="KZN">KwaZulu-Natal</option>
+                  <option value="WC">Western Cape</option>
+                  <option value="GP">Gauteng</option>
+                  <option value="EC">Eastern Cape</option>
+                  <option value="FS">Free State</option>
+                  <option value="LP">Limpopo</option>
+                  <option value="MP">Mpumalanga</option>
+                  <option value="NC">Northern Cape</option>
+                  <option value="NW">North West</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Property Details -->
+          <div class="form-section">
+            <h3>Property Details</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editListingBedrooms">Bedrooms *</label>
+                <input type="number" id="editListingBedrooms" required min="1" placeholder="1">
+              </div>
+              <div class="form-group">
+                <label for="editListingBathrooms">Bathrooms *</label>
+                <input type="number" id="editListingBathrooms" required min="1" placeholder="1">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="editListingGuests">Maximum Guests *</label>
+              <input type="number" id="editListingGuests" required min="1" placeholder="1">
+            </div>
+            
+            <div class="form-group">
+              <label for="editListingDescription">Description *</label>
+              <textarea id="editListingDescription" required rows="4" placeholder="Describe your property, its features, and what makes it special for students..."></textarea>
+            </div>
+          </div>
+
+          <!-- Room Types & Pricing -->
+          <div class="form-section">
+            <h3>Room Types & Pricing</h3>
+            
+            <!-- Room Type Selection -->
+            <div class="form-group">
+              <label>Available Room Types *</label>
+              <div class="room-type-selection">
+                <label class="room-type-option">
+                  <input type="checkbox" name="editRoomTypes" value="single">
+                  <span class="room-type-icon">🛏️</span>
+                  <span class="room-type-label">Single Room</span>
+                </label>
+                <label class="room-type-option">
+                  <input type="checkbox" name="editRoomTypes" value="double">
+                  <span class="room-type-icon">🛏️</span>
+                  <span class="room-type-label">Double Room</span>
+                </label>
+              </div>
+              <small class="form-help">Select which room types you want to offer. You can offer one or both types.</small>
+            </div>
+            
+            <div id="editRoomTypesContainer">
+              <div class="room-type-config hidden" id="editSingleRoomConfig">
+                <h4>Single Room</h4>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="editSinglePrice">Monthly Price (R) *</label>
+                    <input type="number" id="editSinglePrice" required min="0" placeholder="6000">
+                  </div>
+                  <div class="form-group">
+                    <label for="editSingleCapacity">Guest Capacity *</label>
+                    <input type="number" id="editSingleCapacity" required min="1" placeholder="1">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="room-type-config hidden" id="editDoubleRoomConfig">
+                <h4>Double Room</h4>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="editDoublePrice">Monthly Price (R) *</label>
+                    <input type="number" id="editDoublePrice" required min="0" placeholder="8500">
+                  </div>
+                  <div class="form-group">
+                    <label for="editDoubleCapacity">Guest Capacity *</label>
+                    <input type="number" id="editDoubleCapacity" required min="1" placeholder="2">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gender Selection -->
+          <div class="form-section">
+            <h3>Accommodation Gender</h3>
+            <div class="gender-selection">
+              <label class="gender-option">
+                <input type="radio" name="editGender" value="male">
+                <span class="gender-icon">👨</span>
+                <span class="gender-label">Male</span>
+              </label>
+              <label class="gender-option">
+                <input type="radio" name="editGender" value="female">
+                <span class="gender-icon">👩</span>
+                <span class="gender-label">Female</span>
+              </label>
+              <label class="gender-option">
+                <input type="radio" name="editGender" value="mixed">
+                <span class="gender-icon">👥</span>
+                <span class="gender-label">Mixed</span>
+              </label>
+            </div>
+            <small class="form-help">Select the gender preference for this accommodation.</small>
+          </div>
+
+          <!-- Campus Information -->
+          <div class="form-section">
+            <h3>Campus Information</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editNearestUniversity">Nearest University *</label>
+                <select id="editNearestUniversity" required>
+                  <option value="">Select University</option>
+                  <option value="https://www.ukzn.ac.za/">University of KwaZulu-Natal (UKZN)</option>
+                  <option value="https://www.dut.ac.za/">Durban University of Technology (DUT)</option>
+                  <option value="https://www.mut.ac.za/">Mangosuthu University of Technology (MUT)</option>
+                  <option value="https://www.unisa.ac.za/">UNISA</option>
+                  <option value="https://www.ufh.ac.za/">University of Fort Hare</option>
+                  <option value="https://www.ru.ac.za/">Rhodes University</option>
+                  <option value="https://www.wits.ac.za/">University of the Witwatersrand</option>
+                  <option value="https://www.up.ac.za/">University of Pretoria</option>
+                  <option value="https://www.uj.ac.za/">University of Johannesburg</option>
+                  <option value="https://www.uwc.ac.za/">University of the Western Cape</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="editNearestCampus">Nearest Campus *</label>
+                <select id="editNearestCampus" required>
+                  <option value="">Select Campus</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editDistanceToCampus">Distance to Campus *</label>
+                <input type="number" id="editDistanceToCampus" required min="0" step="0.1" placeholder="2.5">
+              </div>
+              <div class="form-group">
+                <label for="editTransportMethod">Transport Method *</label>
+                <select id="editTransportMethod" required>
+                  <option value="">Select Transport</option>
+                  <option value="walking">Walking</option>
+                  <option value="public">Public Transport</option>
+                  <option value="private">Private Vehicle</option>
+                  <option value="university">University Shuttle</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amenities -->
+          <div class="form-section">
+            <h3>Amenities</h3>
+            <div class="amenities-grid">
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="editAmenities" value="WiFi">
+                <span>📶 WiFi</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="editAmenities" value="Parking">
+                <span>🚗 Parking</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="editAmenities" value="Kitchen">
+                <span>🍳 Kitchen</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="editAmenities" value="Laundry">
+                <span>🧺 Laundry</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="editAmenities" value="Security">
+                <span>🔒 Security</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="editAmenities" value="Study Room">
+                <span>📚 Study Room</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="editAmenities" value="Gym">
+                <span>💪 Gym</span>
+              </label>
+              <label class="amenity-checkbox">
+                <input type="checkbox" name="editAmenities" value="Pool">
+                <span>🏊 Pool</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Images -->
+          <div class="form-section">
+            <h3>Property Images</h3>
+            <div class="thumbnail-indicator">
+              <i class="fa fa-star"></i>
+              <span><strong>First image</strong> is currently used as the property thumbnail</span>
+            </div>
+            <div class="image-upload-section">
+              <div class="image-upload-grid" id="editImageUploadGrid">
+                <!-- Images will be dynamically loaded here -->
+              </div>
+              <input type="file" id="editImageUploadInput" multiple accept="image/*" style="display: none;">
+              <p class="upload-help">You can replace images by uploading new ones. The first image will remain the thumbnail.</p>
+            </div>
+          </div>
+
+          <button type="submit" class="listing-submit-btn">Update Listing</button>
+        </form>
       </div>
     </div>
 
@@ -1560,8 +1941,10 @@
         let html = '';
         
         uploadedImages.forEach((image, index) => {
+          const isThumbnail = index === 0;
           html += `
-            <div class="image-upload-slot filled">
+            <div class="image-upload-slot filled ${isThumbnail ? 'thumbnail' : ''}">
+              ${isThumbnail ? '<div class="thumbnail-badge">Thumbnail</div>' : ''}
               <img src="${image}" alt="Property image ${index + 1}">
               <button type="button" class="remove-image" onclick="removeImage(${index})">
                 <i class="fa fa-times"></i>
@@ -1836,6 +2219,7 @@
                 </div>
                 <div class="listing-actions">
                   <button class="dashboard-btn-outline" onclick="viewListing('${listing.id}')">View</button>
+                  <button class="dashboard-btn-primary" onclick="editListing('${listing.id}')">Edit</button>
                   <button class="dashboard-btn-danger" onclick="deleteListing('${listing.id}')">Delete</button>
                 </div>
               </div>
@@ -1979,6 +2363,436 @@
         }
       }
 
+      // Edit Listing Functions
+      let currentEditingListingId = null;
+      let editUploadedImages = [];
+
+      function editListing(listingId) {
+        const user = firebase.auth().currentUser;
+        if (!user) return;
+        
+        // Find the listing
+        const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
+        const listing = listings.find(l => l.id === listingId);
+        
+        if (!listing) {
+          showError('Listing not found');
+          return;
+        }
+        
+        currentEditingListingId = listingId;
+        editUploadedImages = [...listing.images];
+        
+        // Populate edit form with listing data
+        populateEditListingModal(listing);
+        
+        // Show modal
+        showEditListingModal();
+      }
+
+      function showEditListingModal() {
+        document.getElementById('editListingModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeEditListingModal() {
+        document.getElementById('editListingModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+        currentEditingListingId = null;
+        editUploadedImages = [];
+        resetEditListingForm();
+      }
+
+      function populateEditListingModal(listing) {
+        // Basic Information
+        document.getElementById('editListingTitle').value = listing.title || '';
+        document.getElementById('editListingAddress').value = listing.address || '';
+        document.getElementById('editListingCity').value = listing.city || '';
+        document.getElementById('editListingProvince').value = listing.province || '';
+        
+        // Property Details
+        document.getElementById('editListingBedrooms').value = listing.bedrooms || '';
+        document.getElementById('editListingBathrooms').value = listing.bathrooms || '';
+        document.getElementById('editListingGuests').value = listing.guests || '';
+        document.getElementById('editListingDescription').value = listing.description || '';
+        
+        // Room Types & Pricing
+        const roomTypeCheckboxes = document.querySelectorAll('input[name="editRoomTypes"]');
+        roomTypeCheckboxes.forEach(checkbox => {
+          checkbox.checked = listing.roomTypes && listing.roomTypes.includes(checkbox.value);
+        });
+        
+        // Show/hide room type configs
+        handleEditRoomTypeSelection();
+        
+        // Set room type prices and capacities
+        if (listing.singlePrice !== undefined) {
+          document.getElementById('editSinglePrice').value = listing.singlePrice;
+        }
+        if (listing.singleCapacity !== undefined) {
+          document.getElementById('editSingleCapacity').value = listing.singleCapacity;
+        }
+        if (listing.doublePrice !== undefined) {
+          document.getElementById('editDoublePrice').value = listing.doublePrice;
+        }
+        if (listing.doubleCapacity !== undefined) {
+          document.getElementById('editDoubleCapacity').value = listing.doubleCapacity;
+        }
+        
+        // Gender Selection
+        const genderRadio = document.querySelector(`input[name="editGender"][value="${listing.gender}"]`);
+        if (genderRadio) {
+          genderRadio.checked = true;
+        }
+        
+        // Campus Information
+        document.getElementById('editNearestUniversity').value = listing.nearestUniversity || '';
+        document.getElementById('editNearestCampus').value = listing.nearestCampus || '';
+        document.getElementById('editDistanceToCampus').value = listing.distanceToCampus || '';
+        document.getElementById('editTransportMethod').value = listing.transportMethod || '';
+        
+        // Amenities
+        const amenityCheckboxes = document.querySelectorAll('input[name="editAmenities"]');
+        amenityCheckboxes.forEach(checkbox => {
+          checkbox.checked = listing.amenities && listing.amenities.includes(checkbox.value);
+        });
+        
+        // Images
+        updateEditImageGrid();
+      }
+
+      function handleEditRoomTypeSelection() {
+        const singleCheckbox = document.querySelector('input[name="editRoomTypes"][value="single"]');
+        const doubleCheckbox = document.querySelector('input[name="editRoomTypes"][value="double"]');
+        const singleConfig = document.getElementById('editSingleRoomConfig');
+        const doubleConfig = document.getElementById('editDoubleRoomConfig');
+        
+        if (singleCheckbox && singleConfig) {
+          if (singleCheckbox.checked) {
+            singleConfig.classList.remove('hidden');
+          } else {
+            singleConfig.classList.add('hidden');
+          }
+        }
+        
+        if (doubleCheckbox && doubleConfig) {
+          if (doubleCheckbox.checked) {
+            doubleConfig.classList.remove('hidden');
+          } else {
+            doubleConfig.classList.add('hidden');
+          }
+        }
+      }
+
+      function updateEditImageGrid() {
+        const imageGrid = document.getElementById('editImageUploadGrid');
+        let html = '';
+        
+        editUploadedImages.forEach((image, index) => {
+          const isThumbnail = index === 0;
+          html += `
+            <div class="image-upload-slot filled ${isThumbnail ? 'thumbnail' : ''}">
+              ${isThumbnail ? '<div class="thumbnail-badge">Thumbnail</div>' : ''}
+              <img src="${image}" alt="Property image ${index + 1}">
+              <button type="button" class="remove-image" onclick="removeEditImage(${index})">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+          `;
+        });
+        
+        if (editUploadedImages.length < 6) {
+          html += `
+            <div class="image-upload-slot" onclick="triggerEditImageUpload()">
+              <div class="upload-placeholder">
+                <i class="fa fa-plus"></i>
+                <span>Add Image</span>
+              </div>
+            </div>
+          `;
+        }
+        
+        imageGrid.innerHTML = html;
+      }
+
+      function triggerEditImageUpload() {
+        document.getElementById('editImageUploadInput').click();
+      }
+
+      function handleEditImageUpload(event) {
+        const files = event.target.files;
+        
+        for (let file of files) {
+          if (editUploadedImages.length >= 6) {
+            alert('Maximum 6 images allowed');
+            break;
+          }
+          
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            editUploadedImages.push(e.target.result);
+            updateEditImageGrid();
+          };
+          reader.readAsDataURL(file);
+        }
+        
+        // Reset the input to allow selecting the same file again
+        event.target.value = '';
+      }
+
+      function removeEditImage(index) {
+        editUploadedImages.splice(index, 1);
+        updateEditImageGrid();
+      }
+
+      function handleEditListing(event) {
+        event.preventDefault();
+        
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          showEditListingError('User not authenticated');
+          return;
+        }
+        
+        const submitBtn = event.target.querySelector('.listing-submit-btn');
+        submitBtn.disabled = true;
+        
+        // Get form values
+        const title = document.getElementById('editListingTitle').value.trim();
+        const address = document.getElementById('editListingAddress').value.trim();
+        const city = document.getElementById('editListingCity').value.trim();
+        const province = document.getElementById('editListingProvince').value;
+        const bedrooms = document.getElementById('editListingBedrooms').value;
+        const bathrooms = document.getElementById('editListingBathrooms').value;
+        const guests = document.getElementById('editListingGuests').value;
+        const description = document.getElementById('editListingDescription').value.trim();
+        
+        // Validate required fields
+        if (!title || !address || !city || !province || !bedrooms || !bathrooms || !guests || !description) {
+          showEditListingError('Please fill in all required fields');
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        // Get selected room types
+        const selectedRoomTypes = [];
+        const roomTypeCheckboxes = document.querySelectorAll('input[name="editRoomTypes"]:checked');
+        roomTypeCheckboxes.forEach(checkbox => {
+          selectedRoomTypes.push(checkbox.value);
+        });
+        
+        if (selectedRoomTypes.length === 0) {
+          showEditListingError('Please select at least one room type');
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        // Get room type pricing
+        const roomTypeData = {};
+        if (selectedRoomTypes.includes('single')) {
+          const singlePrice = document.getElementById('editSinglePrice').value;
+          const singleCapacity = document.getElementById('editSingleCapacity').value;
+          if (!singlePrice || !singleCapacity) {
+            showEditListingError('Please fill in single room pricing details');
+            submitBtn.disabled = false;
+            return;
+          }
+          roomTypeData.singlePrice = parseFloat(singlePrice);
+          roomTypeData.singleCapacity = parseInt(singleCapacity);
+        }
+        
+        if (selectedRoomTypes.includes('double')) {
+          const doublePrice = document.getElementById('editDoublePrice').value;
+          const doubleCapacity = document.getElementById('editDoubleCapacity').value;
+          if (!doublePrice || !doubleCapacity) {
+            showEditListingError('Please fill in double room pricing details');
+            submitBtn.disabled = false;
+            return;
+          }
+          roomTypeData.doublePrice = parseFloat(doublePrice);
+          roomTypeData.doubleCapacity = parseInt(doubleCapacity);
+        }
+        
+        // Get gender selection
+        const selectedGender = document.querySelector('input[name="editGender"]:checked');
+        if (!selectedGender) {
+          showEditListingError('Please select accommodation gender preference');
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        // Get campus information
+        const nearestUniversity = document.getElementById('editNearestUniversity').value;
+        const nearestCampus = document.getElementById('editNearestCampus').value;
+        const distanceToCampus = document.getElementById('editDistanceToCampus').value;
+        const transportMethod = document.getElementById('editTransportMethod').value;
+        
+        if (!nearestUniversity || !nearestCampus || !distanceToCampus || !transportMethod) {
+          showEditListingError('Please fill in all campus information');
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        // Get selected amenities
+        const selectedAmenities = [];
+        const amenityCheckboxes = document.querySelectorAll('input[name="editAmenities"]:checked');
+        amenityCheckboxes.forEach(checkbox => {
+          selectedAmenities.push(checkbox.value);
+        });
+        
+        // Validate images
+        if (editUploadedImages.length !== 6) {
+          showEditListingError('Please ensure you have exactly 6 images for your property');
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        // Update listing in localStorage
+        const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
+        const listingIndex = listings.findIndex(l => l.id === currentEditingListingId);
+        
+        if (listingIndex === -1) {
+          showEditListingError('Listing not found');
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        // Update the listing
+        listings[listingIndex] = {
+          ...listings[listingIndex],
+          title,
+          address,
+          city,
+          province,
+          bedrooms: parseInt(bedrooms),
+          bathrooms: parseInt(bathrooms),
+          guests: parseInt(guests),
+          description,
+          roomTypes: selectedRoomTypes,
+          ...roomTypeData,
+          gender: selectedGender.value,
+          nearestUniversity,
+          nearestCampus,
+          distanceToCampus: parseFloat(distanceToCampus),
+          transportMethod,
+          amenities: selectedAmenities,
+          images: editUploadedImages,
+          updatedAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem(`host_listings_${user.uid}`, JSON.stringify(listings));
+        
+        // Show success message
+        showEditListingSuccess('Listing updated successfully!');
+        
+        // Update UI
+        setTimeout(() => {
+          loadHostListings();
+          closeEditListingModal();
+          submitBtn.disabled = false;
+        }, 2000);
+      }
+
+      function showEditListingError(message) {
+        const errorElement = document.getElementById('editListingError');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        setTimeout(() => {
+          errorElement.style.display = 'none';
+        }, 5000);
+      }
+
+      function showEditListingSuccess(message) {
+        const errorElement = document.getElementById('editListingError');
+        errorElement.textContent = message;
+        errorElement.style.background = '#d4edda';
+        errorElement.style.color = '#155724';
+        errorElement.style.borderColor = '#c3e6cb';
+        errorElement.style.display = 'block';
+        setTimeout(() => {
+          errorElement.style.display = 'none';
+          errorElement.style.background = '';
+          errorElement.style.color = '';
+          errorElement.style.borderColor = '';
+        }, 3000);
+      }
+
+      function resetEditListingForm() {
+        document.getElementById('editListingForm').reset();
+        editUploadedImages = [];
+        updateEditImageGrid();
+      }
+
+      function handleEditUniversitySelection() {
+        const universitySelect = document.getElementById('editNearestUniversity');
+        const campusSelect = document.getElementById('editNearestCampus');
+        const selectedUniversity = universitySelect.value;
+        
+        // Reset campus dropdown
+        campusSelect.innerHTML = '<option value="">Select Campus</option>';
+        
+        if (!selectedUniversity) {
+          return;
+        }
+        
+        // Show loading state
+        campusSelect.innerHTML = '<option value="">Loading campuses...</option>';
+        
+        // Fetch campuses for selected university
+        fetch(selectedUniversity)
+          .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+          })
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const campusItems = doc.querySelectorAll('.single-recent-blog-post');
+            const campuses = [];
+            
+            campusItems.forEach(item => {
+              const linkElement = item.querySelector('.details a');
+              const titleElement = item.querySelector('.details h4');
+              const title = linkElement ? linkElement.textContent.trim() : 
+                           (titleElement ? titleElement.textContent.trim() : '');
+              const link = linkElement ? linkElement.getAttribute('href') : '';
+              
+              if (title) {
+                campuses.push({ title, link });
+              }
+            });
+            
+            // Populate campus dropdown
+            campusSelect.innerHTML = '<option value="">Select Campus</option>';
+            campuses.forEach(campus => {
+              const option = document.createElement('option');
+              option.value = campus.link;
+              option.textContent = campus.title;
+              campusSelect.appendChild(option);
+            });
+            
+            // Set previously selected campus if exists
+            const currentListing = getCurrentEditingListing();
+            if (currentListing && currentListing.nearestCampus) {
+              campusSelect.value = currentListing.nearestCampus;
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching campuses:', error);
+            campusSelect.innerHTML = '<option value="">Error loading campuses</option>';
+          });
+      }
+
+      function getCurrentEditingListing() {
+        if (!currentEditingListingId) return null;
+        
+        const user = firebase.auth().currentUser;
+        if (!user) return null;
+        
+        const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
+        return listings.find(l => l.id === currentEditingListingId);
+      }
+
       // Initialize event listeners when DOM is loaded
       document.addEventListener('DOMContentLoaded', function() {
         // Set up form submission listener
@@ -2024,6 +2838,42 @@
             }
           });
         }
+        
+        // Set up edit listing modal close on backdrop click
+        const editListingModal = document.getElementById('editListingModal');
+        if (editListingModal) {
+          editListingModal.addEventListener('click', function(e) {
+            if (e.target === editListingModal) {
+              closeEditListingModal();
+            }
+          });
+        }
+        
+        // Set up edit form submission listener
+        const editListingForm = document.getElementById('editListingForm');
+        if (editListingForm) {
+          editListingForm.addEventListener('submit', handleEditListing);
+        }
+        
+        // Set up edit image upload listener
+        const editImageUploadInput = document.getElementById('editImageUploadInput');
+        if (editImageUploadInput) {
+          editImageUploadInput.addEventListener('change', handleEditImageUpload);
+        }
+        
+        // Set up edit university selection listener
+        const editUniversitySelect = document.getElementById('editNearestUniversity');
+        if (editUniversitySelect) {
+          editUniversitySelect.addEventListener('change', function() {
+            handleEditUniversitySelection();
+          });
+        }
+        
+        // Set up edit room type selection listeners
+        const editRoomTypeCheckboxes = document.querySelectorAll('input[name="editRoomTypes"]');
+        editRoomTypeCheckboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', handleEditRoomTypeSelection);
+        });
         
         // Load listings when user is authenticated
         firebase.auth().onAuthStateChanged((user) => {
