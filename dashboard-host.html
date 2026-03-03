@@ -1502,20 +1502,7 @@
       }
 
       // Create Listing Modal Functions
-      let editingListingId = null; // holds id when editing an existing listing
-
-      function showCreateListingModal(listing = null) {
-        // if a listing object is provided we are editing
-        if (listing) {
-          editingListingId = listing.id;
-          populateListingForm(listing);
-          document.querySelector('.listing-submit-btn').textContent = 'Update Listing';
-        } else {
-          editingListingId = null;
-          resetListingForm();
-          document.querySelector('.listing-submit-btn').textContent = 'Create Listing';
-        }
-
+      function showCreateListingModal() {
         document.getElementById('createListingModal').classList.add('show');
         document.body.style.overflow = 'hidden';
       }
@@ -1524,8 +1511,6 @@
         document.getElementById('createListingModal').classList.remove('show');
         document.body.style.overflow = 'auto';
         resetListingForm();
-        editingListingId = null;
-        document.querySelector('.listing-submit-btn').textContent = 'Create Listing';
       }
 
       function resetListingForm() {
@@ -1540,74 +1525,7 @@
         updateImageGrid();
       }
 
-      function populateListingForm(listing) {
-        // fill basic fields
-        document.getElementById('listingTitle').value = listing.title || '';
-        document.getElementById('listingAddress').value = listing.address || '';
-        document.getElementById('listingCity').value = listing.city || '';
-        document.getElementById('listingProvince').value = listing.province || '';
-        document.getElementById('listingBedrooms').value = listing.bedrooms || '';
-        document.getElementById('listingBathrooms').value = listing.bathrooms || '';
-        document.getElementById('listingGuests').value = listing.guests || '';
-        document.getElementById('listingDescription').value = listing.description || '';
-        document.querySelector(`input[name="gender"][value="${listing.gender}"]`).checked = true;
 
-        // host info
-        document.getElementById('hostName').value = listing.hostName || '';
-        document.getElementById('hostEmail').value = listing.hostEmail || '';
-        document.getElementById('hostCellphone').value = listing.hostCellphone || '';
-
-        // room types
-        document.querySelector('input[name="roomTypes"][value="single"]').checked = listing.roomTypes.includes('single');
-        document.querySelector('input[name="roomTypes"][value="double"]').checked = listing.roomTypes.includes('double');
-        handleRoomTypeSelection();
-        document.getElementById('singlePrice').value = listing.singlePrice || '';
-        document.getElementById('singleCapacity').value = listing.singleCapacity || '';
-        document.getElementById('doublePrice').value = listing.doublePrice || '';
-        document.getElementById('doubleCapacity').value = listing.doubleCapacity || '';
-
-        // campus
-        document.getElementById('nearestUniversity').value = listing.nearestUniversity || '';
-        document.getElementById('nearestCampus').value = listing.nearestCampus || '';
-        document.getElementById('distanceToCampus').value = listing.distanceToCampus || '';
-        document.getElementById('transportMethod').value = listing.transportMethod || '';
-
-        // amenities
-        document.querySelectorAll('input[name="amenities"]').forEach(cb => {
-          cb.checked = listing.amenities && listing.amenities.includes(cb.value);
-        });
-
-        // images
-        uploadedImages = listing.images ? [...listing.images] : [];
-        updateImageGrid();
-      }        const bothGenderRadio = document.querySelector('input[name="gender"][value="both"]');
-        if (bothGenderRadio) {
-          bothGenderRadio.checked = true;
-        }
-        
-        // Reset room type selection to default (both checked)
-        const singleRoomCheckbox = document.querySelector('input[name="roomTypes"][value="single"]');
-        const doubleRoomCheckbox = document.querySelector('input[name="roomTypes"][value="double"]');
-        if (singleRoomCheckbox && doubleRoomCheckbox) {
-          singleRoomCheckbox.checked = true;
-          doubleRoomCheckbox.checked = true;
-        }
-        
-        // Show both room type configs by default
-        handleRoomTypeSelection();
-        
-        // Reset image upload grid
-        const imageGrid = document.getElementById('imageUploadGrid');
-        imageGrid.innerHTML = `
-          <div class="image-upload-slot" onclick="triggerImageUpload(0)">
-            <div class="upload-placeholder">
-              <i class="fa fa-plus"></i>
-              <span>Add Image</span>
-            </div>
-          </div>
-        `;
-        uploadedImages = [];
-      }
 
       // Image Upload Functions
       let uploadedImages = [];
@@ -1820,36 +1738,23 @@
         
         // Simulate API call
         setTimeout(() => {
-          // Save to localStorage (in real app, this would be an API call)
           const user = firebase.auth().currentUser;
           if (user) {
             const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
-            if (editingListingId) {
-              // update existing
-              const idx = listings.findIndex(l => l.id === editingListingId);
-              if (idx !== -1) {
-                listings[idx] = {
-                  ...listings[idx],
-                  ...formData
-                };
-                localStorage.setItem(`host_listings_${user.uid}`, JSON.stringify(listings));
-                showSuccess('Listing updated successfully!');
-              }
-            } else {
-              const newListing = {
-                id: Date.now().toString(),
-                ...formData,
-                hostId: user.uid,
-                createdAt: new Date().toISOString(),
-                status: 'pending approval'
-              };
-              listings.push(newListing);
-              localStorage.setItem(`host_listings_${user.uid}`, JSON.stringify(listings));
-              showSuccess('Listing submitted successfully! It is now pending approval.');
-            }
-            // Update UI
-            loadHostListings();
-            closeCreateListingModal();
+            const newListing = {
+              id: Date.now().toString(),
+              ...formData,
+              hostId: user.uid,
+              createdAt: new Date().toISOString(),
+              status: 'pending approval'
+            };
+            listings.push(newListing);
+            localStorage.setItem(`host_listings_${user.uid}`, JSON.stringify(listings));
+            showSuccess('Listing submitted successfully! It is now pending approval.');
+          }
+          // Update UI
+          loadHostListings();
+          closeCreateListingModal();
           submitBtn.disabled = false;
         }, 2000);
       }
@@ -1930,7 +1835,6 @@
                   <span class="price-type">Double</span>
                 </div>
                 <div class="listing-actions">
-                  <button class="dashboard-btn-outline" onclick="editListing('${listing.id}')">Edit</button>
                   <button class="dashboard-btn-outline" onclick="viewListing('${listing.id}')">View</button>
                   <button class="dashboard-btn-danger" onclick="deleteListing('${listing.id}')">Delete</button>
                 </div>
@@ -1944,15 +1848,7 @@
         if (listingsContainerMobile) listingsContainerMobile.innerHTML = html;
       }
 
-      function editListing(listingId) {
-        const user = firebase.auth().currentUser;
-        if (!user) return;
-        const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
-        const listing = listings.find(l => l.id === listingId);
-        if (!listing) return;
-        // show modal pre-populated
-        showCreateListingModal(listing);
-      }
+
 
       function viewListing(listingId) {
         const user = firebase.auth().currentUser;
