@@ -980,7 +980,7 @@
       <div class="dashboard-card dashboard-listings-section-mobile hidden">
         <div class="dashboard-card-header">
           <h2>My Listings</h2>
-          <button class="dashboard-btn-primary" onclick="showCreateListingModal()">+ Create New Listing</button>
+          <button class="dashboard-btn-primary show-create-listing">+ Create New Listing</button>
         </div>
 
         <div class="dashboard-listings-container-mobile">
@@ -1012,7 +1012,7 @@
       <div class="dashboard-card dashboard-listings-section" style="grid-column: 1 / -1;">
         <div class="dashboard-card-header">
           <h2>My Listings</h2>
-          <button class="dashboard-btn-primary" onclick="showCreateListingModal()">+ Create New Listing</button>
+          <button class="dashboard-btn-primary show-create-listing">+ Create New Listing</button>
         </div>
 
         <div class="dashboard-listings-container">
@@ -1063,7 +1063,7 @@
       <div class="modal-container create-listing-modal">
         <div class="modal-header">
           <h2>Create New Listing</h2>
-          <button class="modal-close" onclick="closeCreateListingModal()">&times;</button>
+          <button type="button" class="modal-close" onclick="closeCreateListingModal()">&times;</button>
         </div>
         
         <form id="createListingForm" class="listing-form">
@@ -1186,25 +1186,22 @@
           <!-- Gender Selection -->
           <div class="form-section">
             <h3>Accommodation Gender</h3>
-            <div class="form-group">
-              <label>Accommodation Gender *</label>
-              <div class="gender-selection">
-                <label class="gender-option">
-                  <input type="radio" name="gender" value="male" required>
-                  <span class="gender-icon">👨</span>
-                  <span class="gender-label">Male Only</span>
-                </label>
-                <label class="gender-option">
-                  <input type="radio" name="gender" value="female" required>
-                  <span class="gender-icon">👩</span>
-                  <span class="gender-label">Female Only</span>
-                </label>
-                <label class="gender-option">
-                  <input type="radio" name="gender" value="both" required checked>
-                  <span class="gender-icon">👥</span>
-                  <span class="gender-label">All Genders</span>
-                </label>
-              </div>
+            <div class="gender-selection">
+              <label class="gender-option">
+                <input type="radio" name="gender" value="male" required>
+                <span class="gender-icon">👨</span>
+                <span class="gender-label">Male Only</span>
+              </label>
+              <label class="gender-option">
+                <input type="radio" name="gender" value="female" required>
+                <span class="gender-icon">👩</span>
+                <span class="gender-label">Female Only</span>
+              </label>
+              <label class="gender-option">
+                <input type="radio" name="gender" value="both" required checked>
+                <span class="gender-icon">👥</span>
+                <span class="gender-label">All Genders</span>
+              </label>
             </div>
           </div>
 
@@ -1384,7 +1381,7 @@
       <div class="modal-container create-listing-modal">
         <div class="modal-header">
           <h2 id="viewListingTitle">Listing Details</h2>
-          <button class="modal-close" onclick="closeViewListingModal()">&times;</button>
+          <button type="button" class="modal-close" onclick="closeViewListingModal()">&times;</button>
         </div>
         
         <div class="listing-form">
@@ -1524,7 +1521,7 @@
       <div class="modal-container create-listing-modal">
         <div class="modal-header">
           <h2>Edit Listing</h2>
-          <button class="modal-close" onclick="closeEditListingModal()">&times;</button>
+          <button type="button" class="modal-close" onclick="closeEditListingModal()">&times;</button>
         </div>
         
         <form id="editListingForm" class="listing-form">
@@ -2183,7 +2180,7 @@
               <div class="empty-icon">🏠</div>
               <h3>No Listings Yet</h3>
               <p>Create your first property listing to start hosting students.</p>
-              <button class="dashboard-btn-primary" onclick="showCreateListingModal()">Create Your First Listing</button>
+              <button class="dashboard-btn-primary create-first-listing-btn">Create Your First Listing</button>
             </div>
           `;
           
@@ -2194,18 +2191,23 @@
         
         let html = '<div class="listings-grid">';
         listings.forEach(listing => {
+          // escape user-provided strings to avoid accidental tag injection
+          const safeTitle = listing.title ? listing.title.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+          const safeAddress = listing.address ? listing.address.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+          const safeCity = listing.city ? listing.city.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+
           html += `
             <div class="listing-card">
               <div class="listing-image">
                 ${listing.images.length > 0 ? 
-                  `<img src="${listing.images[0]}" alt="${listing.title}">` :
+                  `<img src="${listing.images[0]}" alt="${safeTitle}">` :
                   `<div class="no-image-placeholder">📷</div>`
                 }
                 <div class="listing-status ${listing.status.replace(' ', '-')}">${listing.status}</div>
               </div>
               <div class="listing-details">
-                <h4>${listing.title}</h4>
-                <p class="listing-address"><i class="fa-solid fa-location-dot"></i> ${listing.address}, ${listing.city}</p>
+                <h4>${safeTitle}</h4>
+                <p class="listing-address"><i class="fa-solid fa-location-dot"></i> ${safeAddress}, ${safeCity}</p>
                 <div class="listing-meta">
                   <span><i class="fa-solid fa-bed"></i> ${listing.bedrooms} bed</span>
                   <span><i class="fa-solid fa-bath"></i> ${listing.bathrooms} bath</span>
@@ -2218,9 +2220,9 @@
                   <span class="price-type">Double</span>
                 </div>
                 <div class="listing-actions">
-                  <button class="dashboard-btn-outline" onclick="viewListing('${listing.id}')">View</button>
-                  <button class="dashboard-btn-primary" onclick="editListing('${listing.id}')">Edit</button>
-                  <button class="dashboard-btn-danger" onclick="deleteListing('${listing.id}')">Delete</button>
+                  <button class="dashboard-btn-outline view-btn" data-id="${listing.id}">View</button>
+                  <button class="dashboard-btn-primary edit-btn" data-id="${listing.id}">Edit</button>
+                  <button class="dashboard-btn-danger delete-btn" data-id="${listing.id}">Delete</button>
                 </div>
               </div>
             </div>
@@ -2235,17 +2237,48 @@
 
 
       function viewListing(listingId) {
+        console.log('viewListing called with ID:', listingId);
         const user = firebase.auth().currentUser;
         if (!user) return;
+        
+        // Check if modal exists, if not, try to wait for it
+        let modal = document.getElementById('viewListingModal');
+        if (!modal) {
+          console.error('View modal not found in DOM! Attempting to wait...');
+          setTimeout(() => {
+            modal = document.getElementById('viewListingModal');
+            if (!modal) {
+              console.error('View modal still not found after delay!');
+              showError('Unable to open view modal. Please refresh the page.');
+              return;
+            }
+            proceedWithView(listingId, user);
+          }, 100);
+          return;
+        }
+        
+        console.log('View modal found:', modal);
+        proceedWithView(listingId, user);
+      }
+      
+      function proceedWithView(listingId, user) {
+        // Ensure no stale modal overlay blocks subsequent clicks
+        const viewModal = document.getElementById('viewListingModal');
+        const editModal = document.getElementById('editListingModal');
+        if (viewModal) viewModal.classList.remove('show');
+        if (editModal) editModal.classList.remove('show');
+        document.body.style.overflow = 'auto';
         
         const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
         const listing = listings.find(l => l.id === listingId);
         
         if (!listing) {
+          console.error('Listing not found:', listingId);
           showError('Listing not found');
           return;
         }
         
+        console.log('Found listing:', listing.title);
         // Populate modal with listing data
         populateViewListingModal(listing);
         
@@ -2254,100 +2287,151 @@
       }
 
       function showViewListingModal() {
-        document.getElementById('viewListingModal').classList.add('show');
+        console.log('Opening view modal');
+        const modal = document.getElementById('viewListingModal');
+        modal.classList.add('show');
         document.body.style.overflow = 'hidden';
       }
 
       function closeViewListingModal() {
-        document.getElementById('viewListingModal').classList.remove('show');
+        console.log('Closing view modal');
+        const modal = document.getElementById('viewListingModal');
+        modal.classList.remove('show');
         document.body.style.overflow = 'auto';
+        
+        // Test if buttons are still clickable (uses delegated class now)
+        setTimeout(() => {
+          const testBtn = document.querySelector('button.view-btn');
+          if (testBtn) {
+            console.log('View button still clickable:', !testBtn.disabled);
+          }
+        }, 100);
       }
 
       function populateViewListingModal(listing) {
-        // Set title and status
-        document.getElementById('viewListingTitle').textContent = listing.title;
+        console.log('Populating view modal with listing:', listing.title);
         
-        const statusBadge = document.getElementById('viewListingStatus');
-        statusBadge.textContent = listing.status;
-        statusBadge.className = `listing-status-badge ${listing.status.replace(' ', '-')}`;
+        // Check if modal elements exist before trying to use them
+        const titleElement = document.getElementById('viewListingTitle');
+        const statusElement = document.getElementById('viewListingStatus');
+        
+        if (!titleElement || !statusElement) {
+          console.error('View modal elements not found!');
+          return;
+        }
+        
+        // Set title and status
+        titleElement.textContent = listing.title;
+        statusElement.textContent = listing.status;
+        statusElement.className = `listing-status-badge ${listing.status.replace(' ', '-')}`;
         
         // Basic Information
-        document.getElementById('viewTitle').textContent = listing.title;
-        document.getElementById('viewAddress').textContent = listing.address;
-        document.getElementById('viewCity').textContent = listing.city;
-        document.getElementById('viewProvince').textContent = listing.province;
+        const viewTitle = document.getElementById('viewTitle');
+        const viewAddress = document.getElementById('viewAddress');
+        const viewCity = document.getElementById('viewCity');
+        const viewProvince = document.getElementById('viewProvince');
+        
+        if (viewTitle) viewTitle.textContent = listing.title;
+        if (viewAddress) viewAddress.textContent = listing.address;
+        if (viewCity) viewCity.textContent = listing.city;
+        if (viewProvince) viewProvince.textContent = listing.province;
         
         // Property Details
-        document.getElementById('viewBedrooms').textContent = listing.bedrooms;
-        document.getElementById('viewBathrooms').textContent = listing.bathrooms;
-        document.getElementById('viewGuests').textContent = listing.guests;
-        document.getElementById('viewDescription').textContent = listing.description;
+        const viewBedrooms = document.getElementById('viewBedrooms');
+        const viewBathrooms = document.getElementById('viewBathrooms');
+        const viewGuests = document.getElementById('viewGuests');
+        const viewDescription = document.getElementById('viewDescription');
+        
+        if (viewBedrooms) viewBedrooms.textContent = listing.bedrooms;
+        if (viewBathrooms) viewBathrooms.textContent = listing.bathrooms;
+        if (viewGuests) viewGuests.textContent = listing.guests;
+        if (viewDescription) viewDescription.textContent = listing.description;
         
         // Gender display
-        const genderText = {
-          'male': 'Male Only',
-          'female': 'Female Only',
-          'both': 'All Genders'
-        };
-        document.getElementById('viewGender').textContent = genderText[listing.gender] || listing.gender;
+        const viewGender = document.getElementById('viewGender');
+        if (viewGender) {
+          const genderText = {
+            'male': 'Male Only',
+            'female': 'Female Only',
+            'both': 'All Genders'
+          };
+          viewGender.textContent = genderText[listing.gender] || listing.gender;
+        }
         
         // Room Types & Pricing
         const roomTypesContainer = document.getElementById('viewRoomTypes');
-        let roomTypesHtml = '';
-        
-        if (listing.roomTypes.includes('single')) {
-          roomTypesHtml += `
-            <div class="room-type-display">
-              <h4>Single Room</h4>
-              <div class="room-pricing">
-                <span class="room-price">R${listing.singlePrice}/month</span>
-                <span class="room-capacity">Capacity: ${listing.singleCapacity} guest${listing.singleCapacity > 1 ? 's' : ''}</span>
+        if (roomTypesContainer) {
+          let roomTypesHtml = '';
+          
+          if (listing.roomTypes.includes('single')) {
+            roomTypesHtml += `
+              <div class="room-type-display">
+                <h4>Single Room</h4>
+                <div class="room-pricing">
+                  <span class="room-price">R${listing.singlePrice}/month</span>
+                  <span class="room-capacity">Capacity: ${listing.singleCapacity} guest${listing.singleCapacity > 1 ? 's' : ''}</span>
+                </div>
               </div>
-            </div>
-          `;
-        }
-        
-        if (listing.roomTypes.includes('double')) {
-          roomTypesHtml += `
-            <div class="room-type-display">
-              <h4>Double Room</h4>
-              <div class="room-pricing">
-                <span class="room-price">R${listing.doublePrice}/month</span>
-                <span class="room-capacity">Capacity: ${listing.doubleCapacity} guest${listing.doubleCapacity > 1 ? 's' : ''}</span>
+            `;
+          }
+          
+          if (listing.roomTypes.includes('double')) {
+            roomTypesHtml += `
+              <div class="room-type-display">
+                <h4>Double Room</h4>
+                <div class="room-pricing">
+                  <span class="room-price">R${listing.doublePrice}/month</span>
+                  <span class="room-capacity">Capacity: ${listing.doubleCapacity} guest${listing.doubleCapacity > 1 ? 's' : ''}</span>
+                </div>
               </div>
-            </div>
-          `;
+            `;
+          }
+          
+          roomTypesContainer.innerHTML = roomTypesHtml;
         }
-        
-        roomTypesContainer.innerHTML = roomTypesHtml;
         
         // Host Information
-        document.getElementById('viewHostName').textContent = listing.hostName;
-        document.getElementById('viewHostEmail').textContent = listing.hostEmail;
-        document.getElementById('viewHostCellphone').textContent = listing.hostCellphone;
+        const viewHostName = document.getElementById('viewHostName');
+        const viewHostEmail = document.getElementById('viewHostEmail');
+        const viewHostCellphone = document.getElementById('viewHostCellphone');
+        
+        if (viewHostName) viewHostName.textContent = listing.hostName;
+        if (viewHostEmail) viewHostEmail.textContent = listing.hostEmail;
+        if (viewHostCellphone) viewHostCellphone.textContent = listing.hostCellphone;
         
         // University Information
-        const universityText = listing.nearestUniversity.replace('Campuses/', '').replace('.html', '').replace(/([A-Z])/g, ' $1').trim();
-        document.getElementById('viewUniversity').textContent = universityText;
-        document.getElementById('viewCampus').textContent = listing.nearestCampus;
-        document.getElementById('viewDistance').textContent = listing.distanceToCampus;
-        document.getElementById('viewTransport').textContent = listing.transportMethod;
+        const viewUniversity = document.getElementById('viewUniversity');
+        const viewCampus = document.getElementById('viewCampus');
+        const viewDistance = document.getElementById('viewDistance');
+        const viewTransport = document.getElementById('viewTransport');
+        
+        if (viewUniversity) {
+          const universityText = listing.nearestUniversity.replace('Campuses/', '').replace('.html', '').replace(/([A-Z])/g, ' $1').trim();
+          viewUniversity.textContent = universityText;
+        }
+        if (viewCampus) viewCampus.textContent = listing.nearestCampus;
+        if (viewDistance) viewDistance.textContent = listing.distanceToCampus;
+        if (viewTransport) viewTransport.textContent = listing.transportMethod;
         
         // Amenities
         const amenitiesContainer = document.getElementById('viewAmenities');
-        let amenitiesHtml = '';
-        listing.amenities.forEach(amenity => {
-          amenitiesHtml += `<div class="amenity-tag">${amenity}</div>`;
-        });
-        amenitiesContainer.innerHTML = amenitiesHtml;
+        if (amenitiesContainer) {
+          let amenitiesHtml = '';
+          listing.amenities.forEach(amenity => {
+            amenitiesHtml += `<div class="amenity-tag">${amenity}</div>`;
+          });
+          amenitiesContainer.innerHTML = amenitiesHtml;
+        }
         
         // Images
         const imagesContainer = document.getElementById('viewListingImages');
-        let imagesHtml = '';
-        listing.images.forEach((image, index) => {
-          imagesHtml += `<img src="${image}" alt="Property image ${index + 1}" class="property-image">`;
-        });
-        imagesContainer.innerHTML = imagesHtml;
+        if (imagesContainer) {
+          let imagesHtml = '';
+          listing.images.forEach((image, index) => {
+            imagesHtml += `<img src="${image}" alt="Property image ${index + 1}" class="property-image">`;
+          });
+          imagesContainer.innerHTML = imagesHtml;
+        }
       }
 
       function deleteListing(listingId) {
@@ -2368,18 +2452,50 @@
       let editUploadedImages = [];
 
       function editListing(listingId) {
+        console.log('editListing called with ID:', listingId);
         const user = firebase.auth().currentUser;
         if (!user) return;
+        
+        // Check if modal exists, if not, try to wait for it or recreate it
+        let modal = document.getElementById('editListingModal');
+        if (!modal) {
+          console.error('Edit modal not found in DOM! Attempting to wait...');
+          // Wait a moment and try again
+          setTimeout(() => {
+            modal = document.getElementById('editListingModal');
+            if (!modal) {
+              console.error('Edit modal still not found after delay!');
+              showError('Unable to open edit modal. Please refresh the page.');
+              return;
+            }
+            proceedWithEdit(listingId, user);
+          }, 100);
+          return;
+        }
+        
+        console.log('Edit modal found:', modal);
+        proceedWithEdit(listingId, user);
+      }
+      
+      function proceedWithEdit(listingId, user) {
+        // Ensure no stale modal overlay blocks subsequent clicks
+        const viewModal = document.getElementById('viewListingModal');
+        const editModal = document.getElementById('editListingModal');
+        if (viewModal) viewModal.classList.remove('show');
+        if (editModal) editModal.classList.remove('show');
+        document.body.style.overflow = 'auto';
         
         // Find the listing
         const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
         const listing = listings.find(l => l.id === listingId);
         
         if (!listing) {
+          console.error('Listing not found:', listingId);
           showError('Listing not found');
           return;
         }
         
+        console.log('Found listing for edit:', listing.title);
         currentEditingListingId = listingId;
         editUploadedImages = [...listing.images];
         
@@ -2391,30 +2507,63 @@
       }
 
       function showEditListingModal() {
-        document.getElementById('editListingModal').classList.add('show');
+        console.log('Opening edit modal');
+        const modal = document.getElementById('editListingModal');
+        if (!modal) {
+          console.error('Edit modal element not found!');
+          return;
+        }
+        modal.classList.add('show');
         document.body.style.overflow = 'hidden';
       }
 
       function closeEditListingModal() {
-        document.getElementById('editListingModal').classList.remove('show');
+        console.log('Closing edit modal');
+        const modal = document.getElementById('editListingModal');
+        modal.classList.remove('show');
         document.body.style.overflow = 'auto';
         currentEditingListingId = null;
         editUploadedImages = [];
         resetEditListingForm();
+        
+        // Test if buttons are still clickable (uses delegated class now)
+        setTimeout(() => {
+          const testBtn = document.querySelector('button.edit-btn');
+          if (testBtn) {
+            console.log('Edit button still clickable:', !testBtn.disabled);
+          }
+        }, 100);
       }
 
       function populateEditListingModal(listing) {
+        console.log('Populating edit modal with listing:', listing.title);
+        
         // Basic Information
-        document.getElementById('editListingTitle').value = listing.title || '';
-        document.getElementById('editListingAddress').value = listing.address || '';
-        document.getElementById('editListingCity').value = listing.city || '';
-        document.getElementById('editListingProvince').value = listing.province || '';
+        const editTitle = document.getElementById('editListingTitle');
+        const editAddress = document.getElementById('editListingAddress');
+        const editCity = document.getElementById('editListingCity');
+        const editProvince = document.getElementById('editListingProvince');
+        
+        if (!editTitle || !editAddress || !editCity || !editProvince) {
+          console.error('Edit modal basic elements not found!');
+          return;
+        }
+        
+        editTitle.value = listing.title || '';
+        editAddress.value = listing.address || '';
+        editCity.value = listing.city || '';
+        editProvince.value = listing.province || '';
         
         // Property Details
-        document.getElementById('editListingBedrooms').value = listing.bedrooms || '';
-        document.getElementById('editListingBathrooms').value = listing.bathrooms || '';
-        document.getElementById('editListingGuests').value = listing.guests || '';
-        document.getElementById('editListingDescription').value = listing.description || '';
+        const editBedrooms = document.getElementById('editListingBedrooms');
+        const editBathrooms = document.getElementById('editListingBathrooms');
+        const editGuests = document.getElementById('editListingGuests');
+        const editDescription = document.getElementById('editListingDescription');
+        
+        if (editBedrooms) editBedrooms.value = listing.bedrooms || '';
+        if (editBathrooms) editBathrooms.value = listing.bathrooms || '';
+        if (editGuests) editGuests.value = listing.guests || '';
+        if (editDescription) editDescription.value = listing.description || '';
         
         // Room Types & Pricing
         const roomTypeCheckboxes = document.querySelectorAll('input[name="editRoomTypes"]');
@@ -2426,17 +2575,22 @@
         handleEditRoomTypeSelection();
         
         // Set room type prices and capacities
-        if (listing.singlePrice !== undefined) {
-          document.getElementById('editSinglePrice').value = listing.singlePrice;
+        const editSinglePrice = document.getElementById('editSinglePrice');
+        const editSingleCapacity = document.getElementById('editSingleCapacity');
+        const editDoublePrice = document.getElementById('editDoublePrice');
+        const editDoubleCapacity = document.getElementById('editDoubleCapacity');
+        
+        if (listing.singlePrice !== undefined && editSinglePrice) {
+          editSinglePrice.value = listing.singlePrice;
         }
-        if (listing.singleCapacity !== undefined) {
-          document.getElementById('editSingleCapacity').value = listing.singleCapacity;
+        if (listing.singleCapacity !== undefined && editSingleCapacity) {
+          editSingleCapacity.value = listing.singleCapacity;
         }
-        if (listing.doublePrice !== undefined) {
-          document.getElementById('editDoublePrice').value = listing.doublePrice;
+        if (listing.doublePrice !== undefined && editDoublePrice) {
+          editDoublePrice.value = listing.doublePrice;
         }
-        if (listing.doubleCapacity !== undefined) {
-          document.getElementById('editDoubleCapacity').value = listing.doubleCapacity;
+        if (listing.doubleCapacity !== undefined && editDoubleCapacity) {
+          editDoubleCapacity.value = listing.doubleCapacity;
         }
         
         // Gender Selection
@@ -2446,10 +2600,15 @@
         }
         
         // Campus Information
-        document.getElementById('editNearestUniversity').value = listing.nearestUniversity || '';
-        document.getElementById('editNearestCampus').value = listing.nearestCampus || '';
-        document.getElementById('editDistanceToCampus').value = listing.distanceToCampus || '';
-        document.getElementById('editTransportMethod').value = listing.transportMethod || '';
+        const editNearestUniversity = document.getElementById('editNearestUniversity');
+        const editNearestCampus = document.getElementById('editNearestCampus');
+        const editDistanceToCampus = document.getElementById('editDistanceToCampus');
+        const editTransportMethod = document.getElementById('editTransportMethod');
+        
+        if (editNearestUniversity) editNearestUniversity.value = listing.nearestUniversity || '';
+        if (editNearestCampus) editNearestCampus.value = listing.nearestCampus || '';
+        if (editDistanceToCampus) editDistanceToCampus.value = listing.distanceToCampus || '';
+        if (editTransportMethod) editTransportMethod.value = listing.transportMethod || '';
         
         // Amenities
         const amenityCheckboxes = document.querySelectorAll('input[name="editAmenities"]');
@@ -2795,6 +2954,88 @@
 
       // Initialize event listeners when DOM is loaded
       document.addEventListener('DOMContentLoaded', function() {
+        // make sure the three modals are placed at body level so container rewrites cannot remove them
+        const viewModalInit = document.getElementById('viewListingModal');
+        const editModalInit = document.getElementById('editListingModal');
+        const createModalInit = document.getElementById('createListingModal');
+        [viewModalInit, editModalInit, createModalInit].forEach(m => {
+          if (m && m.parentNode !== document.body) {
+            document.body.appendChild(m);
+          }
+        });
+
+        // keep copies of the original markup so we can rebuild if something accidentally removes them
+        const viewModalTemplate = viewModalInit ? viewModalInit.outerHTML : null;
+        const editModalTemplate = editModalInit ? editModalInit.outerHTML : null;
+
+        // helper to ensure modal exists
+        function ensureModal(id, template) {
+          let el = document.getElementById(id);
+          if (!el && template) {
+            document.body.insertAdjacentHTML('beforeend', template);
+            el = document.getElementById(id);
+          }
+          return el;
+        }
+
+        // delegation for listing action buttons (works even when container is re-rendered)
+        document.addEventListener('click', function(e) {
+          const target = e.target;
+          if (target.matches('.view-btn')) {
+            const id = target.dataset.id;
+            if (id) viewListing(id);
+          } else if (target.matches('.edit-btn')) {
+            const id = target.dataset.id;
+            if (id) editListing(id);
+          } else if (target.matches('.delete-btn')) {
+            const id = target.dataset.id;
+            if (id) deleteListing(id);
+          } else if (target.matches('.create-first-listing-btn') || target.matches('.dashboard-btn-primary.show-create-listing')) {
+            // buttons that open the create modal both in empty state and header
+            showCreateListingModal();
+          }
+        });
+
+        // monkey‑patch viewListing/editListing to auto‑restore if modal disappears
+        const originalView = window.viewListing;
+        window.viewListing = function(listingId) {
+          ensureModal('viewListingModal', viewModalTemplate);
+          return originalView(listingId);
+        };
+        const originalEdit = window.editListing;
+        window.editListing = function(listingId) {
+          ensureModal('editListingModal', editModalTemplate);
+          return originalEdit(listingId);
+        };
+
+        console.log('DOM loaded - checking modal elements');
+        
+        // Verify all modal elements exist
+        const viewModal = document.getElementById('viewListingModal');
+        const editModal = document.getElementById('editListingModal');
+        const createModal = document.getElementById('createListingModal');
+        
+        console.log('View modal found:', !!viewModal);
+        console.log('Edit modal found:', !!editModal);
+        console.log('Create modal found:', !!createModal);
+        
+        if (!viewModal) console.error('View modal missing from DOM!');
+        if (!editModal) console.error('Edit modal missing from DOM!');
+        if (!createModal) console.error('Create modal missing from DOM!');
+        
+        // Set up periodic check to ensure modals remain available
+        setInterval(() => {
+          const currentViewModal = document.getElementById('viewListingModal');
+          const currentEditModal = document.getElementById('editListingModal');
+          
+          if (!currentViewModal) {
+            console.warn('View modal disappeared from DOM!');
+          }
+          if (!currentEditModal) {
+            console.warn('Edit modal disappeared from DOM!');
+          }
+        }, 5000); // Check every 5 seconds
+        
         // Set up form submission listener
         const createListingForm = document.getElementById('createListingForm');
         if (createListingForm) {
