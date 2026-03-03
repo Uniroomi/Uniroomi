@@ -659,6 +659,7 @@ header .header_area .navbar .menu_nav .nav-item .nav-link.theme_btn_two:not(.log
   border: 2px solid #2BA2D8;
 }
 
+
 .navbar .menu_nav .nav-item .nav-link.theme_btn_two:hover::before {
   left: 100%;
 }
@@ -671,6 +672,13 @@ header .header_area .navbar .menu_nav .nav-item .nav-link.theme_btn_two:not(.log
   background: #ffffff;
   border: 2px solid #2BA2D8;
   color: #2BA2D8;
+}
+
+/* Position Become a Host button slightly lower than other links */
+.navbar .menu_nav .nav-item .nav-link.theme_btn_two,
+.navbar .menu_nav .nav-item .nav-link.theme_btn_two:hover,
+.navbar .menu_nav .nav-item .nav-link.theme_btn_two:active {
+  transform: translateY(19px) !important;
 }
 
 /* Responsive navbar buttons */
