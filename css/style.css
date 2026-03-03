@@ -725,6 +725,20 @@ header .header_area .navbar .menu_nav .nav-item .nav-link.theme_btn_two:not(.log
   display: none !important;
 }
 
+/* show only appropriate listing section depending on screen size */
+@media (min-width: 768px) {
+  /* desktop and larger: hide mobile-specific block */
+  .dashboard-listings-section-mobile {
+    display: none !important;
+  }
+}
+@media (max-width: 767px) {
+  /* mobile: hide desktop block so it's not duplicated */
+  .dashboard-listings-section {
+    display: none !important;
+  }
+}
+
 @media (max-width: 767px) {
   .navbar .menu_nav .nav-item .nav-link.theme_btn,
   .navbar .menu_nav .nav-item .nav-link.theme_btn_two {
