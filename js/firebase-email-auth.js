@@ -102,6 +102,22 @@ class FirebaseEmailAuth {
       this.showRegisterModal('host'); // Show register modal with host role pre-selected
     });
 
+    // password visibility toggle
+    $(document).on('click', '.password-toggle', function(e) {
+      e.preventDefault();
+      const targetId = $(this).attr('data-target');
+      const $input = $('#' + targetId);
+      const type = $input.attr('type');
+      $input.attr('type', type === 'password' ? 'text' : 'password');
+      // swap eye / eye-slash icon
+      const $icon = $(this).find('i');
+      if ($icon.hasClass('fa-eye')) {
+        $icon.removeClass('fa-eye').addClass('fa-eye-slash');
+      } else {
+        $icon.removeClass('fa-eye-slash').addClass('fa-eye');
+      }
+    });
+
     // Resend verification email
     $(document).on('click', '.resend-verification', (e) => {
       e.preventDefault();
@@ -254,8 +270,10 @@ class FirebaseEmailAuth {
       return;
     }
 
-    if (formData.password.length < 8) {
-      this.showError($errorDiv, 'Password must be at least 8 characters long');
+    // password rule: at least 8 characters and at least one uppercase letter
+    const strongPwdRegex = /^(?=.*[A-Z]).{8,}$/;
+    if (!strongPwdRegex.test(formData.password)) {
+      this.showError($errorDiv, 'Password must be at least 8 characters long and contain at least one uppercase letter');
       return;
     }
 
@@ -863,9 +881,12 @@ class FirebaseEmailAuth {
               <input type="email" id="loginEmail" required placeholder="Enter your email" ${emailValue}>
             </div>
             
-            <div class="form-group">
+            <div class="form-group password-group">
               <label for="loginPassword">Password</label>
-              <input type="password" id="loginPassword" required placeholder="Enter your password">
+              <div class="password-field-wrapper">
+                <input type="password" id="loginPassword" required placeholder="Enter your password">
+                <span class="password-toggle" data-target="loginPassword" title="Show/Hide"><i class="fa fa-eye"></i></span>
+              </div>
             </div>
             
             <button type="submit" class="auth-submit-btn">Login</button>
@@ -930,14 +951,20 @@ class FirebaseEmailAuth {
               <input type="email" id="registerEmail" required placeholder="Enter your email">
             </div>
             
-            <div class="form-group">
+            <div class="form-group password-group">
               <label for="registerPassword">Password</label>
-              <input type="password" id="registerPassword" required placeholder="Create a password (min. 8 characters)">
+              <div class="password-field-wrapper">
+                <input type="password" id="registerPassword" required placeholder="Create a password (min. 8 chars, 1 uppercase)">
+                <span class="password-toggle" data-target="registerPassword" title="Show/Hide"><i class="fa fa-eye"></i></span>
+              </div>
             </div>
             
-            <div class="form-group">
+            <div class="form-group password-group">
               <label for="registerConfirmPassword">Confirm Password</label>
-              <input type="password" id="registerConfirmPassword" required placeholder="Confirm your password">
+              <div class="password-field-wrapper">
+                <input type="password" id="registerConfirmPassword" required placeholder="Confirm your password">
+                <span class="password-toggle" data-target="registerConfirmPassword" title="Show/Hide"><i class="fa fa-eye"></i></span>
+              </div>
             </div>
             
             ${isHostRegistration ? `

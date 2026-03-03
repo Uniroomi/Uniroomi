@@ -681,6 +681,28 @@ header .header_area .navbar .menu_nav .nav-item .nav-link.theme_btn_two:not(.log
   transform: translateY(19px) !important;
 }
 
+/* password field toggle eye icon */
+.password-field-wrapper { position: relative; }
+.password-field-wrapper .password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  color: #777;
+}
+.password-field-wrapper .password-toggle.visible i { color: #2BA2D8; }
+.password-field-wrapper .password-toggle i { pointer-events: none; }
+
+/* hide browser native password reveal icon so only custom toggle shows */
+.password-group input[type="password"]::-ms-reveal,
+.password-group input[type="password"]::-ms-clear,
+.password-group input[type="password"]::-webkit-textfield-decoration-container,
+.password-group input[type="password"]::-webkit-password-reveal-button {
+  display: none !important;
+}
+
 /* Responsive navbar buttons */
 @media (max-width: 991px) {
   .navbar .menu_nav .nav-item .nav-link.theme_btn,
