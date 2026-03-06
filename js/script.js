@@ -382,23 +382,7 @@ function setupMobileMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Auto-refresh user list every 5 seconds to show new registrations
-    setInterval(function() {
-        renderUsers();
-    }, 5000);
-    
-    // Auto-refresh properties every 5 seconds to show new listings
-    setInterval(function() {
-        renderProperties();
-    }, 5000);
-    
-    // Also refresh when page becomes visible (user switches back to this tab)
-    document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) {
-            renderUsers();
-            renderProperties();
-        }
-    });
+    // DOM is ready; auth state monitoring happens in the main auth.onAuthStateChanged block below
 });
 
 /* Admin Authentication */
@@ -600,70 +584,3 @@ error.innerText = "Invalid username or password";
 }
 
 });
-
-function approveProperty(i){
-  
-  const property = properties[i];
-  
-  if (property && property.storageKey && property.id) {
-    if (confirm(`Are you sure you want to approve "${property.name}"?`)) {
-      try {
-        // Get the host's listings from localStorage
-        const listings = JSON.parse(localStorage.getItem(property.storageKey) || '[]');
-        
-        // Update the specific listing
-        const updatedListings = listings.map(listing => {
-          if (listing.id === property.id) {
-            listing.approved = true;
-          }
-          return listing;
-        });
-        
-        // Save back to localStorage
-        localStorage.setItem(property.storageKey, JSON.stringify(updatedListings));
-        
-        alert(`Property "${property.name}" has been approved!`);
-        
-        // Refresh the properties list
-        renderProperties();
-      } catch (error) {
-        console.error('Error approving property:', error);
-        alert('Error approving property. Please try again.');
-      }
-    }
-  } else {
-    alert('Invalid property data.');
-  }
-
-}
-
-function declineProperty(i){
-  
-  const property = properties[i];
-  
-  if (property && property.storageKey && property.id) {
-    if (confirm(`Are you sure you want to decline "${property.name}"? This will remove the listing.`)) {
-      try {
-        // Get the host's listings from localStorage
-        const listings = JSON.parse(localStorage.getItem(property.storageKey) || '[]');
-        
-        // Remove the specific listing
-        const filteredListings = listings.filter(listing => listing.id !== property.id);
-        
-        // Save back to localStorage
-        localStorage.setItem(property.storageKey, JSON.stringify(filteredListings));
-        
-        alert(`Property "${property.name}" has been declined and removed.`);
-        
-        // Refresh the properties list
-        renderProperties();
-      } catch (error) {
-        console.error('Error declining property:', error);
-        alert('Error declining property. Please try again.');
-      }
-    }
-  } else {
-    alert('Invalid property data.');
-  }
-
-}
