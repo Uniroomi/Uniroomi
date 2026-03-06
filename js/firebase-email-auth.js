@@ -425,24 +425,44 @@ class FirebaseEmailAuth {
     }
   }
 
-  logout() {
-    this.auth.signOut().then(() => {
-      this.showSuccess('You have been logged out successfully');
-      // Redirect to index.html after logout - use correct relative path
-      const currentPath = window.location.pathname;
-      if (currentPath.includes('Campuses/')) {
-        // We're in a subdirectory, go up one level
-        window.location.href = '../index.html';
-      } else if (currentPath.includes('accommodations/')) {
-        // We're in accommodations subdirectory, go up two levels
-        window.location.href = '../../index.html';
-      } else {
-        // We're already in root directory
-        window.location.href = 'index.html';
-      }
-    }).catch((error) => {
+  async logout() {
+    // Update UI immediately for logged-out state so user sees change without reload
+    try {
+      this.updateUIForLoggedOutUser();
+    } catch (err) {
+      console.warn('Could not update UI for logged out user:', err);
+    }
+
+    // Try sign out but don't block UI; use a timeout to avoid hanging
+    try {
+      await Promise.race([
+        this.auth.signOut(),
+        new Promise((resolve) => setTimeout(resolve, 1500))
+      ]);
+      this.showSuccess(null, 'You have been logged out successfully');
+    } catch (error) {
       console.error('Logout error:', error);
-    });
+    }
+
+    // Redirect to index - determine correct relative path
+    const currentPath = window.location.pathname;
+    let target = 'index.html';
+    if (currentPath.includes('Campuses/')) {
+      target = '../index.html';
+    } else if (currentPath.includes('accommodations/')) {
+      target = '../../index.html';
+    }
+
+    try {
+      window.location.replace(target);
+    } catch (err) {
+      window.location.href = target;
+    }
+
+    // As a last resort ensure the page reloads to show logged-out UI
+    setTimeout(() => {
+      try { window.location.replace(target); } catch { window.location.href = target; }
+    }, 500);
   }
 
   updateUIForAuthenticatedUser() {
