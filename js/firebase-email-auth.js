@@ -16,6 +16,33 @@ class FirebaseEmailAuth {
     this.auth = firebase.auth();
   }
 
+  // Ensure a minimal localStorage user record exists for the authenticated user.
+  // This is necessary because this project uses localStorage as the primary
+  // store for user roles and metadata; localStorage is browser-scoped, so
+  // signing-in from a different browser will not have that record.
+  ensureLocalUserData(user) {
+    try {
+      const uid = user.uid;
+      const email = user.email || '';
+      const displayName = user.displayName || (email ? email.split('@')[0] : 'User');
+      const now = new Date().toISOString();
+      const fallback = {
+        uid,
+        email,
+        displayName,
+        role: 'guest',
+        createdAt: now,
+        // don't set suspended by default
+        suspended: false
+      };
+      localStorage.setItem(`uniroomi_user_${uid}`, JSON.stringify(fallback));
+      return fallback;
+    } catch (err) {
+      console.error('Error creating fallback local user data:', err);
+      return null;
+    }
+  }
+
   init() {
     // Check for existing session
     this.checkExistingSession();
@@ -24,17 +51,15 @@ class FirebaseEmailAuth {
     // Listen for auth state changes
     this.auth.onAuthStateChanged(async (user) => {
       if (user) {
-        // Check if user data exists (not deleted)
-        const userData = JSON.parse(localStorage.getItem(`uniroomi_user_${user.uid}`));
+        // Ensure there's a local user record. If missing (other browser), create a minimal one.
+        let userData = JSON.parse(localStorage.getItem(`uniroomi_user_${user.uid}`));
         if (!userData) {
-          // User data not found - user was deleted, sign them out immediately
-          await this.auth.signOut();
-          this.showError(null, 'Your account has been deleted. Please contact support if this is an error.');
-          return;
+          // Create a fallback local user record so the user can use the app from this browser.
+          userData = this.ensureLocalUserData(user);
         }
-        
+
         // Check if user is suspended
-        if (userData.suspended) {
+        if (userData && userData.suspended) {
           // User is suspended, sign them out immediately
           await this.auth.signOut();
           this.showError(null, 'Your account has been suspended. Please contact support.');
@@ -193,14 +218,12 @@ class FirebaseEmailAuth {
       // Sign in user
       const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
       
-      // Check if user data exists (not deleted)
-      const userData = JSON.parse(localStorage.getItem(`uniroomi_user_${userCredential.user.uid}`));
+      // Ensure local user data exists. If it was created in another browser, create a minimal record here.
+      let userData = JSON.parse(localStorage.getItem(`uniroomi_user_${userCredential.user.uid}`));
       if (!userData) {
-        await this.auth.signOut(); // Sign out the user
-        this.showError($errorDiv, 'Your account has been deleted. Please contact support if this is an error.');
-        return;
+        userData = this.ensureLocalUserData(userCredential.user);
       }
-      
+
       // Check if user is suspended
       if (userData.suspended) {
         await this.auth.signOut(); // Sign out the user
