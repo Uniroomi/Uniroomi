@@ -22,8 +22,25 @@ class FirebaseEmailAuth {
     // Bind events
     this.bindEvents();
     // Listen for auth state changes
-    this.auth.onAuthStateChanged((user) => {
+    this.auth.onAuthStateChanged(async (user) => {
       if (user) {
+        // Check if user data exists (not deleted)
+        const userData = JSON.parse(localStorage.getItem(`uniroomi_user_${user.uid}`));
+        if (!userData) {
+          // User data not found - user was deleted, sign them out immediately
+          await this.auth.signOut();
+          this.showError(null, 'Your account has been deleted. Please contact support if this is an error.');
+          return;
+        }
+        
+        // Check if user is suspended
+        if (userData.suspended) {
+          // User is suspended, sign them out immediately
+          await this.auth.signOut();
+          this.showError(null, 'Your account has been suspended. Please contact support.');
+          return;
+        }
+        
         this.currentUser = {
           uid: user.uid,
           email: user.email,
@@ -157,52 +174,67 @@ class FirebaseEmailAuth {
     const password = $('#loginPassword').val();
     const $submitBtn = $('#loginForm button[type="submit"]');
     const $errorDiv = $('#loginError');
+    const $successDiv = $('#loginSuccess');
 
-    // Reset error
+    // Reset messages
     $errorDiv.hide();
+    $successDiv.hide();
 
     // Validation
     if (!email || !password) {
-      this.showError($errorDiv, 'Please enter both email and password');
+      this.showError($errorDiv, 'Please fill in all required fields');
       return;
     }
 
-    // Show loading
     const originalText = $submitBtn.text();
     $submitBtn.prop('disabled', true).text('Logging in...');
 
     try {
+      // Sign in user
       const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
       
-      if (!userCredential.user.emailVerified) {
-        this.showError($errorDiv, 'Please verify your email before logging in. Check your inbox for the verification link.');
-        await this.auth.signOut();
+      // Check if user data exists (not deleted)
+      const userData = JSON.parse(localStorage.getItem(`uniroomi_user_${userCredential.user.uid}`));
+      if (!userData) {
+        await this.auth.signOut(); // Sign out the user
+        this.showError($errorDiv, 'Your account has been deleted. Please contact support if this is an error.');
+        return;
+      }
+      
+      // Check if user is suspended
+      if (userData.suspended) {
+        await this.auth.signOut(); // Sign out the user
+        this.showError($errorDiv, 'Your account has been suspended. Please contact support.');
         return;
       }
 
-      // Close modal and show success
+      // Update user profile with name if needed
+      if (!userCredential.user.displayName && userData) {
+        await userCredential.user.updateProfile({
+          displayName: userData.displayName || userData.email.split('@')[0]
+        });
+      }
+
       this.closeAllModals();
-      this.showSuccess('Login successful!');
+      this.showSuccess($successDiv, 'Login successful!');
+      
+      // Redirect to appropriate dashboard based on user role
+      setTimeout(() => {
+        this.redirectToDashboard();
+      }, 1000);
 
     } catch (error) {
+      console.error('Login error:', error);
       let errorMessage = 'Login failed. Please try again.';
       
-      switch (error.code) {
-        case 'auth/user-not-found':
-          errorMessage = 'No account found with this email address.';
-          break;
-        case 'auth/wrong-password':
-          errorMessage = 'Incorrect password.';
-          break;
-        case 'auth/user-disabled':
-          errorMessage = 'This account has been disabled.';
-          break;
-        case 'auth/too-many-requests':
-          errorMessage = 'Too many failed attempts. Please try again later.';
-          break;
-        case 'auth/email-not-verified':
-          errorMessage = 'Please verify your email before logging in.';
-          break;
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email address.';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password. Please try again.';
+      } else if (error.code === 'auth/user-disabled') {
+        errorMessage = 'This account has been disabled.';
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = 'Too many failed login attempts. Please try again later.';
       }
       
       this.showError($errorDiv, errorMessage);
@@ -690,11 +722,38 @@ class FirebaseEmailAuth {
     if ($element) {
       $element.text(message).show();
     } else {
-      alert(message);
+      // Show error in a temporary alert if no element provided
+      const errorAlert = $(`
+        <div class="alert alert-danger" style="position: fixed; top: 20px; right: 20px; z-index: 9999; background: #dc3545; color: white; padding: 15px; border-radius: 5px; max-width: 300px;">
+          ${message}
+        </div>
+      `);
+      $('body').append(errorAlert);
+      setTimeout(() => {
+        errorAlert.fadeOut(500, function() {
+          $(this).remove();
+        });
+      }, 5000);
     }
   }
 
-  showSuccess(message) {
+  showSuccess($element, message) {
+    if ($element) {
+      $element.html(message).show();
+    } else {
+      // Show success in a temporary alert if no element provided
+      const successAlert = $(`
+        <div class="alert alert-success" style="position: fixed; top: 20px; right: 20px; z-index: 9999; background: #28a745; color: white; padding: 15px; border-radius: 5px; max-width: 300px;">
+          ${message}
+        </div>
+      `);
+      $('body').append(successAlert);
+      setTimeout(() => {
+        successAlert.fadeOut(500, function() {
+          $(this).remove();
+        });
+      }, 3000);
+    }
     // Create success notification
     const notification = `
       <div class="success-notification">
