@@ -398,179 +398,79 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase only if not already initialized
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-const auth = firebase.auth();
-
-// Check admin authentication on page load
-auth.onAuthStateChanged(async (user) => {
-    console.log("Auth state changed:", user ? "User logged in" : "No user");
     
-    if (!user) {
-        console.log("No user signed in, redirecting to login");
-        // No user signed in, redirect to login
-        window.location.href = "admin.html";
-        return;
-    }
-    
-    console.log("User email:", user.email);
-    console.log("User UID:", user.uid);
-    
-    // Check if user has admin session. If session is missing, wait briefly
-    // to allow other tabs/pages (where login just completed) to write it.
-    function waitForAdminSession(timeout = 2000) {
-      const start = Date.now();
-      return new Promise((resolve) => {
-        const existing = JSON.parse(localStorage.getItem("adminSession") || "null");
-        if (existing && existing.uid) return resolve(existing);
-
-        function storageHandler(e) {
-          if (e.key === 'adminSession' && e.newValue) {
-            try { resolve(JSON.parse(e.newValue)); } catch { resolve(null); }
-          }
+    // Check admin authentication on page load (no Firebase auth check)
+    // We rely only on localStorage session since Firebase is signed out immediately after login
+    function checkAdminAuthentication() {
+        console.log("Checking admin authentication...");
+        
+        // Check if user has admin session in localStorage
+        const adminSession = JSON.parse(localStorage.getItem("adminSession") || "{}");
+        console.log("Admin session:", adminSession);
+        
+        if (!adminSession.uid || !adminSession.email) {
+            console.log("No admin session found, redirecting to login");
+            // No admin session, redirect to login
+            window.location.href = "admin.html";
+            return;
         }
-
-        window.addEventListener('storage', storageHandler);
-
-        const iv = setInterval(() => {
-          const s = JSON.parse(localStorage.getItem("adminSession") || "null");
-          if (s && s.uid) {
-            clearInterval(iv);
-            window.removeEventListener('storage', storageHandler);
-            return resolve(s);
-          }
-          if (Date.now() - start >= timeout) {
-            clearInterval(iv);
-            window.removeEventListener('storage', storageHandler);
-            return resolve(null);
-          }
-        }, 200);
-      });
-    }
-
-    console.log("Checking admin session in localStorage...");
-    let adminSession = JSON.parse(localStorage.getItem("adminSession") || "null");
-    if (!adminSession || !adminSession.uid || adminSession.uid !== user.uid) {
-      // Wait a short time for other tab/page to populate adminSession
-      adminSession = await waitForAdminSession(2000);
-    }
-
-    console.log("Admin session:", adminSession);
-
-    if (!adminSession || !adminSession.uid || adminSession.uid !== user.uid) {
-      console.log("No valid admin session after wait, signing out");
-      // No valid admin session, sign out and redirect
-      await auth.signOut();
-      localStorage.removeItem("adminSession");
-      window.location.href = "admin.html";
-      return;
-    }
-    
-    // Check if session is still valid (less than 24 hours)
-    const loginTime = new Date(adminSession.loginTime);
-    const now = new Date();
-    const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
-    console.log("Session age (hours):", hoursDiff);
-    
-    if (hoursDiff >= 24) {
-        console.log("Session expired, signing out");
-        // Admin logout function
-        async function adminLogout() {
-            try {
-                // Sign out from Firebase
-                await auth.signOut();
-                // Clear admin session
-                localStorage.removeItem("adminSession");
-                // Clear any main site user data to prevent cross-contamination
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
-                        localStorage.removeItem(key);
-                    }
-                });
-                // Redirect to admin login
-                window.location.href = "admin.html";
-            } catch (error) {
-                console.error("Logout error:", error);
-                // Force cleanup even if logout fails
-                localStorage.removeItem("adminSession");
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
-                        localStorage.removeItem(key);
-                    }
-                });
-                window.location.href = "admin.html";
-            }
+        
+        // Check if session is still valid (less than 24 hours)
+        const loginTime = new Date(adminSession.loginTime);
+        const now = new Date();
+        const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+        console.log("Session age (hours):", hoursDiff);
+        
+        if (hoursDiff >= 24) {
+            console.log("Session expired, redirecting to login");
+            // Session expired, redirect to login
+            localStorage.removeItem("adminSession");
+            window.location.href = "admin.html";
+            return;
         }
-        await adminLogout();
-    }
-    
-    // Check if user is admin (specific admin email)
-    if (adminSession.email !== "uniroomi@proton.me") {
-        console.log("User is not admin, signing out. Email:", adminSession.email);
-        // User is not admin, sign out and redirect
-        async function adminLogout() {
-            try {
-                // Sign out from Firebase
-                await auth.signOut();
-                // Clear admin session
-                localStorage.removeItem("adminSession");
-                // Clear any main site user data to prevent cross-contamination
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
-                        localStorage.removeItem(key);
-                    }
-                });
-                // Redirect to admin login
-                window.location.href = "admin.html";
-            } catch (error) {
-                console.error("Logout error:", error);
-                // Force cleanup even if logout fails
-                localStorage.removeItem("adminSession");
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
-                        localStorage.removeItem(key);
-                    }
-                });
-                window.location.href = "admin.html";
-            }
+        
+        // Check if user is admin (specific admin email)
+        if (adminSession.email !== "uniroomi@proton.me") {
+            console.log("User is not admin, redirecting to login. Email:", adminSession.email);
+            // User is not admin, redirect to login
+            localStorage.removeItem("adminSession");
+            window.location.href = "admin.html";
+            return;
         }
-        await adminLogout();
-        return;
+        
+        console.log("Admin session valid, initializing dashboard");
+        // Admin session is valid, initialize dashboard
+        initializeDashboard();
     }
-    
-    console.log("User authenticated and authorized, initializing dashboard");
-    // User is authenticated and authorized, initialize dashboard
-    initializeDashboard();
-});
 
-// Admin logout function
-async function adminLogout() {
-    try {
-        // Sign out from Firebase
-        await auth.signOut();
-        // Clear admin session
-        localStorage.removeItem("adminSession");
-        // Clear any main site user data to prevent cross-contamination
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
-                localStorage.removeItem(key);
-            }
-        });
-        // Redirect to admin login
-        window.location.href = "admin.html";
-    } catch (error) {
-        console.error("Logout error:", error);
-        // Force cleanup even if logout fails
-        localStorage.removeItem("adminSession");
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
-                localStorage.removeItem(key);
-            }
-        });
-        window.location.href = "admin.html";
+    // Check authentication on page load
+    checkAdminAuthentication();
+
+    // Admin logout function
+    async function adminLogout() {
+        try {
+            // Clear admin session
+            localStorage.removeItem("adminSession");
+            // Clear any main site user data to prevent cross-contamination
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            // Redirect to admin login
+            window.location.href = "admin.html";
+        } catch (error) {
+            console.error("Logout error:", error);
+            // Force cleanup even if logout fails
+            localStorage.removeItem("adminSession");
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            window.location.href = "admin.html";
+        }
     }
-}
 
 // Initialize dashboard only after authentication
 function initializeDashboard() {

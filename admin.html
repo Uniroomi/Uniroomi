@@ -75,10 +75,8 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     submitBtn.textContent = "Logging in...";
     
     try {
-        // Sign in with Firebase
+        // Sign in with Firebase to verify credentials
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        
-        // Check if user is admin (you can implement your own admin check logic)
         const user = userCredential.user;
         
         // For demo purposes, we'll check if the email is exactly the admin email
@@ -90,6 +88,9 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
                 email: user.email,
                 loginTime: new Date().toISOString()
             }));
+            
+            // IMPORTANT: Immediately sign out from Firebase to prevent main site login
+            await auth.signOut();
             
             // Redirect to admin dashboard
             window.location.href = "dashboard-admin.html";
