@@ -211,6 +211,12 @@ class FirebaseEmailAuth {
       return;
     }
 
+    // Block admin email from main site login
+    if (email === "uniroomi@proton.me") {
+      this.showError($errorDiv, 'This account is for admin access only. Please use the admin login page.');
+      return;
+    }
+
     const originalText = $submitBtn.text();
     $submitBtn.prop('disabled', true).text('Logging in...');
 
@@ -317,6 +323,12 @@ class FirebaseEmailAuth {
     // Validation
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
       this.showError($errorDiv, 'Please fill in all required fields');
+      return;
+    }
+
+    // Block admin email from main site registration
+    if (formData.email === "uniroomi@proton.me") {
+      this.showError($errorDiv, 'This email is reserved for admin access only.');
       return;
     }
 
