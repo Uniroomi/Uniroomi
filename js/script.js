@@ -475,20 +475,67 @@ auth.onAuthStateChanged(async (user) => {
     
     if (hoursDiff >= 24) {
         console.log("Session expired, signing out");
-        // Session expired, sign out and redirect
-        await auth.signOut();
-        localStorage.removeItem("adminSession");
-        window.location.href = "admin.html";
-        return;
+        // Admin logout function
+        async function adminLogout() {
+            try {
+                // Sign out from Firebase
+                await auth.signOut();
+                // Clear admin session
+                localStorage.removeItem("adminSession");
+                // Clear any main site user data to prevent cross-contamination
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                // Redirect to admin login
+                window.location.href = "admin.html";
+            } catch (error) {
+                console.error("Logout error:", error);
+                // Force cleanup even if logout fails
+                localStorage.removeItem("adminSession");
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                window.location.href = "admin.html";
+            }
+        }
+        await adminLogout();
     }
     
     // Check if user is admin (specific admin email)
     if (adminSession.email !== "uniroomi@proton.me") {
         console.log("User is not admin, signing out. Email:", adminSession.email);
         // User is not admin, sign out and redirect
-        await auth.signOut();
-        localStorage.removeItem("adminSession");
-        window.location.href = "admin.html";
+        async function adminLogout() {
+            try {
+                // Sign out from Firebase
+                await auth.signOut();
+                // Clear admin session
+                localStorage.removeItem("adminSession");
+                // Clear any main site user data to prevent cross-contamination
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                // Redirect to admin login
+                window.location.href = "admin.html";
+            } catch (error) {
+                console.error("Logout error:", error);
+                // Force cleanup even if logout fails
+                localStorage.removeItem("adminSession");
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                window.location.href = "admin.html";
+            }
+        }
+        await adminLogout();
         return;
     }
     
@@ -499,39 +546,30 @@ auth.onAuthStateChanged(async (user) => {
 
 // Admin logout function
 async function adminLogout() {
-  // Remove admin session immediately to avoid other tabs treating this as still-logged-in
-  try {
-    localStorage.removeItem("adminSession");
-  } catch (err) {
-    console.warn('Could not remove adminSession from localStorage', err);
-  }
-
-  // Try to sign out; if it hangs, force redirect after a short timeout
-  let signedOut = false;
-  try {
-    const signOutFn = (typeof auth !== 'undefined' && auth && auth.signOut) ? auth.signOut.bind(auth) : (firebase && firebase.auth && firebase.auth().signOut.bind(firebase.auth()));
-    await Promise.race([
-      signOutFn(),
-      new Promise((resolve) => setTimeout(resolve, 1500))
-    ]);
-    signedOut = true;
-  } catch (error) {
-    console.error("Logout error:", error);
-  }
-
-  // Use replace to avoid back-button returning to protected page
-  try {
-    window.location.replace("admin.html");
-  } catch (err) {
-    // Fallback
-    window.location.href = "admin.html";
-  }
-  // If signOut didn't complete, force reload to ensure UI updates
-  if (!signedOut) {
-    setTimeout(() => {
-      try { window.location.replace('admin.html'); } catch { window.location.href = 'admin.html'; }
-    }, 500);
-  }
+    try {
+        // Sign out from Firebase
+        await auth.signOut();
+        // Clear admin session
+        localStorage.removeItem("adminSession");
+        // Clear any main site user data to prevent cross-contamination
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                localStorage.removeItem(key);
+            }
+        });
+        // Redirect to admin login
+        window.location.href = "admin.html";
+    } catch (error) {
+        console.error("Logout error:", error);
+        // Force cleanup even if logout fails
+        localStorage.removeItem("adminSession");
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                localStorage.removeItem(key);
+            }
+        });
+        window.location.href = "admin.html";
+    }
 }
 
 // Initialize dashboard only after authentication

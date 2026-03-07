@@ -94,8 +94,14 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             // Redirect to admin dashboard
             window.location.href = "dashboard-admin.html";
         } else {
-            // User is not admin
+            // User is not admin, sign out and clear any main site session
             await auth.signOut();
+            // Clear any existing user session from main site
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('uniroomi_user_') || key.startsWith('host_listings_')) {
+                    localStorage.removeItem(key);
+                }
+            });
             errorDiv.textContent = "Access denied. Admin privileges required.";
         }
         
