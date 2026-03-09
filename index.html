@@ -563,8 +563,36 @@
           return window.auth.navigateToDashboard();
         }
         
-        // Fallback: check localStorage for user role
-        const userRole = localStorage.getItem('userRole') || 'guest';
+        // Fallback: check localStorage for user role using the correct key format
+        let userRole = 'guest';
+        
+        // Try to get the current user from Firebase Auth
+        if (typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser) {
+          const user = firebase.auth().currentUser;
+          const userData = localStorage.getItem(`uniroomi_user_${user.uid}`);
+          
+          if (userData) {
+            try {
+              const userObj = JSON.parse(userData);
+              userRole = userObj.role || 'guest';
+            } catch (error) {
+              console.error('Error parsing user data:', error);
+            }
+          }
+        } else {
+          // If no Firebase user, check for any stored user data
+          const keys = Object.keys(localStorage).filter(key => key.startsWith('uniroomi_user_'));
+          if (keys.length > 0) {
+            try {
+              const userData = localStorage.getItem(keys[0]);
+              const userObj = JSON.parse(userData);
+              userRole = userObj.role || 'guest';
+            } catch (error) {
+              console.error('Error parsing user data:', error);
+            }
+          }
+        }
+        
         const currentPath = window.location.pathname;
         
         // Determine which dashboard to go to
