@@ -553,5 +553,32 @@
 
     <!-- Firebase Email Authentication -->
     <script src="js/firebase-email-auth.js"></script>
+
+    <!-- Dashboard Navigation Fix -->
+    <script>
+      // Role-based navigation utility - ensures dashboard button works even if auth.js hasn't loaded
+      function navigateToDashboard() {
+        // First try to use the auth system's navigateToDashboard if available
+        if (typeof window.auth !== 'undefined' && typeof window.auth.navigateToDashboard === 'function') {
+          return window.auth.navigateToDashboard();
+        }
+        
+        // Fallback: check localStorage for user role
+        const userRole = localStorage.getItem('userRole') || 'guest';
+        const currentPath = window.location.pathname;
+        
+        // Determine which dashboard to go to
+        let targetDashboard = 'dashboard.html'; // default for guests
+        
+        if (userRole === 'host') {
+          targetDashboard = 'dashboard-host.html';
+        }
+        
+        // Check if we're already on the correct dashboard
+        if (!currentPath.includes(targetDashboard)) {
+          window.location.href = targetDashboard;
+        }
+      }
+    </script>
   </body>
 </html>

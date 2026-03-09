@@ -2061,29 +2061,29 @@
       // Create Listing Form Submission
       function handleCreateListing(event) {
         event.preventDefault();
-        
+
         // Get selected room types
         const selectedRoomTypes = Array.from(document.querySelectorAll('input[name="roomTypes"]:checked')).map(cb => cb.value);
-        
+
         // Validate at least one room type is selected
         if (selectedRoomTypes.length === 0) {
           showListingError('Please select at least one room type to offer');
           return;
         }
-        
+
         // Validate exactly 6 images are uploaded
         if (uploadedImages.length !== 6) {
           showListingError('Please upload exactly 6 images for your property');
           return;
         }
-        
+
         // Validate at least one amenity is selected
         const selectedAmenities = Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map(cb => cb.value);
         if (selectedAmenities.length === 0) {
           showListingError('Please select at least one amenity');
           return;
         }
-        
+
         const formData = {
           title: document.getElementById('listingTitle').value,
           address: document.getElementById('listingAddress').value,
@@ -2109,33 +2109,52 @@
           amenities: selectedAmenities,
           images: uploadedImages
         };
-        
-        // Show loading
-        const submitBtn = document.querySelector('.listing-submit-btn');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Creating Listing...';
-        submitBtn.disabled = true;
-        
+
+        // Use the submit button inside this form (safer when multiple forms exist)
+        const submitBtn = event.target.querySelector('.listing-submit-btn') || document.querySelector('.listing-submit-btn');
+        const originalText = submitBtn ? submitBtn.textContent : 'Create Listing';
+        if (submitBtn) {
+          submitBtn.textContent = 'Creating Listing...';
+          submitBtn.disabled = true;
+        }
+
         // Simulate API call
         setTimeout(() => {
-          const user = firebase.auth().currentUser;
-          if (user) {
+          try {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+              showListingError('User not authenticated. Please sign in and try again.');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+              }
+              return;
+            }
+
             const listings = JSON.parse(localStorage.getItem(`host_listings_${user.uid}`) || '[]');
-            const newListing = {
+            const newListing = Object.assign({
               id: Date.now().toString(),
-              ...formData,
               hostId: user.uid,
               createdAt: new Date().toISOString(),
               status: 'pending approval'
-            };
+            }, formData);
+
             listings.push(newListing);
             localStorage.setItem(`host_listings_${user.uid}`, JSON.stringify(listings));
             showSuccess('Listing submitted successfully! It is now pending approval.');
+
+            // Update UI then close modal
+            loadHostListings();
+            closeCreateListingModal();
+          } catch (err) {
+            console.error('Error creating listing:', err);
+            showListingError('An error occurred while creating the listing. Please try again.');
+          } finally {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalText;
+            }
           }
-          // Update UI
-          loadHostListings();
-          closeCreateListingModal();
-          submitBtn.disabled = false;
         }, 2000);
       }
 
