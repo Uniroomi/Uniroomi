@@ -836,10 +836,27 @@ class FirebaseEmailAuth {
       targetDashboard = 'dashboard-host.html';
     }
     
+    // Build correct relative path based on current location
+    let targetPath = targetDashboard;
+    
+    if (currentPath.includes('/Campuses/')) {
+      // We're in a Campuses subdirectory, need to go up one level
+      targetPath = '../' + targetDashboard;
+    } else if (currentPath.includes('/accommodations/')) {
+      // We're in accommodations subdirectory, need to go up two levels
+      targetPath = '../../' + targetDashboard;
+    } else if (currentPath.includes('/Uniroomi/') && !currentPath.includes('/Campuses/') && !currentPath.includes('/accommodations/')) {
+      // We're in the main Uniroomi directory (but not in subdirectories)
+      targetPath = targetDashboard;
+    } else {
+      // Default fallback - assume we're in main directory
+      targetPath = targetDashboard;
+    }
+    
     // Check if we're already on the correct dashboard
     if (!currentPath.includes(targetDashboard)) {
       // Navigate to dashboard with section hash
-      window.location.href = `${targetDashboard}#${section}`;
+      window.location.href = `${targetPath}#${section}`;
     } else {
       // Already on dashboard, just scroll to section
       this.scrollToSection(section);
@@ -937,10 +954,30 @@ class FirebaseEmailAuth {
     }
     
     console.log('Navigating to:', targetDashboard);
+    console.log('Current path:', currentPath);
+    
+    // Build correct relative path based on current location
+    let targetPath = targetDashboard;
+    
+    if (currentPath.includes('/Campuses/')) {
+      // We're in a Campuses subdirectory, need to go up one level
+      targetPath = '../' + targetDashboard;
+    } else if (currentPath.includes('/accommodations/')) {
+      // We're in accommodations subdirectory, need to go up two levels
+      targetPath = '../../' + targetDashboard;
+    } else if (currentPath.includes('/Uniroomi/') && !currentPath.includes('/Campuses/') && !currentPath.includes('/accommodations/')) {
+      // We're in the main Uniroomi directory (but not in subdirectories)
+      targetPath = targetDashboard;
+    } else {
+      // Default fallback - assume we're in main directory
+      targetPath = targetDashboard;
+    }
+    
+    console.log('Final target path:', targetPath);
     
     // Check if we're already on the correct dashboard
     if (!currentPath.includes(targetDashboard)) {
-      window.location.href = targetDashboard;
+      window.location.href = targetPath;
     }
   }
 

@@ -12,7 +12,10 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="vendors/linericon/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css" />
     <link
       rel="stylesheet"
@@ -65,7 +68,18 @@
                 <a class="nav-link" href="gallery.html"></a>
               </li>
               <li class="nav-item dashboard-nav-item" style="display: none">
-                <button class="button-75" role="button" onclick="navigateToDashboard(); return false;"><span class="text"><i class="fa-solid fa-th-large"></i> Dashboard</span></button>
+                <button
+                  class="button-75"
+                  role="button"
+                  onclick="
+                    navigateToDashboard();
+                    return false;
+                  "
+                >
+                  <span class="text"
+                    ><i class="fa-solid fa-th-large"></i> Dashboard</span
+                  >
+                </button>
               </li>
               <li class="nav-item submenu dropdown">
                 <a
@@ -500,10 +514,30 @@
             Anokha Holdings (Pty) Ltd.
           </p>
           <div class="col-lg-4 col-sm-12 footer-social">
-            <a href="#"><i class="fa-brands fa-facebook" style="color: rgb(130, 132, 143);"></i></a>
-            <a href="#"><i class="fa-brands fa-x-twitter" style="color: rgb(130, 132, 143);"></i></a>
-            <a href="#"><i class="fa-brands fa-linkedin" style="color: rgb(130, 132, 143);"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram" style="color: rgb(130, 132, 143);"></i></a>
+            <a href="#"
+              ><i
+                class="fa-brands fa-facebook"
+                style="color: rgb(130, 132, 143)"
+              ></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fa-brands fa-x-twitter"
+                style="color: rgb(130, 132, 143)"
+              ></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fa-brands fa-linkedin"
+                style="color: rgb(130, 132, 143)"
+              ></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fa-brands fa-instagram"
+                style="color: rgb(130, 132, 143)"
+              ></i
+            ></a>
           </div>
         </div>
       </div>
@@ -559,49 +593,58 @@
       // Role-based navigation utility - ensures dashboard button works even if auth.js hasn't loaded
       function navigateToDashboard() {
         // First try to use the auth system's navigateToDashboard if available
-        if (typeof window.auth !== 'undefined' && typeof window.auth.navigateToDashboard === 'function') {
+        if (
+          typeof window.auth !== "undefined" &&
+          typeof window.auth.navigateToDashboard === "function"
+        ) {
           return window.auth.navigateToDashboard();
         }
-        
+
         // Fallback: check localStorage for user role using the correct key format
-        let userRole = 'guest';
-        
+        let userRole = "guest";
+
         // Try to get the current user from Firebase Auth
-        if (typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser) {
+        if (
+          typeof firebase !== "undefined" &&
+          firebase.auth &&
+          firebase.auth().currentUser
+        ) {
           const user = firebase.auth().currentUser;
           const userData = localStorage.getItem(`uniroomi_user_${user.uid}`);
-          
+
           if (userData) {
             try {
               const userObj = JSON.parse(userData);
-              userRole = userObj.role || 'guest';
+              userRole = userObj.role || "guest";
             } catch (error) {
-              console.error('Error parsing user data:', error);
+              console.error("Error parsing user data:", error);
             }
           }
         } else {
           // If no Firebase user, check for any stored user data
-          const keys = Object.keys(localStorage).filter(key => key.startsWith('uniroomi_user_'));
+          const keys = Object.keys(localStorage).filter((key) =>
+            key.startsWith("uniroomi_user_"),
+          );
           if (keys.length > 0) {
             try {
               const userData = localStorage.getItem(keys[0]);
               const userObj = JSON.parse(userData);
-              userRole = userObj.role || 'guest';
+              userRole = userObj.role || "guest";
             } catch (error) {
-              console.error('Error parsing user data:', error);
+              console.error("Error parsing user data:", error);
             }
           }
         }
-        
+
         const currentPath = window.location.pathname;
-        
+
         // Determine which dashboard to go to
-        let targetDashboard = 'dashboard.html'; // default for guests
-        
-        if (userRole === 'host') {
-          targetDashboard = 'dashboard-host.html';
+        let targetDashboard = "dashboard.html"; // default for guests
+
+        if (userRole === "host") {
+          targetDashboard = "dashboard-host.html";
         }
-        
+
         // Check if we're already on the correct dashboard
         if (!currentPath.includes(targetDashboard)) {
           window.location.href = targetDashboard;
