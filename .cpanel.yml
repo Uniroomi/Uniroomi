@@ -1,3 +1,7 @@
+# This file is for CI/CD systems (GitHub Actions, etc.), not cPanel Git Version Control
+# cPanel Git Version Control does not execute .cpanel.yml tasks
+# To fix cPanel deployment, set Repository Path to /home/username/public_html in cPanel Git settings
+
 ---
 deployment:
   tasks:
