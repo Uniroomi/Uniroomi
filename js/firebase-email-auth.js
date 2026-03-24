@@ -558,22 +558,8 @@ class FirebaseEmailAuth {
       }
     }
     
-    // Check if user is a host to decide whether to show "Become a Host" button only
+    // "Become a Host" button is not shown for logged-in users
     let becomeHostButton = '';
-    if (user && user.uid) {
-      const userData = localStorage.getItem(`uniroomi_user_${user.uid}`);
-      if (userData) {
-        const userObj = JSON.parse(userData);
-        // Only show "Become a Host" button for guests, not for hosts
-        if (userObj.role !== 'host') {
-          becomeHostButton = `
-            <li class="nav-item">
-              <span class="nav-link theme_btn_two">Become a Host</span>
-            </li>
-          `;
-        }
-      }
-    }
     
     const $userMenu = `
       ${becomeHostButton}
