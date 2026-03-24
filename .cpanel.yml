@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export REPOPATH=/home/yourusername/repositories/Uniroomi-main
+    - export MAINPATH=/home/yourusername/public_html
+    - /bin/cp -R $REPOPATH/* $MAINPATH/
+    - /bin/cp -R $REPOPATH/.[^.]* $MAINPATH/ 2>/dev/null || true
