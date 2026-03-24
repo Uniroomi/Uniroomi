@@ -138,6 +138,12 @@ class FirebaseEmailAuth {
       this.logout();
     });
 
+    // Notification bell click
+    $(document).on('click', '.notification-bell', (e) => {
+      e.preventDefault();
+      this.toggleNotifications();
+    });
+
     // Become a Host button
     $(document).on('click', '.theme_btn_two:not(.logout-btn):not(.user-menu)', (e) => {
       e.preventDefault();
@@ -191,6 +197,50 @@ class FirebaseEmailAuth {
   closeAllModals() {
     $('.modal-overlay').fadeOut(300, function() {
       $(this).remove();
+    });
+  }
+
+  toggleNotifications() {
+    const existingDropdown = $('.notification-dropdown');
+    
+    if (existingDropdown.length > 0) {
+      existingDropdown.fadeOut(300, function() {
+        $(this).remove();
+      });
+    } else {
+      this.showNotificationDropdown();
+    }
+  }
+
+  showNotificationDropdown() {
+    const dropdownHtml = this.getNotificationDropdownHtml();
+    $('body').append(dropdownHtml);
+    
+    // Position the dropdown near the notification bell
+    const bell = $('.notification-bell');
+    const dropdown = $('.notification-dropdown');
+    
+    if (bell.length > 0 && dropdown.length > 0) {
+      const bellOffset = bell.offset();
+      const bellWidth = bell.outerWidth();
+      const dropdownWidth = 320; // Fixed width for dropdown
+      
+      dropdown.css({
+        top: bellOffset.top + bell.outerHeight() + 10,
+        left: bellOffset.left + bellWidth - dropdownWidth + 20
+      });
+    }
+    
+    $('.notification-dropdown').fadeIn(300);
+    
+    // Close dropdown when clicking outside
+    $(document).on('click.notification', (e) => {
+      if (!$(e.target).closest('.notification-bell, .notification-dropdown').length) {
+        $('.notification-dropdown').fadeOut(300, function() {
+          $(this).remove();
+        });
+        $(document).off('click.notification');
+      }
     });
   }
 
@@ -1225,10 +1275,4 @@ $(document).ready(function() {
       }
     });
   }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', attachDashboardNav);
-  } else {
-    attachDashboardNav();
-  }
-})();
+}

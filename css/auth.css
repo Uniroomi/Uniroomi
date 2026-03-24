@@ -733,23 +733,6 @@
   animation: bellClapper 2.2s 0.1s linear infinite;
 }
 
-.notification-bell .notification--num {
-  position: absolute;
-  top: 0%;
-  left: 60%;
-  font-size: 10px;
-  border-radius: 50%;
-  width: 14px;
-  height: 14px;
-  background-color: #dc3545;
-  border: 2px solid #f8f9fa;
-  color: #FFFFFF;
-  text-align: center;
-  line-height: 14px;
-  font-weight: bold;
-  animation: notification 3.2s ease;
-}
-
 @keyframes bell {
   0%, 25%, 75%, 100% {
     transform: rotate(0deg);
@@ -786,12 +769,208 @@
   }
 }
 
-@keyframes notification {
-  0%, 25%, 75%, 100% {
-    opacity: 1;
+.notification-bell .notification--num {
+  position: absolute;
+  top: 0%;
+  left: 60%;
+  transform: translateX(-50%);
+  background: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+/* Notification Dropdown Styles */
+.notification-dropdown {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  max-height: 400px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+  border: 1px solid #e1e8ed;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e1e8ed;
+  background: #f8f9fa;
+}
+
+.notification-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.mark-all-read-btn {
+  background: none;
+  border: none;
+  color: #2BA2D8;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.mark-all-read-btn:hover {
+  background-color: #e8f4f8;
+}
+
+.notification-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notification-item.unread {
+  background-color: #f0f8ff;
+  border-left: 3px solid #2BA2D8;
+}
+
+.notification-item.unread::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  width: 8px;
+  height: 8px;
+  background: #2BA2D8;
+  border-radius: 50%;
+}
+
+.notification-icon {
+  margin-right: 12px;
+  margin-top: 2px;
+}
+
+.notification-icon i {
+  font-size: 16px;
+  color: #666;
+  width: 20px;
+  text-align: center;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-content h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
+}
+
+.notification-content p {
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notification-time {
+  font-size: 11px;
+  color: #999;
+}
+
+.notification-actions {
+  margin-left: 8px;
+}
+
+.mark-read-btn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.mark-read-btn:hover {
+  background-color: #e8f4f8;
+  color: #2BA2D8;
+  opacity: 1;
+}
+
+.notification-footer {
+  padding: 10px 20px;
+  text-align: center;
+  border-top: 1px solid #e1e8ed;
+  background: #f8f9fa;
+}
+
+.notification-footer a {
+  color: #2BA2D8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.notification-footer a:hover {
+  text-decoration: underline;
+}
+
+.no-notifications {
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .notification-dropdown {
+    width: 280px;
+    right: 10px;
   }
-  30%, 70% {
-    opacity: 0;
+  
+  .notification-item {
+    padding: 10px 15px;
+  }
+  
+  .notification-content h4 {
+    font-size: 13px;
+  }
+  
+  .notification-content p {
+    font-size: 12px;
   }
 }
 
