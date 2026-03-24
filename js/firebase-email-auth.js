@@ -138,12 +138,6 @@ class FirebaseEmailAuth {
       this.logout();
     });
 
-    // Notification bell click
-    $(document).on('click', '.notification-bell', (e) => {
-      e.preventDefault();
-      alert('Notifications feature coming soon!');
-    });
-
     // Become a Host button
     $(document).on('click', '.theme_btn_two:not(.logout-btn):not(.user-menu)', (e) => {
       e.preventDefault();
@@ -682,6 +676,55 @@ class FirebaseEmailAuth {
     `;
     
     $loginBtn.parent().replaceWith($userMenu);
+    
+    // Update message count after user menu is created
+    setTimeout(() => {
+      console.log('Attempting to update notification count...');
+      
+      // Try multiple approaches to update message count
+      try {
+        // Method 1: Check if uniroomiMessaging exists
+        if (typeof uniroomiMessaging !== 'undefined' && uniroomiMessaging.updateMessageCount) {
+          console.log('Using uniroomiMessaging.updateMessageCount');
+          uniroomiMessaging.updateMessageCount();
+        }
+        // Method 2: Check if updateMessageCount exists globally
+        else if (typeof updateMessageCount === 'function') {
+          console.log('Using global updateMessageCount');
+          updateMessageCount();
+        }
+        // Method 3: Manually update the notification count
+        else {
+          console.log('Using manual message count update');
+          const notificationNum = document.querySelector('.notification--num');
+          console.log('Notification element found:', !!notificationNum);
+          
+          if (notificationNum) {
+            // Try to get messages from localStorage
+            if (typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser) {
+              const user = firebase.auth().currentUser;
+              const messagesKey = `uniroomi_messages_${user.uid}`;
+              const messages = JSON.parse(localStorage.getItem(messagesKey) || '[]');
+              const unreadCount = messages.filter(m => !m.isRead).length;
+              
+              console.log('Messages found:', messages.length);
+              console.log('Unread count:', unreadCount);
+              
+              notificationNum.textContent = unreadCount > 0 ? unreadCount.toString() : '';
+              notificationNum.style.display = unreadCount > 0 ? 'block' : 'none';
+              
+              console.log('Notification updated with count:', unreadCount);
+            } else {
+              console.log('Firebase user not available');
+            }
+          } else {
+            console.log('Notification element not found');
+          }
+        }
+      } catch (error) {
+        console.log('Message count update failed:', error);
+      }
+    }, 200);
     
     // Add mobile menu items to the collapsible navbar
     const $navbarCollapse = $('#navbarSupportedContent .navbar-nav');
