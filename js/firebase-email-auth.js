@@ -577,17 +577,6 @@ class FirebaseEmailAuth {
     
     const $userMenu = `
       ${becomeHostButton}
-      <li class="nav-item">
-        <a href="#" class="nav-link notification-bell" title="Notifications">
-          <div class="notification">
-            <svg viewBox="0 0 166 197">
-              <path d="M82.8652955,196.898522 C97.8853137,196.898522 110.154225,184.733014 110.154225,169.792619 L55.4909279,169.792619 C55.4909279,184.733014 67.8452774,196.898522 82.8652955,196.898522 L82.8652955,196.898522 Z" class="notification--bellClapper"></path>
-              <path d="M146.189736,135.093562 L146.189736,82.040478 C146.189736,52.1121695 125.723173,27.9861651 97.4598237,21.2550099 L97.4598237,14.4635396 C97.4598237,6.74321823 90.6498186,0 82.8530327,0 C75.0440643,0 68.2462416,6.74321823 68.2462416,14.4635396 L68.2462416,21.2550099 C39.9707102,27.9861651 19.5163297,52.1121695 19.5163297,82.040478 L19.5163297,135.093562 L0,154.418491 L0,164.080956 L165.706065,164.080956 L165.706065,154.418491 L146.189736,135.093562 Z" class="notification--bell"></path>
-            </svg>
-            <span class="notification--num"></span>
-          </div>
-        </a>
-      </li>
       <li class="nav-item desktop-dashboard-btn">
         <button class="button-75" role="button" onclick="navigateToDashboard(); return false;"><span class="text"><i class="fa fa-th-large"></i> Dashboard</span></button>
       </li>
@@ -676,55 +665,6 @@ class FirebaseEmailAuth {
     `;
     
     $loginBtn.parent().replaceWith($userMenu);
-    
-    // Update message count after user menu is created
-    setTimeout(() => {
-      console.log('Attempting to update notification count...');
-      
-      // Try multiple approaches to update message count
-      try {
-        // Method 1: Check if uniroomiMessaging exists
-        if (typeof uniroomiMessaging !== 'undefined' && uniroomiMessaging.updateMessageCount) {
-          console.log('Using uniroomiMessaging.updateMessageCount');
-          uniroomiMessaging.updateMessageCount();
-        }
-        // Method 2: Check if updateMessageCount exists globally
-        else if (typeof updateMessageCount === 'function') {
-          console.log('Using global updateMessageCount');
-          updateMessageCount();
-        }
-        // Method 3: Manually update the notification count
-        else {
-          console.log('Using manual message count update');
-          const notificationNum = document.querySelector('.notification--num');
-          console.log('Notification element found:', !!notificationNum);
-          
-          if (notificationNum) {
-            // Try to get messages from localStorage
-            if (typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser) {
-              const user = firebase.auth().currentUser;
-              const messagesKey = `uniroomi_messages_${user.uid}`;
-              const messages = JSON.parse(localStorage.getItem(messagesKey) || '[]');
-              const unreadCount = messages.filter(m => !m.isRead).length;
-              
-              console.log('Messages found:', messages.length);
-              console.log('Unread count:', unreadCount);
-              
-              notificationNum.textContent = unreadCount > 0 ? unreadCount.toString() : '';
-              notificationNum.style.display = unreadCount > 0 ? 'block' : 'none';
-              
-              console.log('Notification updated with count:', unreadCount);
-            } else {
-              console.log('Firebase user not available');
-            }
-          } else {
-            console.log('Notification element not found');
-          }
-        }
-      } catch (error) {
-        console.log('Message count update failed:', error);
-      }
-    }, 200);
     
     // Add mobile menu items to the collapsible navbar
     const $navbarCollapse = $('#navbarSupportedContent .navbar-nav');

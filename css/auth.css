@@ -690,111 +690,6 @@
   transform: translateY(20px);
 }
 
-/* Custom SVG Notification Bell */
-.notification-bell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 !important;
-  margin: 0 3px !important;
-  height: 46px;
-  transform: translateY(20px);
-}
-
-.notification-bell .notification {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.notification-bell .notification svg {
-  width: 30px;
-  height: 30px;
-}
-
-.notification-bell .notification svg > path {
-  fill: #333;
-  transition: fill 0.3s ease;
-}
-
-.notification-bell:hover .notification svg > path {
-  fill: #2BA2D8;
-}
-
-.notification-bell .notification--bell {
-  animation: bell 2.2s linear infinite;
-  transform-origin: 50% 0%;
-}
-
-.notification-bell .notification--bellClapper {
-  animation: bellClapper 2.2s 0.1s linear infinite;
-}
-
-.notification-bell .notification--num {
-  position: absolute;
-  top: 0%;
-  left: 60%;
-  font-size: 10px;
-  border-radius: 50%;
-  width: 14px;
-  height: 14px;
-  background-color: #dc3545;
-  border: 2px solid #f8f9fa;
-  color: #FFFFFF;
-  text-align: center;
-  line-height: 14px;
-  font-weight: bold;
-  animation: notification 3.2s ease;
-}
-
-@keyframes bell {
-  0%, 25%, 75%, 100% {
-    transform: rotate(0deg);
-  }
-  40% {
-    transform: rotate(2deg);
-  }
-  45% {
-    transform: rotate(-2deg);
-  }
-  55% {
-    transform: rotate(1deg);
-  }
-  60% {
-    transform: rotate(-1deg);
-  }
-}
-
-@keyframes bellClapper {
-  0%, 25%, 75%, 100% {
-    transform: translateX(0);
-  }
-  40% {
-    transform: translateX(-2px);
-  }
-  45% {
-    transform: translateX(2px);
-  }
-  55% {
-    transform: translateX(-1px);
-  }
-  60% {
-    transform: translateX(1px);
-  }
-}
-
-@keyframes notification {
-  0%, 25%, 75%, 100% {
-    opacity: 1;
-  }
-  30%, 70% {
-    opacity: 0;
-  }
-}
-
 /* Profile Dropdown */
 .navbar .nav-item .dropdown-menu {
   border: none;
@@ -1050,7 +945,6 @@
   
   /* Hide desktop navbar items on mobile */
   .navbar .nav-item .theme_btn_two,
-  .notification-bell,
   .profile-avatar {
     display: none !important;
   }
