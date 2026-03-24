@@ -138,12 +138,6 @@ class FirebaseEmailAuth {
       this.logout();
     });
 
-    // Notification bell click
-    $(document).on('click', '.notification-bell', (e) => {
-      e.preventDefault();
-      this.toggleNotifications();
-    });
-
     // Become a Host button
     $(document).on('click', '.theme_btn_two:not(.logout-btn):not(.user-menu)', (e) => {
       e.preventDefault();
