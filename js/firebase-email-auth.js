@@ -561,10 +561,15 @@ class FirebaseEmailAuth {
       }
     }
     
+<<<<<<< HEAD
     // Hide "Become a Host" for all logged-in users (guest and host) in desktop and mobile menus
     let becomeHostButton = '';
     // The existing "Become a Host" button is already removed from nav via $becomeHostBtn.parent().remove(),
     // and no new button will be re-added here when authenticated.
+=======
+    // "Become a Host" button is not shown for logged-in users
+    let becomeHostButton = '';
+>>>>>>> 74bd8566a2ab370114636e54e9ab783031f1b2a4
     
     const $userMenu = `
       ${becomeHostButton}
