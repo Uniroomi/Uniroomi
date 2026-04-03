@@ -594,10 +594,10 @@
       function navigateToDashboard() {
         // First try to use the auth system's navigateToDashboard if available
         if (
-          typeof window.auth !== "undefined" &&
-          typeof window.auth.navigateToDashboard === "function"
+          typeof window.uniroomiAuth !== "undefined" &&
+          typeof window.uniroomiAuth.navigateToDashboard === "function"
         ) {
-          return window.auth.navigateToDashboard();
+          return window.uniroomiAuth.navigateToDashboard();
         }
 
         // Fallback: check localStorage for user role using the correct key format

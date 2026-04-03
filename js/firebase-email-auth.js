@@ -495,6 +495,9 @@ class FirebaseEmailAuth {
     
     // Remove ALL existing "Become a Host" buttons to prevent duplicates
     $becomeHostBtn.parent().remove();
+    // Also hide any static become-host anchors for robustness (desktop + mobile)
+    $('.become-host').closest('.nav-item').hide();
+    $('.theme_btn_two:contains("Become a Host")').closest('.nav-item').hide();
     
     // Only add "Become a Host" button back if user is a guest
     if (userRole !== 'host') {
@@ -558,22 +561,10 @@ class FirebaseEmailAuth {
       }
     }
     
-    // Check if user is a host to decide whether to show "Become a Host" button only
+    // Hide "Become a Host" for all logged-in users (guest and host) in desktop and mobile menus
     let becomeHostButton = '';
-    if (user && user.uid) {
-      const userData = localStorage.getItem(`uniroomi_user_${user.uid}`);
-      if (userData) {
-        const userObj = JSON.parse(userData);
-        // Only show "Become a Host" button for guests, not for hosts
-        if (userObj.role !== 'host') {
-          becomeHostButton = `
-            <li class="nav-item">
-              <span class="nav-link theme_btn_two">Become a Host</span>
-            </li>
-          `;
-        }
-      }
-    }
+    // The existing "Become a Host" button is already removed from nav via $becomeHostBtn.parent().remove(),
+    // and no new button will be re-added here when authenticated.
     
     const $userMenu = `
       ${becomeHostButton}
@@ -760,9 +751,13 @@ class FirebaseEmailAuth {
     
     // Remove the empty dropdown that's interfering
     $('.submenu.dropdown').remove();
+
+    // Ensure "Become a Host" is visible for logged-out state
+    $('.become-host').closest('.nav-item').show();
+    $('.theme_btn_two:contains("Become a Host")').closest('.nav-item').show();
     
     const $navItems = `
-      <li class="nav-item">
+      <li class="nav-item become-host">
         <span class="nav-link theme_btn_two">Become a Host</span>
       </li>
       <li class="nav-item">
@@ -1180,11 +1175,15 @@ class FirebaseEmailAuth {
 // Initialize authentication system when DOM is ready
 $(document).ready(function() {
   // Firebase SDK is already loaded in index.html
-  window.auth = new FirebaseEmailAuth();
-  window.uniroomiAuth = window.auth;
-  
-  // Make navigation functions globally accessible
-  window.auth.makeGlobal();
+  // Only initialize if not already initialized
+  if (!window.uniroomiAuth) {
+    window.auth = new FirebaseEmailAuth();
+    window.uniroomiAuth = window.auth;
+    
+    // Make navigation functions globally accessible
+    window.auth.makeGlobal();
+    console.log('Firebase Auth initialized successfully');
+  }
 });
 
 // Global dashboard button visibility management
